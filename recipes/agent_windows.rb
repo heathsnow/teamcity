@@ -79,16 +79,25 @@ node.teamcity.agents.each do |name, agent| # multiple agents
     variables agent.to_hash
   end
 
+  # Lazily find the Java executable since it may not be installed during Chef compile
+  java_exe = lambda { Teamcity::FindJava.find_java_exe("#{agent.system_dir}/bin") }
+
+  # Service configuration file
+  template '#{agent.system_dir}/launcher/conf/wrapper.conf' do
+    source 'wrapper.conf.erb'
+    variables({ :name => name, :java_exe => java_exe })
+  end
+
   # Install as Windows service
   execute "#{agent.system_dir}/bin/service.install.bat" do
     action :nothing
-    notifies :start, 'service[teamcity_service]', :delayed
+    cwd "#{agent.system_dir}/bin"
   end
 
-  # What about more than 1 agent?
-  service 'teamcity_service' do
-    service_name 'TeamCity Build Agent'
-    action :nothing
+  # Start the service
+  execute "#{agent.system_dir}/bin/service.start.bat" do
+    cwd "#{agent.system_dir}/bin"
+    only_if { true }
   end
-
+  
 end

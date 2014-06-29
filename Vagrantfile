@@ -9,9 +9,11 @@ Vagrant.configure("2") do |config|
     v.gui = true
   end
   config.vm.provision :chef_client do |chef|
+    #chef.log_level = 'debug'
+    #chef.verbose_logging = true
     chef.node_name = "vagrant-#{ENV['LOGNAME']}-teamcity.hq.daptiv.com"
     chef.add_recipe "daptiv_java"
-    chef.add_recipe "teamcity::agent"
+    chef.add_recipe "teamcity"
     chef.json = {
       "teamcity" => {
         "agents" => {
