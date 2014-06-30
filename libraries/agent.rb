@@ -79,7 +79,7 @@ module Teamcity
     end
 
     def label(seperator)
-      if self.class.agent_count() < 2
+      if agent_count() < 2
         ''
       else
         seperator + @name
