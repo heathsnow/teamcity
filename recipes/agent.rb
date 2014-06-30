@@ -1,5 +1,5 @@
 # Cookbook Name:: teamcity
-# Recipe:: default
+# Recipe:: agent
 #
 # Copyright 2014, Shawn Neal (sneal@sneal.net)
 #
@@ -16,4 +16,8 @@
 # limitations under the License.
 #
 
-include_recipe 'teamcity::agent'
+if platform?('windows')
+  include_recipe 'teamcity::agent_windows'
+else
+  include_recipe 'teamcity::agent_linux'
+end

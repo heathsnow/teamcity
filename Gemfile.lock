@@ -55,6 +55,7 @@ GEM
       puma (~> 1.6)
       rest-client (>= 1.0.4, < 1.7.0)
       yajl-ruby (~> 1.1)
+    chef-sugar (2.0.0)
     chef-zero (1.7.3)
       hashie (~> 2.0)
       json
@@ -234,6 +235,7 @@ PLATFORMS
 DEPENDENCIES
   berkshelf (~> 2.0.14)
   chef (~> 11.8)
+  chef-sugar (~> 2.0.0)
   chefspec (~> 3.4.0)
   daptiv-chef-ci (~> 0.0.14)
   daptiv-foodcritic-rules

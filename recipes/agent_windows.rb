@@ -15,7 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
+include_recipe 'chef-sugar::default'
 require 'digest/md5'
+
+# Prefer this cookbook's java_home if specified, otherwise try and use the Java cookbook's
+java_home = node.deep_fetch('teamcity', 'java_home') || node.deep_fetch('java', 'java_home')
+java_exe = 'java'
+java_exe = ::File.join(java_home, 'bin', 'java.exe') if java_home
 
 node.teamcity.agents.each do |name, agent| # multiple agents
   next if agent.nil? # support removing of agents
@@ -47,7 +54,6 @@ node.teamcity.agents.each do |name, agent| # multiple agents
   windows_zipfile agent.system_dir do
     source install_file
     action :unzip
-    notifies :run, "execute[#{agent.system_dir}/bin/service.install.bat]", :immediately
     not_if &installed_check
   end
 
@@ -79,19 +85,16 @@ node.teamcity.agents.each do |name, agent| # multiple agents
     variables agent.to_hash
   end
 
-  # Lazily find the Java executable since it may not be installed during Chef compile
-  java_exe = lambda { Teamcity::FindJava.find_java_exe("#{agent.system_dir}/bin") }
-
   # Service configuration file
-  template '#{agent.system_dir}/launcher/conf/wrapper.conf' do
+  template "#{agent.system_dir}/launcher/conf/wrapper.conf" do
     source 'wrapper.conf.erb'
     variables({ :name => name, :java_exe => java_exe })
   end
 
   # Install as Windows service
   execute "#{agent.system_dir}/bin/service.install.bat" do
-    action :nothing
     cwd "#{agent.system_dir}/bin"
+    not_if { ::Win32::Service.exists?("TCBuildAgent_#{name}") }
   end
 
   # Start the service
@@ -99,5 +102,5 @@ node.teamcity.agents.each do |name, agent| # multiple agents
     cwd "#{agent.system_dir}/bin"
     only_if { true }
   end
-  
+
 end

@@ -1,3 +1,11 @@
+module Win32
+  module Service
+    def self.exists?(file)
+      return false
+    end
+  end
+end
+
 describe 'teamcity::agent_windows' do
   describe 'no attributes set' do
     let(:chef_run) do
@@ -13,6 +21,7 @@ describe 'teamcity::agent_windows' do
     let(:chef_run) do
       ChefSpec::Runner.new(platform: 'Windows', version: '2008R2') do |node|
         node.set['teamcity']['agents']['default']['server_url'] = 'http://teamcity.example.com'
+        node.set['java']['java_home'] = 'C:/Program Files/Java'
       end.converge(described_recipe)
     end
 
@@ -45,15 +54,15 @@ describe 'teamcity::agent_windows' do
         source: downloaded_zip_path)
     end
 
-    it 'unzip notifies the Windows service registration' do
-      resource = chef_run.windows_zipfile('/home/teamcity')
-      expect(resource).to notify('execute[/home/teamcity/bin/service.install.bat]').to(
-        :run).immediately
-    end
-
     it 'create the buildagent.properties file' do
       expect(chef_run).to create_template('/home/teamcity/conf/buildAgent.properties').with(
         source: 'buildAgent.properties.erb')
+    end
+
+    it 'creates a the service wrapper conf' do
+      expect(chef_run).to create_template('/home/teamcity/launcher/conf/wrapper.conf').with(
+        source: 'wrapper.conf.erb',
+        variables: { name: 'default', java_exe: 'C:/Program Files/Java/bin/java.exe' })
     end
   end
 end
