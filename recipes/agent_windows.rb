@@ -100,7 +100,7 @@ node.teamcity.agents.each do |name, agent| # multiple agents
   # Start the service
   execute "#{agent.system_dir}/bin/service.start.bat" do
     cwd "#{agent.system_dir}/bin"
-    only_if { true }
+    only_if { ::Win32::Service.status("TCBuildAgent_#{name}").current_state != 'running' }
   end
 
 end
