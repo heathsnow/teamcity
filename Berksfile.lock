@@ -1,19 +1,15 @@
-{
-  "sources": {
-    "teamcity": {
-      "path": "."
-    },
-    "java": {
-      "locked_version": "1.22.0"
-    },
-    "chef-sugar": {
-      "locked_version": "2.0.0"
-    },
-    "windows": {
-      "locked_version": "1.31.2"
-    },
-    "chef_handler": {
-      "locked_version": "1.1.5"
-    }
-  }
-}
+DEPENDENCIES
+  teamcity
+    path: .
+    metadata: true
+
+GRAPH
+  chef-sugar (2.0.0)
+  chef_handler (1.1.6)
+  java (1.25.0)
+  teamcity (0.9.0)
+    chef-sugar (>= 0.0.0)
+    java (>= 0.0.0)
+    windows (>= 0.0.0)
+  windows (1.31.2)
+    chef_handler (>= 0.0.0)
