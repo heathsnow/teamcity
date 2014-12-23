@@ -1,7 +1,7 @@
 Vagrant.configure("2") do |config|
   config.vm.define 'ubuntu', primary: true do |ubuntu|
-    ubuntu.vm.box_url = 'https://opscode-vm.s3.amazonaws.com/vagrant/opscode_ubuntu-12.04_chef-11.2.0.box'
-    ubuntu.vm.box = 'opscode_ubuntu-12.04_chef-11.2.0'
+    ubuntu.vm.box_url = 'http://vagrantboxes.hq.daptiv.com/vagrant/boxes/virtualbox_ubuntu-12.04_chef-11.12.4_1.0.5.box'
+    ubuntu.vm.box = 'virtualbox_ubuntu-12.04_chef-11.12.4_1.0.5'
     ubuntu.vm.provision :chef_client do |chef|
       chef.node_name = "vagrant-#{ENV['LOGNAME']}-daptiv_teamcity-ubuntu.hq.daptiv.com"
       chef.add_recipe "daptiv_java"
