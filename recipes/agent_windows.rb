@@ -19,10 +19,6 @@
 include_recipe 'chef-sugar::default'
 require 'digest/md5'
 
-def buildagent_creds()
-  Chef::EncryptedDataBagItem.load('teamcity', 'buildagent_creds')
-end
-
 # Prefer this cookbook's java_home if specified, otherwise try and use the Java cookbook's
 java_home = node.deep_fetch('teamcity', 'java_home') || node.deep_fetch('java', 'java_home')
 java_exe = 'java'
@@ -92,29 +88,16 @@ node.teamcity.agents.each do |name, agent| # multiple agents
   # Service configuration file
   template "#{agent.system_dir}/launcher/conf/wrapper.conf" do
     source 'wrapper.conf.erb'
-    variables({ :name => name, :java_exe => java_exe })
+    variables({ :name => name,
+                :java_exe => java_exe,
+                :account_user => node['teamcity']['agent_windows']['ntservice_user'],
+                :account_pwd => node['teamcity']['agent_windows']['ntservice_password'] })
   end
 
   # Install as Windows service
   execute "#{agent.system_dir}/bin/service.install.bat" do
     cwd "#{agent.system_dir}/bin"
     not_if { ::Win32::Service.exists?("TCBuildAgent_#{name}") }
-  end
-
-  # Stop the service
-  execute "#{agent.system_dir}/bin/service.stop.bat" do
-    cwd "#{agent.system_dir}/bin"
-    only_if { node.chef_environment == 'dev' and ::Win32::Service.status("TCBuildAgent_#{name}").current_state != 'stopped' }
-  end
-
-  # Configure service user
-
-  creds = buildagent_creds()
-  username = creds['domain_username']
-  password = creds['domain_password']
-
-  execute "sc.exe config \"TCBuildAgent_#{name}\" obj= \"#{username}\" password= \"#{password}\" type= own" do
-    only_if { node.chef_environment == 'dev' and ::Win32::Service.status("TCBuildAgent_#{name}").current_state != 'running' }
   end
 
   # Start the service
