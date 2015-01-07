@@ -17,5 +17,7 @@
 #
 
 node.default['teamcity']['agents']['default'] = {}
+node.default['teamcity']['agent_windows']['ntservice_user'] = ''
+node.default['teamcity']['agent_windows']['ntservice_password'] = ''
 
 Teamcity::Agent.new('default', node).set_defaults

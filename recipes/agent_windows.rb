@@ -88,7 +88,10 @@ node.teamcity.agents.each do |name, agent| # multiple agents
   # Service configuration file
   template "#{agent.system_dir}/launcher/conf/wrapper.conf" do
     source 'wrapper.conf.erb'
-    variables({ :name => name, :java_exe => java_exe })
+    variables({ :name => name,
+                :java_exe => java_exe,
+                :account_user => node['teamcity']['agent_windows']['ntservice_user'],
+                :account_pwd => node['teamcity']['agent_windows']['ntservice_password'] })
   end
 
   # Install as Windows service
