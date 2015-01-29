@@ -89,9 +89,7 @@ node.teamcity.agents.each do |name, agent| # multiple agents
   template "#{agent.system_dir}/launcher/conf/wrapper.conf" do
     source 'wrapper.conf.erb'
     variables({ :name => name,
-                :java_exe => java_exe,
-                :account_user => node['teamcity']['agent_windows']['ntservice_user'],
-                :account_pwd => node['teamcity']['agent_windows']['ntservice_password'] })
+      :java_exe => java_exe })
   end
 
   # Install as Windows service
@@ -99,6 +97,28 @@ node.teamcity.agents.each do |name, agent| # multiple agents
     cwd "#{agent.system_dir}/bin"
     not_if { ::Win32::Service.exists?("TCBuildAgent_#{name}") }
   end
+
+  # SC commands windows_service is not yet available for this
+
+  ntservice_user = node.teamcity.agent_windows.ntservice_user
+  ntservice_password = node.teamcity.agent_windows.ntservice_password
+
+  # Stop the service
+
+  execute "#{agent.system_dir}/bin/service.stop.bat" do
+    cwd "#{agent.system_dir}/bin"
+    only_if { ::Win32::Service.status("TCBuildAgent_#{name}").current_state == 'running' &&
+      !ntservice_user.nil? }
+  end
+
+  # Configure ntservice creds for service
+
+  execute 'configure-service' do
+    command "sc.exe config \"TCBuildAgent_#{name}\" obj= \"#{ntservice_user}\" " \
+      "password= \"#{ntservice_password}\""
+    not_if { ntservice_user.nil? }
+  end
+
 
   # Start the service
   execute "#{agent.system_dir}/bin/service.start.bat" do

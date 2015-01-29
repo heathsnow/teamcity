@@ -1,8 +1,20 @@
 module Win32
-  module Service
+  class Service
     def self.exists?(file)
       return false
     end
+
+    def self.status(svc)
+      ServiceStub.new()
+    end
+  end
+end
+
+class ServiceStub
+  @@stubbed_state = 'stopped'
+
+  def current_state
+    @@stubbed_state
   end
 end
 
