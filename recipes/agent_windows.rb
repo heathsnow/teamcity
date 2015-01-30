@@ -115,7 +115,7 @@ node.teamcity.agents.each do |name, agent| # multiple agents
 
   execute 'configure-service' do
     command "sc.exe config \"TCBuildAgent_#{name}\" obj= \"#{ntservice_user}\" " \
-      "password= \"#{ntservice_password}\""
+      "password= \"#{ntservice_password}\" type= own"
     not_if { ntservice_user.nil? }
   end
 
