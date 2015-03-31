@@ -21,7 +21,7 @@ end
 describe 'teamcity::agent_windows' do
   describe 'no attributes set' do
     let(:chef_run) do
-      ChefSpec::Runner.new(platform: 'Windows', version: '2008R2').converge(described_recipe)
+      ChefSpec::SoloRunner.new(platform: 'windows', version: '2008R2').converge(described_recipe)
     end
 
     it 'errors out when no server_url has been set' do
@@ -31,7 +31,7 @@ describe 'teamcity::agent_windows' do
 
   describe 'server_url attribute set' do
     let(:chef_run) do
-      ChefSpec::Runner.new(platform: 'Windows', version: '2008R2') do |node|
+      ChefSpec::SoloRunner.new(platform: 'windows', version: '2008R2') do |node|
         node.set['teamcity']['agents']['default']['server_url'] = 'http://teamcity.example.com'
         node.set['java']['java_home'] = 'C:/Program Files/Java'
       end.converge(described_recipe)

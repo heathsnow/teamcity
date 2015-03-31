@@ -51,6 +51,7 @@ GEM
       plist (~> 3.1.0)
       pry (~> 0.9)
       rest-client (>= 1.0.4, <= 1.6.7)
+    chef-sugar (2.0.0)
     chef-zero (2.2.1)
       ffi-yajl (~> 1.1)
       hashie (~> 2.0)
@@ -213,8 +214,9 @@ PLATFORMS
 DEPENDENCIES
   berkshelf (~> 3.1.5)
   chef (~> 11.14)
+  chef-sugar (~> 2.0.0)
   chefspec (~> 4.1.1)
-  daptiv-chef-ci (~> 0.0.13)
+  daptiv-chef-ci (~> 0.0.14)
   daptiv-foodcritic-rules (~> 0.0.2)
   foodcritic (~> 3.0.0)
   log_switch (~> 0.4.0)
