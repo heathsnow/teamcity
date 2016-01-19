@@ -11,7 +11,7 @@ platforms:
     driver:
       provider: virtualbox
       box: daptiv/windows2012r2_chef11
-      box_url: 'http://artrepo.daptiv.com:8081/artifactory/vagrant-local/virtualbox_windows-2012r2_chef-12.5.1_1.0.23.box'
+      box_url: <%= ENV['WINDOWS_BOX_URL'] %>
       gui: false
     driver_config:
       communicator: winrm
@@ -21,7 +21,7 @@ platforms:
     driver:
       provider: virtualbox
       box: daptiv/trusty64
-      box_url: 'http://artrepo.daptiv.com:8081/artifactory/vagrant-local/virtualbox_ubuntu-14.04_chef-12.4.1_1.0.13.box'
+      box_url: <%= ENV['UBUNTU_BOX_URL' %>
       gui: false
       customize:
         memory: 2048
@@ -29,8 +29,6 @@ platforms:
 
 suites:
   - name: default
-    data_bags_path: <%= ENV['CHEF_DATA_BAGS'] %>
-    encrypted_data_bag_secret_key_path: <%= ENV['CHEF_SECRET_FILE'] %>
     run_list:
       - recipe[daptiv_java]
       - recipe[teamcity]
