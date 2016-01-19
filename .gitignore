@@ -12,3 +12,6 @@ version.txt
 bin/*
 .bundle/*
 
+# Kitchen
+.kitchen/*
+Berksfile.lock
