@@ -1,0 +1,39 @@
+---
+driver:
+  name: vagrant
+  provider: virtualbox
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: windows2012r2_chef12
+    driver:
+      provider: virtualbox
+      box: daptiv/windows2012r2_chef11
+      box_url: <%= ENV['WINDOWS_BOX_URL'] %>
+      gui: false
+    driver_config:
+      communicator: winrm
+    transport:
+      name: winrm
+  - name: ubuntu-14.04-virtualbox
+    driver:
+      provider: virtualbox
+      box: daptiv/trusty64
+      box_url: <%= ENV['UBUNTU_BOX_URL'] %>
+      gui: false
+      customize:
+        memory: 2048
+        cpus: 2
+
+suites:
+  - name: default
+    run_list:
+      - recipe[daptiv_java]
+      - recipe[teamcity]
+    attributes:
+      teamcity:
+        agents:
+          default:
+            server_url: 'http://teamcity.hq.daptiv.com'

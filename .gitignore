@@ -12,3 +12,5 @@ version.txt
 bin/*
 .bundle/*
 
+# Kitchen
+.kitchen/*
