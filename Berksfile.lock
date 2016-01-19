@@ -1,11 +1,17 @@
 DEPENDENCIES
+  daptiv_java
   teamcity
     path: .
     metadata: true
 
 GRAPH
+  apt (2.9.2)
   chef-sugar (2.0.0)
   chef_handler (1.1.6)
+  daptiv_java (1.0.148)
+    apt (>= 0.0.0)
+    java (>= 0.0.0)
+    windows (>= 0.0.0)
   java (1.25.0)
   teamcity (0.3.0)
     chef-sugar (>= 0.0.0)

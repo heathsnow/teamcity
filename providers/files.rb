@@ -16,7 +16,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+
 include Teamcity::Helper
+
+use_inline_resources
 
 action :download do
   initialize_connection(@new_resource.connection)

@@ -1,12 +1,14 @@
-require 'tailor/rake_task'
+require 'rubocop/rake_task'
 require 'foodcritic'
 require 'rspec/core/rake_task'
-require 'daptiv-chef-ci/vagrant_task'
 
-task :default => [:version, :tailor, :foodcritic, :spec]
+@provider = (ENV['PROVIDER'] || :virtualbox).to_sym
+
+task default: [:version, :rubocop, :foodcritic, :spec]
 
 task :version do
-  IO.write('version.txt', (ENV['BUILD_NUMBER'] ? "0.3.#{ENV['BUILD_NUMBER']}" : '0.3.0'))
+  version = ENV['BUILD_NUMBER'] ? "0.3.#{ENV['BUILD_NUMBER']}" : '0.3.0'
+  IO.write('version.txt', version)
 end
 
 FoodCritic::Rake::LintTask.new do |t|
@@ -20,5 +22,4 @@ RSpec::Core::RakeTask.new do |task|
   task.rspec_opts = ['--color', '-f documentation', '-tunit']
 end
 
-Tailor::RakeTask.new
-Vagrant::RakeTask.new
+RuboCop::RakeTask.new
