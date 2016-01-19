@@ -21,7 +21,7 @@ platforms:
     driver:
       provider: virtualbox
       box: daptiv/trusty64
-      box_url: <%= ENV['UBUNTU_BOX_URL' %>
+      box_url: <%= ENV['UBUNTU_BOX_URL'] %>
       gui: false
       customize:
         memory: 2048
