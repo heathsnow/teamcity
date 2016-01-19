@@ -14,4 +14,3 @@ bin/*
 
 # Kitchen
 .kitchen/*
-Berksfile.lock
