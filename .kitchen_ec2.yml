@@ -1,0 +1,54 @@
+---
+driver:
+  name: ec2
+  tags: {
+    "Name": <%= ENV['COOKBOOK'] %>
+  }
+  aws_ssh_key_id: <%= ENV['EC2_SSH_KEY_ID'] %>
+  instance_type: <%= ENV['EC2_INSTANCE_TYPE'] %>
+  region: <%= ENV['EC2_REGION'] %>
+  availability_zone: <%= ENV['EC2_AZ'] %>
+  subnet_id: <%= ENV['EC2_SUBNET_ID'] %>
+  security_group_ids: [<%= ENV['EC2_SG'] %>]
+  retryable_tries: 120
+
+platforms:
+  - name: ubuntu
+    driver:
+      image_id: <%= ENV['EC2_UBUNTU_AMI'] %>
+      block_device_mappings:
+        - device_name: /dev/sda1
+          ebs:
+            delete_on_termination: true
+    transport:
+      name: ssh
+      username: <%= ENV['SSH_USER'] %>
+      ssh_key: <%= ENV['SSH_KEY'] %>
+  - name: windows
+    transport:
+      name: winrm
+      username: <%= ENV['WIN_USER'] %>
+      password: <%= ENV['WIN_PASS'] %>
+    driver:
+      image_id: <%= ENV['EC2_AMI'] %>
+      block_device_mappings:
+        - device_name: /dev/sda1
+          ebs:
+            delete_on_termination: true
+        - device_name: /dev/sdf
+          ebs:
+            delete_on_termination: true
+
+suites:
+  - name: <%= ENV['COOKBOOK'] %>
+    data_bags_path: <%= ENV['CHEF_DATA_BAGS'] %>
+    encrypted_data_bag_secret_key_path: <%= ENV['CHEF_SECRET_FILE'] %>
+    run_list:
+      - recipe[daptiv_java::default]
+      - recipe[teamcity::default]
+      - recipe[minitest-handler::default]
+    attributes:
+      teamcity:
+        agents:
+          default:
+            server_url: 'http://teamcity.hq.daptiv.com'

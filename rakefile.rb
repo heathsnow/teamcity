@@ -1,25 +1,31 @@
-require 'rubocop/rake_task'
-require 'foodcritic'
-require 'rspec/core/rake_task'
+begin
+  gem 'minitest-chef-handler'
+rescue Gem::LoadError
+  sh 'chef gem install minitest-chef-handler'
+end
 
-@provider = (ENV['PROVIDER'] || :virtualbox).to_sym
-
-task default: [:version, :rubocop, :foodcritic, :spec]
+task default: [:version, :rubocop, :foodcritic, :spec, :kitchen]
+task nokitchen: [:version, :rubocop, :foodcritic, :spec]
 
 task :version do
-  version = ENV['BUILD_NUMBER'] ? "0.3.#{ENV['BUILD_NUMBER']}" : '0.3.0'
+  version = ENV['BUILD_NUMBER'] ? "0.3.#{ENV['BUILD_NUMBER']}" : '0.0.1'
   IO.write('version.txt', version)
 end
 
-FoodCritic::Rake::LintTask.new do |t|
-  t.options = {
-    cookbook_paths: '.',
-    search_gems: true }
+task :foodcritic do
+  sh 'chef exec foodcritic . -G -f any'
 end
 
-RSpec::Core::RakeTask.new do |task|
-  task.pattern = 'spec/**/*_spec.rb'
-  task.rspec_opts = ['--color', '-f documentation', '-tunit']
+task :rubocop do
+  sh 'chef exec rubocop'
 end
 
-RuboCop::RakeTask.new
+task :spec do
+  cmd = 'chef exec rspec --color -f documentation '
+  cmd += '-tunit --pattern "spec/**/*_spec.rb"'
+  sh cmd.to_s
+end
+
+task :kitchen do
+  sh 'chef exec kitchen converge -c'
+end
