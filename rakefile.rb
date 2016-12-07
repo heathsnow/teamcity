@@ -27,5 +27,5 @@ task :spec do
 end
 
 task :kitchen do
-  sh 'chef exec kitchen test -c'
+  sh 'chef exec kitchen test -c -l debug'
 end
