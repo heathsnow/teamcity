@@ -27,5 +27,5 @@ task :spec do
 end
 
 task :kitchen do
-  sh 'chef exec kitchen converge -c'
+  sh 'chef exec kitchen test -c'
 end

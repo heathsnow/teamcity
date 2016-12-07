@@ -33,6 +33,9 @@ services:
       WIN_USER: ${WIN_USER}
       WIN_PASS: ${WIN_PASS}
       SSH_KEY: /root/.ssh/${SSH_KEY}
+      gh_email: ${gh_email}
+      gh_password: ${gh_password}
+      gh_name: ${gh_name}
     command: |
       bash -c 'bash -s <<EOF
       echo "Please enter the command to execute:"
