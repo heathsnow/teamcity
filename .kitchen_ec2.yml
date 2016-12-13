@@ -53,3 +53,4 @@ suites:
           default:
             server_url: 'http://teamcity.hq.daptiv.com'
             name: 'teamcity'
+            group: 'teamcity'
