@@ -11,6 +11,8 @@ driver:
   subnet_id: <%= ENV['EC2_SUBNET_ID'] %>
   security_group_ids: [<%= ENV['EC2_SG'] %>]
   retryable_tries: 120
+  # Can't get to work on latest Chef, so. . .
+  require_chef_omnibus: 12.5.1
 
 platforms:
   - name: ubuntu
@@ -52,5 +54,3 @@ suites:
         agents:
           default:
             server_url: 'http://teamcity.hq.daptiv.com'
-            name: 'teamcity'
-            group: 'teamcity'
