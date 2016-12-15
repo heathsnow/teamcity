@@ -5,6 +5,7 @@ driver:
 
 provisioner:
   name: chef_zero
+  log_level: info
 
 platforms:
   - name: windows2012r2_chef12
