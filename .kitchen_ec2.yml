@@ -16,7 +16,7 @@ driver:
 
 provisioner:
   name: chef_zero
-  log_level: info
+  log_level: debug
 
 platforms:
   - name: ubuntu
