@@ -5,8 +5,8 @@ variable "env_hostname_prefix" {}
 variable "iam_state_file" {}
 variable "instance_key_name" {}
 variable "instance_private_key" {}
-variable "teamcity_server_ami_name" { default = "CoreOS-stable-1235.9.0-hvm" }
-variable "teamcity_server_ami_owners" { default = "595879546273" }
+variable "teamcity_server_ami_name" { default = "teamcity_server_2017.2.2" }
+variable "teamcity_server_ami_owners" { default = "147491244536" }
 variable "teamcity_server_config_volume_size" { default = "1" }
 variable "teamcity_server_data_volume_size" { default = "60" }
 variable "teamcity_server_instance_count" { default = "1" }
