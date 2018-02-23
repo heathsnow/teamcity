@@ -1,0 +1,45 @@
+module "instances" {
+  source = "modules/instances"
+  ami_name = "${var.teamcity_server_ami_name}"
+  ami_owners = "${var.teamcity_server_ami_owners}"
+  bastion_host = "${var.bastion_host}" 
+  bastion_user = "${var.bastion_user}"
+  config_volume_ids = "${module.volumes.teamcity_server_config_volume_ids}"
+  data_volume_ids = "${module.volumes.teamcity_server_data_volume_ids}"
+  domain_name = "${var.domain_name}"
+  env_hostname_prefix = "${var.env_hostname_prefix}"
+  instance_count = "${var.teamcity_server_instance_count}"
+  instance_iam_instance_profile = "${data.terraform_remote_state.iam.teamcity_server_role_name}"
+  instance_key_name = "${var.instance_key_name}"
+  instance_private_key = "${var.instance_private_key}"
+  instance_security_group_ids = "${data.terraform_remote_state.vpc.linuxcoreservices_sg_id},${data.terraform_remote_state.vpc.teamcity_server_sg_id}"
+  instance_subnet_ids = "${data.terraform_remote_state.vpc.private_subnet_id_list}"
+  instance_type = "${var.teamcity_server_instance_type}"
+  instance_user = "${var.teamcity_server_instance_user}"
+  load_balancer = "${module.load_balancers.teamcity_server_elb_name}"
+  log_volume_ids = "${module.volumes.teamcity_server_log_volume_ids}"
+  remote_state_region = "${var.remote_state_region}"
+  service_name = "${var.teamcity_server_service_name}"
+}
+
+module "load_balancers" {
+  source = "modules/load_balancers"
+  elb_security_groups_ids = "${data.terraform_remote_state.vpc.teamcity_server_elb_sg_id}"
+  elb_ssl_certificate_id = "${var.wildcard_ssl_cert_arn}"
+  elb_subnet_ids = "${data.terraform_remote_state.vpc.private_subnet_id_list}"
+  service_name = "${var.teamcity_server_service_name}"
+}
+
+module "volumes" {
+  source = "modules/volumes"
+  bastion_host = "${var.bastion_host}"
+  bastion_user = "${var.bastion_user}"
+  config_volume_size = "${var.teamcity_server_config_volume_size}"
+  data_volume_size = "${var.teamcity_server_data_volume_size}"
+  env_hostname_prefix = "${var.env_hostname_prefix}"
+  instance_count = "${var.teamcity_server_instance_count}"
+  instance_private_key = "${var.instance_private_key}"
+  log_volume_size = "${var.teamcity_server_log_volume_size}"
+  service_name = "${var.teamcity_server_service_name}"
+  volume_availability_zones = "${data.terraform_remote_state.vpc.private_subnet_availability_zone_list}"
+}

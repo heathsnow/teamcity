@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cruise xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="cruise-config.xsd" schemaVersion="97">
+  <server artifactsdir="artifacts" siteUrl="https://gocd2.daptiv.com" secureSiteUrl="https://gocd2.daptiv.com" purgeStart="1.0" purgeUpto="3.0" jobTimeout="60" agentAutoRegisterKey="1393f0d4-1ae8-4238-ad63-eb1cf97a1e89" webhookSecret="83f2e6df-afe4-4055-bfe3-2d34a76f732d" commandRepositoryLocation="default" serverId="5d2f4445-a4f0-4441-864d-6a0ff6e83cc3">
+    <security>
+      <authConfigs>
+        <authConfig id="d2506bd7-5388-4a04-9858-527976736488" pluginId="cd.go.authentication.passwordfile">
+          <property>
+            <key>PasswordFilePath</key>
+            <value>/etc/go/.htpasswd</value>
+          </property>
+        </authConfig>
+        <authConfig id="671f27ed-dcea-44e8-a2f3-bd288de0bbae" pluginId="cd.go.authentication.ldap">
+          <property>
+            <key>Url</key>
+            <value>ldaps://us-dc01.us.daptiv.cloud</value>
+          </property>
+          <property>
+            <key>SearchBases</key>
+            <value>OU=Users,OU=US,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud</value>
+          </property>
+          <property>
+            <key>ManagerDN</key>
+            <value>CN=PFM LDAP Bind,OU=ServiceAccounts,OU=PFM,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud</value>
+          </property>
+          <property>
+            <key>Password</key>
+            <encryptedValue>FTusjdMZhuGlj4f/h3jlwdqS3/PhPKUJ</encryptedValue>
+          </property>
+          <property>
+            <key>UserSearchFilter</key>
+            <value />
+          </property>
+          <property>
+            <key>UserLoginFilter</key>
+            <value>(sAMAccountName={0})</value>
+          </property>
+          <property>
+            <key>DisplayNameAttribute</key>
+            <value />
+          </property>
+          <property>
+            <key>EmailAttribute</key>
+            <value />
+          </property>
+        </authConfig>
+        <authConfig id="8b87b7f4-0baf-4a6e-8db2-fc6b8dc5a7a5" pluginId="cd.go.authentication.ldap">
+          <property>
+            <key>Url</key>
+            <value>ldaps://us-dc02.us.daptiv.cloud</value>
+          </property>
+          <property>
+            <key>SearchBases</key>
+            <value>OU=Users,OU=US,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud</value>
+          </property>
+          <property>
+            <key>ManagerDN</key>
+            <value>CN=PFM LDAP Bind,OU=ServiceAccounts,OU=PFM,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud</value>
+          </property>
+          <property>
+            <key>Password</key>
+            <encryptedValue>FTusjdMZhuGlj4f/h3jlwdqS3/PhPKUJ</encryptedValue>
+          </property>
+          <property>
+            <key>UserSearchFilter</key>
+            <value />
+          </property>
+          <property>
+            <key>UserLoginFilter</key>
+            <value>(sAMAccountName={0})</value>
+          </property>
+          <property>
+            <key>DisplayNameAttribute</key>
+            <value />
+          </property>
+          <property>
+            <key>EmailAttribute</key>
+            <value />
+          </property>
+        </authConfig>
+        <authConfig id="4b593dc5-4554-4320-b05c-7a656082b02c" pluginId="cd.go.authentication.ldap">
+          <property>
+            <key>Url</key>
+            <value>ldaps://us-dc03.us.daptiv.cloud</value>
+          </property>
+          <property>
+            <key>SearchBases</key>
+            <value>OU=Users,OU=US,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud</value>
+          </property>
+          <property>
+            <key>ManagerDN</key>
+            <value>CN=PFM LDAP Bind,OU=ServiceAccounts,OU=PFM,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud</value>
+          </property>
+          <property>
+            <key>Password</key>
+            <encryptedValue>FTusjdMZhuGlj4f/h3jlwdqS3/PhPKUJ</encryptedValue>
+          </property>
+          <property>
+            <key>UserSearchFilter</key>
+            <value />
+          </property>
+          <property>
+            <key>UserLoginFilter</key>
+            <value>(sAMAccountName={0})</value>
+          </property>
+          <property>
+            <key>DisplayNameAttribute</key>
+            <value />
+          </property>
+          <property>
+            <key>EmailAttribute</key>
+            <value />
+          </property>
+        </authConfig>
+      </authConfigs>
+      <roles>
+        <role name="read-only">
+          <users>
+            <user>gocd-reader</user>
+          </users>
+        </role>
+        <role name="US_GoCD_RoleAdmin" />
+      </roles>
+      <admins>
+        <role>US_GoCD_RoleAdmin</role>
+        <user>gocd-admin</user>
+      </admins>
+    </security>
+    <mailhost hostname="us-smtp01.daptiv.com" port="25" username="daptiv" tls="false" from="gocd-notification@changepoint.com" admin="heath.snow@changepoint.com" />
+  </server>
+  <repositories>
+    <repository id="a16e5b96-ab83-4e7d-92d3-26d52d658907" name="Artifactory">
+      <pluginConfiguration id="generic-artifactory" version="1" />
+      <configuration>
+        <property>
+          <key>REPO_URL</key>
+          <value>http://artrepo.daptiv.com:8081/artifactory</value>
+        </property>
+        <property>
+          <key>USERNAME</key>
+          <value>gocd</value>
+        </property>
+        <property>
+          <key>PASSWORD</key>
+          <encryptedValue>NK/TLimk9UGNi5Pe9cw0wQ==</encryptedValue>
+        </property>
+      </configuration>
+      <packages>
+        <package id="49526af6-8086-4045-a85e-134f25ca844a" name="daptiv-pattern-library">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>npm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>@daptiv/pattern-library/-/@daptiv</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>pattern-library</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="f079dfd6-2034-4f27-9565-7932aecc7408" name="Daptiv.Database.Ppm">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>nuget-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>.</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>Daptiv.Database.Ppm</value>
+            </property>
+            <property>
+              <key>POLL_VERSION_TO</key>
+              <value>99</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="3b124bf4-310b-4cc9-8090-6b4a9968f350" name="Daptiv.Services.Auth">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>ppm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>Daptiv.Services.Auth</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>Daptiv.Services.Auth</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="0804cba8-dc30-4209-a578-926c6a2bdc9f" name="Daptiv.Services.Auth.DB">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>ppm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>Daptiv.Services.Auth</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>dbmigrate</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="a90bf04e-7b93-46a9-8118-af5e88c5e4fb" name="Daptiv.Services.ResourceManagement">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>ppm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>Daptiv.Services.ResourceManagement</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>Daptiv.Services.ResourceManagement</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="743e39ca-829a-4a19-a748-71764ca6321a" name="feature-flag-api">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>npm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>feature-flag-api</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>feature-flag-api</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="b3d26a4d-307b-462d-b2e5-411aa0a49229" name="feature-flag-client">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>npm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>feature-flag-client</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>feature-flag-client</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="46aa02a3-a260-4349-bb45-0c67caafde00" name="LicenseKeyGenerator">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>ppm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>LicenseKeyGenerator/versions</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>LicenseKeyGenerator</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="4d86f5c8-5efa-4ebe-ab6f-3cab5815e651" name="PPM_FB">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>ppm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>versions</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>PPM_FB</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="76a6ff07-2ec2-4956-9c46-5b25e46d3a9b" name="PPM_MASTER">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>ppm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>versions</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>PPM_MASTER</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="31371fc2-41b1-416c-acbe-a88684841bd4" name="project-task-board-api">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>npm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>project-task-board-api</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>project-task-board-api</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="f8d9deec-0974-4340-9fa6-ab29ebb0976f" name="project-team-board-client">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>npm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>project-team-board-client</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>project-team-board-client</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="c8744e08-8dbb-4b70-9178-29ef3b3bfc28" name="SPA">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>ppm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>versions</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>SPA</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="a46ac02f-1a84-4027-89bd-297c4b3bc516" name="teammember-api">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>npm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>teammember-api</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>teammember-api</value>
+            </property>
+          </configuration>
+        </package>
+        <package id="2361bbd8-114e-4a0c-90c5-6adb50e55e69" name="teammember-client">
+          <configuration>
+            <property>
+              <key>REPO_ID</key>
+              <value>npm-local</value>
+            </property>
+            <property>
+              <key>PACKAGE_PATH</key>
+              <value>teammember-client</value>
+            </property>
+            <property>
+              <key>PACKAGE_ID</key>
+              <value>teammember-client</value>
+            </property>
+          </configuration>
+        </package>
+      </packages>
+    </repository>
+    <repository id="4f23c893-0726-4bcf-9bf0-085afbc685f4" name="S3-help-build">
+      <pluginConfiguration id="s3-poller" version="1" />
+      <configuration>
+        <property>
+          <key>S3_BUCKET</key>
+          <value>help-build</value>
+        </property>
+      </configuration>
+      <packages>
+        <package id="660b7ce9-c4f6-477e-a730-0756116de211" name="help">
+          <configuration>
+            <property>
+              <key>S3_PATH</key>
+              <value>v</value>
+            </property>
+          </configuration>
+        </package>
+      </packages>
+    </repository>
+    <repository id="fed5d94d-4094-43c7-a802-93c23d97e400" name="S3-help-ttm-build">
+      <pluginConfiguration id="s3-poller" version="1" />
+      <configuration>
+        <property>
+          <key>S3_BUCKET</key>
+          <value>help-ttm-build</value>
+        </property>
+      </configuration>
+      <packages>
+        <package id="3a7b3105-c96b-4e77-b284-776b60c25c77" name="help-ttm">
+          <configuration>
+            <property>
+              <key>S3_PATH</key>
+              <value>v</value>
+            </property>
+          </configuration>
+        </package>
+      </packages>
+    </repository>
+  </repositories>
+</cruise>

@@ -1,0 +1,118 @@
+{
+  "variables": {
+    "aws_access_key": "",
+    "aws_secret_key": "",
+    "ec2_ami_name_suffix": "{{env `EC2_AMI_NAME_SUFFIX`}}",
+    "ec2_ami_region": "{{env `EC2_AMI_REGION`}}",
+    "ec2_ami_users": "{{env `EC2_AMI_USERS`}}",
+    "ec2_keypair_name": "{{env `EC2_KEYPAIR_NAME`}}",
+    "ec2_subnet_id": "{{env `EC2_SUBNET_ID`}}",
+    "ec2_vpc_id": "{{env `EC2_VPC_ID`}}",
+    "teamcity_version": "2017.2.2"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "ami_description": "TeamCity {{user `teamcity_version`}} on Ubuntu Server 16.04 LTS",
+      "ami_name": "teamcity_server_{{user `teamcity_version`}}{{user `ec2_ami_name_suffix`}}",
+      "ami_regions": "{{user `ec2_ami_region`}}",
+      "ami_users": "{{user `ec2_ami_users`}}",
+      "force_delete_snapshot": true,
+      "force_deregister": true,
+      "instance_type": "t2.micro",
+      "launch_block_device_mappings": [
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sda1",
+          "volume_size": 20,
+          "volume_type": "gp2"
+        },
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sdf",
+          "volume_size": 2,
+          "volume_type": "gp2"
+        },
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sdg",
+          "volume_size": 5,
+          "volume_type": "gp2"
+        },
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sdh",
+          "volume_size": 1,
+          "volume_type": "gp2"
+        }
+      ],
+      "name": "teamcity_server_ami",
+      "region": "us-east-1",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "shutdown_behavior": "terminate",
+      "snapshot_users": "{{user `ec2_ami_users`}}",
+      "source_ami_filter": {
+        "filters": {
+          "name": "ubuntu_xenial_16.04",
+          "root-device-type": "ebs",
+          "virtualization-type": "hvm"
+        },
+        "most_recent": true,
+        "owners": ["147491244536"]
+      },
+      "ssh_keypair_name": "{{user `ec2_keypair_name`}}",
+      "ssh_private_key_file": "/root/.ssh/{{user `ec2_keypair_name`}}.pem",
+      "ssh_username": "ubuntu",
+      "subnet_id": "{{user `ec2_subnet_id`}}",
+      "vpc_id": "{{user `ec2_vpc_id`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "expect_disconnect": true,
+      "scripts": [
+        "./scripts/enable_hostname_resolution.sh",
+        "./scripts/install_linux_updates.sh"
+      ]
+    },
+    {
+      "type": "file",
+      "destination": "/tmp/default",
+      "source": "./files/default"
+    },
+    {
+      "type": "file",
+      "destination": "/tmp/teamcity-server.service",
+      "source": "./files/teamcity-server.service"
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "TEAMCITY_VERSION={{user `teamcity_version`}}"
+      ],
+      "scripts": [
+        "./scripts/configure_partitions.sh",
+        "./scripts/install_aws_cli.sh",
+        "./scripts/install_teamcity.sh",
+        "./scripts/enable_collectd_automatic_startup.sh",
+        "./scripts/disable_hostname_resolution.sh"
+      ]
+    },
+    { 
+      "type": "shell",
+      "inline": [
+        "curl http://169.254.169.254/latest/meta-data/local-ipv4"
+      ]
+    },
+    {
+      "type": "shell-local",
+      "command": "export SSH_USER=ubuntu && egrep -m1 -o '10\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}' ./build.log | xargs -I host scripts/run_inspec_tests.sh host"
+    },
+    {
+      "type": "shell-local",
+      "command": "egrep ' [^1-9] failure' build.log"
+    }
+  ]
+}

@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+set -e
+
+echo "Setting AWS_DEFAULT_REGION..."
+METADATA_URL="http://169.254.169.254/latest/dynamic/instance-identity/document"
+export AWS_DEFAULT_REGION="$(curl -s "${METADATA_URL}" | jq -r .region)"
+if [ -z "${AWS_DEFAULT_REGION}" ]; then
+  echo "Unable to set AWS_DEFAULT_REGION."
+  exit 1
+fi
+
+echo "Setting GOCD_ADMIN_USER..."
+GOCD_ADMIN_USER="$(aws ssm get-parameter \
+  --name /gocd/admin/user \
+  --query Parameter.Value --with-decryption --output text)"
+if [ -z "${GOCD_ADMIN_USER}" ]; then
+  echo "Unable to set GOCD_ADMIN_USER."
+  exit 1
+fi
+
+echo "Setting GOCD_ADMIN_PASSWORD..."
+GOCD_ADMIN_PASSWORD="$(aws ssm get-parameter \
+  --name /gocd/admin/password \
+  --query Parameter.Value --with-decryption --output text)"
+if [ -z "${GOCD_ADMIN_PASSWORD}" ]; then
+  echo "Unable to set GOCD_ADMIN_PASSWORD."
+  exit 1
+fi
+
+echo "Setting GOCD_SERVER_URL..."
+GOCD_SERVER_URL="$(aws ssm get-parameter \
+  --name /gocd/server/url \
+  --query Parameter.Value --with-decryption --output text)"
+if [ -z "${GOCD_SERVER_URL}" ]; then
+  echo "Unable to set GOCD_SERVER_URL."
+  exit 1
+fi
+
+echo "Retrieving GoCD agent list..."
+GOCD_API_RESPONSE="$(curl -s -S \
+  -H 'Accept: application/vnd.go.cd.v4+json' \
+  -u "${GOCD_ADMIN_USER}:${GOCD_ADMIN_PASSWORD}" \
+  "${GOCD_SERVER_URL}/api/agents")"
+
+GOCD_AGENT_UUIDS="$(jq -r \
+  '._embedded.agents[]
+  | select(.agent_state == "Missing")
+  | [.uuid]
+  | join(" ")' \
+  <<< ${GOCD_API_RESPONSE})"
+
+GOCD_AGENT_UUIDS=(${GOCD_AGENT_UUIDS})
+
+echo "Disabling and removing unresponsive agents..."
+for GOCD_AGENT_UUID in "${GOCD_AGENT_UUIDS[@]}"
+do
+  GOCD_AGENT_CONFIG_JSON="$(jq -n \
+    '{
+       "agent_config_state": "Disabled"
+     }')"
+
+  GOCD_API_RESPONSE="$(curl -s -S \
+    -H 'Accept: application/vnd.go.cd.v4+json' \
+    -H 'Content-Type: application/json' \
+    -X PATCH -d "${GOCD_AGENT_CONFIG_JSON}" \
+    -u "${GOCD_ADMIN_USER}:${GOCD_ADMIN_PASSWORD}" \
+    "${GOCD_SERVER_URL}/api/agents/${GOCD_AGENT_UUID}")"
+
+  curl -s -S \
+    -H 'Accept: application/vnd.go.cd.v4+json' \
+    -X DELETE \
+    -u "${GOCD_ADMIN_USER}:${GOCD_ADMIN_PASSWORD}" \
+    "${GOCD_SERVER_URL}/api/agents/${GOCD_AGENT_UUID}"
+done

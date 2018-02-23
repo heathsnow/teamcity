@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+set -e
+
+LDAP_SERVER_URI="ldaps://us-dc01.us.daptiv.cloud"
+LDAP_SEARCH_BASE_DISTINGUISHED_NAME="OU=Users,OU=US,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud"
+LDAP_GROUP_DISTINGUISHED_NAMES=(
+  "CN=US_GoCD_RoleAdmin,OU=Users,OU=US,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud"
+  "CN=US_GoCD_RoleDaptivConnect,OU=Users,OU=US,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud"
+  "CN=US_GoCD_RoleEngineering,OU=Users,OU=US,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud"
+  "CN=US_GoCD_RoleSupport,OU=Users,OU=US,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud"
+  "CN=US_GoCD_RoleTechnicalWriter,OU=Users,OU=US,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud"
+  "CN=US_GoCD_RoleTeamNetOps,OU=Users,OU=US,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud"
+  "CN=US_GoCD_RoleTeamBork,OU=Users,OU=US,OU=DaptivEnvironments,DC=us,DC=daptiv,DC=cloud"
+)
+
+echo "Setting AWS_DEFAULT_REGION..."
+METADATA_URL="http://169.254.169.254/latest/dynamic/instance-identity/document"
+export AWS_DEFAULT_REGION="$(curl -s "${METADATA_URL}" | jq -r .region)"
+if [ -z "${AWS_DEFAULT_REGION}" ]; then
+  echo "Unable to set AWS_DEFAULT_REGION."
+  exit 1
+fi
+
+echo "Setting GOCD_ADMIN_USER..."
+GOCD_ADMIN_USER="$(aws ssm get-parameter \
+  --name /gocd/admin/user \
+  --query Parameter.Value --with-decryption --output text)"
+if [ -z "${GOCD_ADMIN_USER}" ]; then
+  echo "Unable to set GOCD_ADMIN_USER."
+  exit 1
+fi
+
+echo "Setting GOCD_ADMIN_PASSWORD..."
+GOCD_ADMIN_PASSWORD="$(aws ssm get-parameter \
+  --name /gocd/admin/password \
+  --query Parameter.Value --with-decryption --output text)"
+if [ -z "${GOCD_ADMIN_PASSWORD}" ]; then
+  echo "Unable to set GOCD_ADMIN_PASSWORD."
+  exit 1
+fi
+
+echo "Setting GOCD_SERVER_URL..."
+GOCD_SERVER_URL="$(aws ssm get-parameter \
+  --name /gocd/server/url \
+  --query Parameter.Value --with-decryption --output text)"
+if [ -z "${GOCD_SERVER_URL}" ]; then
+  echo "Unable to set GOCD_SERVER_URL."
+  exit 1
+fi
+
+echo "Setting LDAP_USER..."
+LDAP_USER="$(aws ssm get-parameter \
+  --name /gocd/ldap/user \
+  --query Parameter.Value --with-decryption --output text)"
+if [ -z "${LDAP_USER}" ]; then
+  echo "Unable to set LDAP_USER."
+  exit 1
+fi
+
+echo "Setting LDAP_PASSWORD..."
+LDAP_PASSWORD="$(aws ssm get-parameter \
+  --name /gocd/ldap/password \
+  --query Parameter.Value --with-decryption --output text)"
+if [ -z "${LDAP_PASSWORD}" ]; then
+  echo "Unable to set LDAP_PASSWORD."
+  exit 1
+fi
+
+echo "Updating GoCD role membership..."
+for LDAP_GROUP_DISTINGUISHED_NAME in "${LDAP_GROUP_DISTINGUISHED_NAMES[@]}"
+do
+  LDAP_GROUP_COMMON_NAME="$(echo \"${LDAP_GROUP_DISTINGUISHED_NAME}\" | \
+    cut -d ',' -f 1 | cut -d '=' -f 2-)"
+
+  echo "Querying LDAP for members of group '${LDAP_GROUP_COMMON_NAME}'..."
+  LDAP_SEARCH_RESULTS="$(echo -n "${LDAP_PASSWORD}" | ldapsearch \
+    -H "${LDAP_SERVER_URI}" \
+    -D "${LDAP_USER}" \
+    -b "${LDAP_SEARCH_BASE_DISTINGUISHED_NAME}" \
+    -s "sub" -LLL -x \
+    -y "/dev/stdin" \
+    -W "(&(objectClass=user)(!(objectclass=computer)) \
+        (memberOf:1.2.840.113556.1.4.1941:=${LDAP_GROUP_DISTINGUISHED_NAME}))" \
+    sAMAccountName || exit 1)"
+
+  if [ -z "${LDAP_SEARCH_RESULTS}" ]; then
+    LDAP_GROUP_MEMBERS=""
+  else
+    LDAP_GROUP_MEMBERS="$(echo "${LDAP_SEARCH_RESULTS}" | \
+      grep -o -e 'sAMAccountName: [^[:space:]]*' | cut -d ' ' -f 2-)"
+  fi
+
+  GOCD_ROLE_NAME="${LDAP_GROUP_COMMON_NAME}"
+
+  GOCD_ROLE_MEMBERS="${LDAP_GROUP_MEMBERS//[[:space:]]/,}"
+
+  GOCD_GROUP_CONFIG_JSON="$(jq -n \
+    --arg gocd_role_members "${GOCD_ROLE_MEMBERS}" \
+    --arg gocd_role_name "${GOCD_ROLE_NAME}" \
+    '{
+       "name": $gocd_role_name,
+       "type": "gocd",
+       "attributes": {
+         "users": ($gocd_role_members | split(","))
+       }
+     }')"
+
+  GOCD_API_HTTP_STATUS_CODE="$(curl -i -s -S \
+    -o '/dev/null' \
+    -w "%{http_code}" \
+    -H 'Accept: application/vnd.go.cd.v1+json' \
+    -u "${GOCD_ADMIN_USER}:${GOCD_ADMIN_PASSWORD}" \
+    "${GOCD_SERVER_URL}/api/admin/security/roles/${GOCD_ROLE_NAME}")"
+
+  if [ "${GOCD_API_HTTP_STATUS_CODE}" == "404" ]; then
+    echo "Creating GoCD role '${GOCD_ROLE_NAME}'..."
+
+    GOCD_API_RESPONSE="$(curl -s -S \
+      -H 'Accept: application/vnd.go.cd.v1+json' \
+      -H 'Content-Type: application/json' \
+      -X POST -d "${GOCD_GROUP_CONFIG_JSON}" \
+      -u "${GOCD_ADMIN_USER}:${GOCD_ADMIN_PASSWORD}" \
+      "${GOCD_SERVER_URL}/api/admin/security/roles")"
+  else
+    echo "Updating GoCD role '${GOCD_ROLE_NAME}'..."
+
+    GOCD_API_RESPONSE="$(curl -i -s -S \
+      -H 'Accept: application/vnd.go.cd.v1+json' \
+      -u "${GOCD_ADMIN_USER}:${GOCD_ADMIN_PASSWORD}" \
+      "${GOCD_SERVER_URL}/api/admin/security/roles/${GOCD_ROLE_NAME}" | \
+      tr -d '\r' | tr -s '\n' ' ')"
+
+    GOCD_GROUP_CONFIG_ETAG="$(echo "${GOCD_API_RESPONSE}" | \
+      grep -o -e 'ETag: \"[[:alnum:]]*' | cut -d '"' -f 2-)"
+
+    curl -s -S \
+      -H 'Accept: application/vnd.go.cd.v1+json' \
+      -H 'Content-Type: application/json' \
+      -H "If-Match: \"${GOCD_GROUP_CONFIG_ETAG}\"" \
+      -X PUT -d "${GOCD_GROUP_CONFIG_JSON}" \
+      -u "${GOCD_ADMIN_USER}:${GOCD_ADMIN_PASSWORD}" \
+      "${GOCD_SERVER_URL}/api/admin/security/roles/${GOCD_ROLE_NAME}"
+  fi
+done

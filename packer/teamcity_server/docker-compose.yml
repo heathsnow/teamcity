@@ -1,0 +1,29 @@
+# How to use this file:
+# $> docker-compose run --rm packer rake build
+
+version: '2'
+services:
+  packer:
+    image: ${DOCKER_IMAGE}
+    volumes:
+      - $PWD:/src
+      - ${AWS_CRED_DIR}:/root/.aws
+      - ~/.ssh:/root/.ssh
+    working_dir: /src
+    network_mode: "host"
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      EC2_AMI_NAME_SUFFIX: ${EC2_AMI_NAME_SUFFIX}
+      EC2_AMI_REGION: ${EC2_AMI_REGION}
+      EC2_AMI_USERS: ${EC2_AMI_USERS}
+      EC2_KEYPAIR_NAME: ${EC2_KEYPAIR_NAME}
+      EC2_ROLE_ARN: ${EC2_ROLE_ARN}
+      EC2_SUBNET_ID: ${EC2_SUBNET_ID}
+      EC2_VPC_ID: ${EC2_VPC_ID}
+      PACKER_FILE: ${PACKER_FILE}
+    command: |
+      bash -c 'bash -s <<EOF
+      echo "Please enter the command to execute:"
+      echo "Ex: docker-compose run --rm packer rake build"
+      EOF'
