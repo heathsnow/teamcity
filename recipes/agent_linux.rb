@@ -20,10 +20,11 @@ require 'digest/md5'
 node['teamcity']['agents'].each_with_index do |(name, agent), index| # multiple agents
   next if agent.nil? # support removing of agents
 
+  require ::File.join(::File.dirname(__FILE__), '..', 'libraries', 'agent')
   agent = Teamcity::Agent.new(name, node)
   agent.set_defaults
 
-  unless agent.server_url?
+  unless agent['server_url']?
     message = "You need to setup the server url for agent #{name}"
     Chef::Log.fatal message
     raise message
