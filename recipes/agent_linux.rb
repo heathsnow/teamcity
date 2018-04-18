@@ -17,7 +17,7 @@
 #
 require 'digest/md5'
 
-node.teamcity.agents.each_with_index do |(name, agent), index| # multiple agents
+node['teamcity']['agents'].each_with_index do |(name, agent), index| # multiple agents
   next if agent.nil? # support removing of agents
 
   agent = Teamcity::Agent.new name, node
