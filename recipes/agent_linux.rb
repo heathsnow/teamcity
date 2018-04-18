@@ -16,11 +16,11 @@
 # limitations under the License.
 #
 require 'digest/md5'
+require ::File.join(::File.dirname(__FILE__), '..', 'libraries', 'agent')
 
 node['teamcity']['agents'].each_with_index do |(name, agent), index| # multiple agents
   next if agent.nil? # support removing of agents
 
-  require ::File.join(::File.dirname(__FILE__), '..', 'libraries', 'agent')
   agent = Teamcity::Agent.new(name, node)
   agent.set_defaults
 
