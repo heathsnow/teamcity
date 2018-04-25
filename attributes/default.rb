@@ -16,8 +16,21 @@
 # limitations under the License.
 #
 
-node.default['teamcity']['agents']['default'] = {}
-node.default['teamcity']['agent_windows']['ntservice_user'] = nil
-node.default['teamcity']['agent_windows']['ntservice_password'] = nil
+default['teamcity']['agents']['default'] = {}
+default['teamcity']['agent_windows']['ntservice_user'] = nil
+default['teamcity']['agent_windows']['ntservice_password'] = nil
+default['teamcity']['agents']['server_url'] = nil
+default['teamcity']['agents']['name'] = nil
+default['teamcity']['agents']['user'] = 'teamcity'
+default['teamcity']['agents']['group'] = 'teamcity'
+default['teamcity']['agents']['home'] = nil
+default['teamcity']['agents']['system_dir'] = '.'
+default['teamcity']['agents']['work_dir'] = 'work'
+default['teamcity']['agents']['temp_dir'] = 'tmp'
+default['teamcity']['agents']['own_address'] = nil
+default['teamcity']['agents']['own_port'] = 9090
+default['teamcity']['agents']['authorization_token'] = nil
+default['teamcity']['agents']['system_properties'] = {}
+default['teamcity']['agents']['env_properties'] = {}
 
-Teamcity::Agent.new('default', node).set_defaults
+# Teamcity::Agent.new('default', node).set_defaults
