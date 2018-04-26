@@ -40,5 +40,4 @@ suites:
     attributes:
       teamcity:
         agents:
-          default:
-            server_url: 'http://teamcity.hq.daptiv.com'
+          server_url: 'http://teamcity.hq.daptiv.com'

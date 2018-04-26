@@ -31,7 +31,7 @@ describe 'teamcity::agent_windows' do
 
   describe 'server_url attribute set' do
     let(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'windows', version: '2008R2') do |node|
+      ChefSpec::SoloRunner.new(platform: 'windows', version: '2012R2') do |node|
         node.override['teamcity']['agents']['server_url'] = 'http://teamcity.example.com'
         node.override['java']['java_home'] = 'C:/Program Files/Java'
         node.override['teamcity']['agents']['name'] = 'TEST'
