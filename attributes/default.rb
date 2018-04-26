@@ -1,7 +1,7 @@
 # Cookbook Name:: teamcity
 # Attributes:: default
 #
-# Copyright 2013, Malte Swart (chef@malteswart.de)
+# Copyright 2018 Changepoint
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

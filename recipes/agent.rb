@@ -1,7 +1,7 @@
 # Cookbook Name:: teamcity
 # Recipe:: agent
 #
-# Copyright 2014, Shawn Neal (sneal@sneal.net)
+# Copyright 2018 Changepoint
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

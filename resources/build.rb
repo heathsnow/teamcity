@@ -1,8 +1,8 @@
 #
-# Author:: Paul Morton (<larder-project@biaprotect.com>)
 # Cookbook Name:: teamcity
+# Resource:: build
 #
-# Copyright 2011, Paul Morton
+# Copyright 2018 Changepoint
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.

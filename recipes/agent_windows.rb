@@ -1,7 +1,7 @@
 # Cookbook Name:: teamcity
 # Recipe:: agent_windows
 #
-# Copyright 2014, Shawn Neal (sneal@sneal.net)
+# Copyright 2018 Changepoing
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,8 +24,8 @@ java_home = node.deep_fetch('teamcity', 'java_home') || node.deep_fetch('java', 
 java_exe = 'java'
 java_exe = ::File.join(java_home, 'bin', 'java.exe') if java_home
 
-node['teamcity']['agents'].each do |name, agent| # multiple agents
-  next if agent.nil? # support removing of agents
+# node['teamcity']['agents'].each do |name, agent| # multiple agents
+  # next if agent.nil? # support removing of agents
 
   home = node['teamcity']['agents']['home'] || File.join('', 'home', node['teamcity']['agents']['user'])
   system_dir = File.expand_path node['teamcity']['agents']['system_dir'], home
@@ -36,7 +36,7 @@ node['teamcity']['agents'].each do |name, agent| # multiple agents
   agent_auth_token = node['teamcity']['agents']['authorization_token']
 
   unless server_url && !server_url.empty?
-    message = "You need to setup the server url for agent #{name}"
+    message = "You need to setup the server url for agent #{agent_name}"
     Chef::Log.fatal(message)
     raise message
   end
@@ -75,11 +75,11 @@ node['teamcity']['agents'].each do |name, agent| # multiple agents
       memento
     end
     if agent_name.nil? && !settings['name'].nil?
-      Chef::Log.info "Setting agent (#{name})'s name to #{settings['name']}"
+      Chef::Log.info "Setting agent (#{agent_name})'s name to #{settings['name']}"
       node.override['teamcity']['agents']['name'] = settings['name']
     end
     if agent_auth_token.nil? && !settings['authorizationToken'].nil?
-      Chef::Log.info "Setting agent (#{name})'s authorization_token"
+      Chef::Log.info "Setting agent (#{agent_name})'s authorization_token"
       node.override['teamcity']['agents']['authorization_token'] = settings['authorizationToken']
     end
   end
@@ -104,14 +104,14 @@ node['teamcity']['agents'].each do |name, agent| # multiple agents
   # Service configuration file
   template "#{system_dir}/launcher/conf/wrapper.conf" do
     source 'wrapper.conf.erb'
-    variables({ :name => name,
+    variables({ :name => agent_name,
       :java_exe => java_exe })
   end
 
   # Install as Windows service
   execute "#{system_dir}/bin/service.install.bat" do
     cwd "#{system_dir}/bin"
-    not_if { ::Win32::Service.exists?("TCBuildAgent_#{name}") }
+    not_if { ::Win32::Service.exists?("TCBuildAgent_#{agent_name}") }
   end
 
   # SC commands windows_service is not yet available for this
@@ -123,14 +123,14 @@ node['teamcity']['agents'].each do |name, agent| # multiple agents
 
   execute "#{system_dir}/bin/service.stop.bat" do
     cwd "#{system_dir}/bin"
-    only_if { ::Win32::Service.status("TCBuildAgent_#{name}").current_state == 'running' &&
+    only_if { ::Win32::Service.status("TCBuildAgent_#{agent_name}").current_state == 'running' &&
       !ntservice_user.nil? }
   end
 
   # Configure ntservice creds for service
 
   execute 'configure-service' do
-    command "sc.exe config \"TCBuildAgent_#{name}\" obj= \"#{ntservice_user}\" " \
+    command "sc.exe config \"TCBuildAgent_#{agent_name}\" obj= \"#{ntservice_user}\" " \
       "password= \"#{ntservice_password}\" type= own"
     not_if { ntservice_user.nil? }
   end
@@ -139,7 +139,7 @@ node['teamcity']['agents'].each do |name, agent| # multiple agents
   # Start the service
   execute "#{system_dir}/bin/service.start.bat" do
     cwd "#{system_dir}/bin"
-    only_if { ::Win32::Service.status("TCBuildAgent_#{name}").current_state != 'running' }
+    only_if { ::Win32::Service.status("TCBuildAgent_#{agent_name}").current_state != 'running' }
   end
 
-end
+# end

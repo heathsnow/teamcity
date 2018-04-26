@@ -1,7 +1,7 @@
 # Cookbook Name:: teamcity
 # Recipe:: agent_linux
 #
-# Copyright 2013, Malte Swart (chef@malteswart.de)
+# Copyright 2018 Changepoint
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,8 +17,8 @@
 #
 require 'digest/md5'
 
-node['teamcity']['agents'].each_with_index do |(name, agent), index| # multiple agents
-  next if agent.nil? # support removing of agents
+# node['teamcity']['agents'].each_with_index do |(name, agent), index| # multiple agents
+  # next if agent.nil? # support removing of agents
 
   home = node['teamcity']['agents']['home'] || File.join('', 'home', node['teamcity']['agents']['user'])
   system_dir = File.expand_path node['teamcity']['agents']['system_dir'], home
@@ -29,7 +29,7 @@ node['teamcity']['agents'].each_with_index do |(name, agent), index| # multiple 
   agent_auth_token = node['teamcity']['agents']['authorization_token']
 
   unless server_url && !server_url.empty?
-    message = "You need to setup the server url for agent #{name}"
+    message = "You need to setup the server url for agent #{agent_name}"
     Chef::Log.fatal(message)
     raise message
   end
@@ -45,7 +45,7 @@ node['teamcity']['agents'].each_with_index do |(name, agent), index| # multiple 
     home home
   end
 
-  directory "directory #{index}" do
+  directory "directory #{system_dir}" do
     path system_dir
     user node['teamcity']['agents']['user']
     group node['teamcity']['agents']['group']
@@ -103,11 +103,11 @@ node['teamcity']['agents'].each_with_index do |(name, agent), index| # multiple 
       memento
     end
     if agent_name.nil? && !settings['name'].nil?
-      Chef::Log.info "Setting agent (#{name})'s name to #{settings['name']}"
-      node.override['teamcity']['agents']['name']  = settings['name']
+      Chef::Log.info "Setting agent (#{agent_name})'s name to #{settings['name']}"
+      node.override['teamcity']['agents']['name'] = settings['name']
     end
     if agent_auth_token.nil? && !settings['authorizationToken'].nil?
-      Chef::Log.info "Setting agent (#{name})'s authorization_token"
+      Chef::Log.info "Setting agent (#{agent_name})'s authorization_token"
       node.override['teamcity']['agents']['authorization_token'] = settings['authorizationToken']
     end
   end
@@ -147,4 +147,4 @@ node['teamcity']['agents'].each_with_index do |(name, agent), index| # multiple 
     action [:enable, :start]
     supports :status => true
   end
-end
+# end
