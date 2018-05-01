@@ -134,7 +134,8 @@ require 'digest/md5'
 
   # create init.d script
   service_name = 'teamcity-agent'
-  template '/etc/init.d/' + service_name do
+  # template '/etc/init.d/' + service_name do
+  template '/etc/systemd/system/' + service_name do
     source 'agent.initd.erb'
     mode 0755
     variables(
