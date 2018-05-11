@@ -1,4 +1,5 @@
-source 'http://berkshelfapi.daptiv.com'
+source :chef_server
 
-metadata
 cookbook 'daptiv_java'
+cookbook 'minitest-handler'
+metadata

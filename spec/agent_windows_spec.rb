@@ -31,9 +31,15 @@ describe 'teamcity::agent_windows' do
 
   describe 'server_url attribute set' do
     let(:chef_run) do
-      ChefSpec::SoloRunner.new(platform: 'windows', version: '2008R2') do |node|
-        node.set['teamcity']['agents']['default']['server_url'] = 'http://teamcity.example.com'
-        node.set['java']['java_home'] = 'C:/Program Files/Java'
+      ChefSpec::SoloRunner.new(platform: 'windows', version: '2012R2') do |node|
+        node.override['teamcity']['agents']['server_url'] = 'http://teamcity.example.com'
+        node.override['java']['java_home'] = 'C:/Program Files/Java'
+        node.override['teamcity']['agents']['name'] = 'TEST'
+        node.default['teamcity']['agents']['user'] = 'teamcity'
+        node.default['teamcity']['agents']['home'] = nil
+        node.default['teamcity']['agents']['system_dir'] = '.'
+        @home = node['teamcity']['agents']['home'] || File.join('', 'home', node['teamcity']['agents']['user'])
+        @system_dir = File.expand_path node['teamcity']['agents']['system_dir'], @home
       end.converge(described_recipe)
     end
 
@@ -62,8 +68,7 @@ describe 'teamcity::agent_windows' do
     end
 
     it 'unzips the agent zip file' do
-      expect(chef_run).to unzip_windows_zipfile_to('/home/teamcity').with(
-        source: downloaded_zip_path)
+      expect(chef_run).to unzip_windows_zipfile('/home/teamcity')
     end
 
     it 'create the buildagent.properties file' do
@@ -74,7 +79,7 @@ describe 'teamcity::agent_windows' do
     it 'creates a the service wrapper conf' do
       expect(chef_run).to create_template('/home/teamcity/launcher/conf/wrapper.conf').with(
         source: 'wrapper.conf.erb',
-        variables: { name: 'default', java_exe: 'C:/Program Files/Java/bin/java.exe' })
+        variables: { name: 'TEST', java_exe: 'C:/Program Files/Java/bin/java.exe' })
     end
   end
 end

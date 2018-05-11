@@ -1,0 +1,38 @@
+# How to use this file:
+# export COOKBOOK=${PWD##*/} && docker-compose run --rm test
+
+version: '2'
+services:
+  test:
+    image: ${CHEF_IMAGE}
+    volumes:
+      - $PWD:/${COOKBOOK}/
+      - ${AWS_CRED_DIR}:/root/.aws/
+      - ${CHEF_CONFIG_DIR}:/root/.chef/
+      - ${CHEF_REPO_DIR}:/chef-repo/
+      - ${SSH_KEY_DIR}:/root/.ssh/
+    working_dir: /${COOKBOOK}/
+    network_mode: "host"
+    environment:
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+      CHEF_DATA_BAGS: /chef-repo/data_bags
+      CHEF_SECRET_FILE: /root/.chef/${CHEF_SECRET_FILE}
+      COOKBOOK: ${COOKBOOK}
+      EC2_AZ: ${EC2_AZ}
+      EC2_IMAGE_NAME: ${EC2_IMAGE_NAME}
+      EC2_INSTANCE_TYPE: ${EC2_INSTANCE_TYPE}
+      EC2_REGION: ${EC2_REGION}
+      EC2_ROLE_ARN: ${EC2_ROLE_ARN}
+      EC2_SG: ${EC2_SG}
+      EC2_SSH_KEY_ID: ${EC2_SSH_KEY_ID}
+      EC2_SUBNET_ID: ${EC2_SUBNET_ID}
+      EC2_UBUNTU_IMAGE_NAME: ${EC2_UBUNTU_IMAGE_NAME}
+      LATEST_PPM_PACKAGE: ${LATEST_PPM_PACKAGE}
+      REQUIRE_CHEF_OMNIBUS: ${REQUIRE_CHEF_OMNIBUS}
+      SSH_KEY: /root/.ssh/${SSH_KEY}
+      SSH_PASS: ${SSH_PASS}
+      SSH_USER: ${SSH_USER}
+      WIN_PASS: ${WIN_PASS}
+      WIN_USER: ${WIN_USER}
+    command: "'chef exec rake'"
