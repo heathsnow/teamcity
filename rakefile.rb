@@ -1,8 +1,6 @@
 # rubocop:disable Metrics/BlockLength
-# task default: %i[version rubocop foodcritic spec kitchen cleanup]
-task default: %i[version foodcritic spec kitchen cleanup]
-# task nokitchen: %i[version rubocop foodcritic spec]
-task nokitchen: %i[version foodcritic spec]
+task default: %i[version foodcritic spec]
+task kitchen: %i[version foodcritic spec kitchen cleanup]
 
 desc 'Set cookbook version.'
 task :version do
