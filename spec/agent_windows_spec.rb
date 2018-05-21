@@ -25,7 +25,7 @@ describe 'teamcity::agent_windows' do
     end
 
     it 'errors out when no server_url has been set' do
-      expect { chef_run }.to raise_error.with(RuntimeError)
+      expect { chef_run }.to raise_error(RuntimeError)
     end
   end
 
