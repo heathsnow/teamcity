@@ -51,7 +51,9 @@ describe 'teamcity::agent_windows' do
     end
 
     before(:each) do
-      ::File.stub(:exists?).with('/home/teamcity/bin').and_return(false)
+      allow(File).to receive(:exist?)
+        .with('/home/teamcity/bin')
+        .and_return(false)
     end
 
     it 'does not error out when server_url has been set' do
