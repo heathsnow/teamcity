@@ -51,7 +51,7 @@ describe 'teamcity::agent_windows' do
     end
 
     before(:each) do
-      allow(File).to receive(:exist?)
+      allow(File).to receive(:exists?)
         .with('/home/teamcity/bin')
         .and_return(false)
     end
