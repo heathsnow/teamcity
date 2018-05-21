@@ -25,7 +25,7 @@ describe 'teamcity::agent_windows' do
     end
 
     it 'errors out when no server_url has been set' do
-      expect { chef_run }.to raise_error
+      expect { chef_run }.to raise_error(RuntimeError)
     end
   end
 
@@ -51,7 +51,9 @@ describe 'teamcity::agent_windows' do
     end
 
     before(:each) do
-      ::File.stub(:exists?).with('/home/teamcity/bin').and_return(false)
+      allow(File).to receive(:exists?)
+        .with('/home/teamcity/bin')
+        .and_return(false)
     end
 
     it 'does not error out when server_url has been set' do
