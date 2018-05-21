@@ -16,7 +16,7 @@
 # limitations under the License.
 #
 
-include_recipe 'chef-sugar::default'
+include_recipe 'chef-sugar'
 require 'digest/md5'
 
 # Prefer this cookbook's java_home if specified, otherwise try and use the Java cookbook's
