@@ -8,7 +8,7 @@ RSpec.configure do |config|
   config.order = 'random'
 
   config.before(:each) do
-    ::File.stub(:exists?).and_call_original()
+    allow(File).to receive(:exists?).and_call_original
     stub_const('File::ALT_SEPARATOR', '\\')
   end
 end
