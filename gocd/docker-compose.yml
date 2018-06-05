@@ -1,0 +1,13 @@
+# How to use this file:
+# export DOCKER_IMAGE=ruby:2.2-slim;
+# docker-compose run --rm test
+
+version: '2'
+services:
+  test:
+    image: ${DOCKER_IMAGE}
+    volumes:
+      - $PWD:/src
+    working_dir: /src
+    network_mode: "host"
+    command: 'rake'
