@@ -6,6 +6,7 @@ Chef cookbooks for creating TeamCity agents.
 
 | Name | Description |
 |-------|-------------|
+| [daptiv_teamcity](teamcity) | Cookbook used during deployment of a TeamCity agent (configures tools). |
 | [teamcity](teamcity) | Cookbook for installing TeamCity on an agent. |
 
 ## Contributing
