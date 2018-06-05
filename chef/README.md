@@ -8,19 +8,6 @@ Chef cookbooks for creating TeamCity agents.
 |-------|-------------|
 | [teamcity](teamcity) | Cookbook for installing TeamCity on an agent. |
 
-## Usage
-
-### teamcity::default
-
-Include `teamcity` in your node's `run_list`:
-
-```json
-{
-  "run_list": [
-    "recipe[teamcity::default]"
-  ]
-}
-```
 ## Contributing
 
 1. Fork the repository on GitHub.
