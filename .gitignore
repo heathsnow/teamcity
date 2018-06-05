@@ -15,3 +15,7 @@ bin/*
 # Kitchen
 .kitchen/*
 Berksfile.lock
+
+# Terraform
+*.tfstate
+*.backup
