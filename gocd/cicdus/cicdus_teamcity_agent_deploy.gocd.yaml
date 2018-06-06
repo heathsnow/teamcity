@@ -19,7 +19,7 @@ pipelines:
     materials:
       "teamcity":
         git: git@github.com:daptiv/teamcity.git
-        branch: master
+        branch: 187704_teamcity
         destination: teamcity
       "terraform_environment":
         git: git@github.com:daptiv/terraform_environment.git
