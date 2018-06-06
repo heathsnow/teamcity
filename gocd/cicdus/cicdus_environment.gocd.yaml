@@ -1,4 +1,4 @@
 environments:
   cicdus:
     pipelines:
-      - cicdus_teamcity_deploy
+      - cicdus_teamcity_agent_deploy
