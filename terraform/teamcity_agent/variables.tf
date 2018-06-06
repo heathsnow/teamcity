@@ -3,7 +3,7 @@ variable "bastion_user" { default = "ubuntu" }
 variable "chef_environment" { default = "cookbook_ci" }
 variable "chef_server_url" { default = "https://api.opscode.com/organizations/daptiv" }
 variable "chef_user_name" { default = "deploysvc" }
-variable "chef_version" { default = "12.16.42" }
+variable "chef_version" { default = "13.8.5" }
 variable "domain_name" {}
 variable "env_hostname_prefix" {}
 variable "instance_key_name" {}
