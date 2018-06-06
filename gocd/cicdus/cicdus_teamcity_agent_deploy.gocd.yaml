@@ -23,7 +23,7 @@ pipelines:
         destination: teamcity
       "terraform_environment":
         git: git@github.com:daptiv/terraform_environment.git
-        branch: master
+        branch: 187704_teamcity
         destination: terraform_environment
     stages:
       - "Validate":
