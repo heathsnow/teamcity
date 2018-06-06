@@ -24,7 +24,7 @@ $> git clone git@github.com:daptiv/terraform_environment.git
 Run the Terraform configuration to deploy TeamCity agents:
 
 ```bash
-$> cd teamcity/terraform/teamcity_agents
+$> cd teamcity/terraform/teamcity_agent
 $>
 $> export AWS_CRED_DIR='~/.aws/'
 $> export AWS_ACCESS_KEY_ID='access_key_for_blu'
@@ -56,8 +56,7 @@ The following modules are defined in the *modules.tf* file.
 
 | Name | Description |
 |------|-------------|
-| [instances](modules/instances) | Creates individual EC2 instances running Elasticsearch. |
-| [load_balancers](modules/load_balancers) | Creates a Consul ELB. |
+| [instances](modules/instances) | Creates individual EC2 instances running TeamCity. |
 | [volumes](modules/volumes) | Creates volumes for storing critical data independent of EC2 instance lifecycle. |
 
 ## Input Variables

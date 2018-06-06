@@ -1,4 +1,5 @@
 module "instances" {
+  source = "modules/instances"
   ami_name = "${var.teamcity_agent_ami_name}"
   ami_owners = "${var.teamcity_agent_ami_owners}"
   bastion_host = "${var.bastion_host}" 
@@ -21,11 +22,11 @@ module "instances" {
   remote_state_region = "${var.remote_state_region}"
   secret_key_file = "${var.secret_key_file}"
   service_name = "${var.teamcity_agent_service_name}"
-  source = "modules/instances"
   user_key_file = "${var.user_key_file}"
 }
 
 module "volumes" {
+  source = "modules/volumes"
   bastion_host = "${var.bastion_host}"
   bastion_user = "${var.bastion_user}"
   data_volume_size = "${var.teamcity_agent_data_volume_size}"
@@ -34,6 +35,5 @@ module "volumes" {
   instance_private_key = "${var.instance_private_key}"
   log_volume_size = "${var.teamcity_agent_log_volume_size}"
   service_name = "${var.teamcity_agent_service_name}"
-  source = "modules/volumes"
   volume_availability_zones = "${data.terraform_remote_state.vpc.private_subnet_availability_zone_list}"
 }

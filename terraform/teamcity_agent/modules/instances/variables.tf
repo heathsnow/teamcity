@@ -16,7 +16,6 @@ variable "instance_security_group_ids" {}
 variable "instance_subnet_ids" {}
 variable "instance_type" {}
 variable "instance_user" {}
-variable "load_balancer" {}
 variable "log_volume_ids" {}
 variable "remote_state_region" {}
 variable "secret_key_file" {}
