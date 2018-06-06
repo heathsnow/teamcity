@@ -1,0 +1,99 @@
+{
+  "variables": {
+    "ami_name": "windows_2012r2_chef_13.8.5_visualstudio_2015_sql_server_2016_testagent",
+    "ami_source_filter": "windows_2012r2_chef_13.8.5_visualstudio_2015_sql_server_2016",
+    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
+    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "chef_secret_file": "{{env `CHEF_SECRET_FILE`}}",
+    "ec2_ami_name_suffix": "{{env `EC2_AMI_NAME_SUFFIX`}}",
+    "ec2_ami_region": "{{env `EC2_AMI_REGION`}}",
+    "ec2_ami_users": "{{env `EC2_AMI_USERS`}}",
+    "ec2_subnet_id": "{{env `EC2_SUBNET_ID`}}",
+    "ec2_vpc_id": "{{env `EC2_VPC_ID`}}",
+    "validation_key_path": "{{env `VALIDATION_KEY_PATH`}}"
+  },
+  "builders": [
+    {
+      "type": "amazon-ebs",
+      "access_key": "{{user `aws_access_key`}}",
+      "ami_block_device_mappings": [
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sda1",
+          "volume_size": 60,
+          "volume_type": "gp2"
+        },
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sdf",
+          "volume_size": 40,
+          "volume_type": "gp2"
+        }
+      ],
+      "ami_description": "{{user `ami_name`}}",
+      "ami_name": "{{user `ami_name`}}{{user `ec2_ami_name_suffix`}}",
+      "ami_regions": "{{user `ec2_ami_region`}}",
+      "ami_users": "{{user `ec2_ami_users`}}",
+      "communicator": "winrm",
+      "force_delete_snapshot": true,
+      "force_deregister": true,
+      "instance_type": "c4.large",
+      "launch_block_device_mappings": [
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sda1",
+          "volume_size": 60,
+          "volume_type": "gp2"
+        },
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sdf",
+          "volume_size": 40,
+          "volume_type": "gp2"
+        }
+      ],
+      "name": "{{user `ami_name`}}_ami",
+      "region": "us-east-1",
+      "secret_key": "{{user `aws_secret_key`}}",
+      "shutdown_behavior": "terminate",
+      "snapshot_users": "{{user `ec2_ami_users`}}",
+      "source_ami_filter": {
+        "filters": {
+          "name": "{{user `ami_source_filter`}}",
+          "root-device-type": "ebs",
+          "virtualization-type": "hvm"
+        },
+        "most_recent": true,
+        "owners": ["147491244536","254353712761"]
+      },
+      "subnet_id": "{{user `ec2_subnet_id`}}",
+      "vpc_id": "{{user `ec2_vpc_id`}}",
+      "winrm_password": "XFm$D38y83",
+      "winrm_timeout": "2h",
+      "winrm_username": "Administrator"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "file",
+      "destination": "c:/chef/encrypted_data_bag_secret",
+      "source": "/root/.chef/{{user `chef_secret_file`}}"
+    },
+    {
+      "type": "chef-client",
+      "chef_environment": "dev",
+      "encrypted_data_bag_secret_path": "/root/.chef/{{user `chef_secret_file`}}",
+      "guest_os_type": "windows",
+      "node_name": "windows_2012r2_chef_13_8_5_visualstudio_2015_sql_server_2016_testagent",
+      "run_list": "recipe[daptiv_ec2_environment],recipe[daptiv_buildagent_ppm_role]",
+      "server_url": "https://api.opscode.com/organizations/daptiv",
+      "skip_install": "true",
+      "validation_client_name": "daptiv-validator",
+      "validation_key_path": "{{user `validation_key_path`}}"
+    },
+    {
+      "type": "powershell",
+      "script": "./scripts/delete-cached-installation-packages.ps1"
+    }
+  ]
+}
