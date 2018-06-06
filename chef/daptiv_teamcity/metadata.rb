@@ -1,0 +1,20 @@
+name 'daptiv_teamcity'
+maintainer 'Changepoint'
+maintainer_email 'cpc_sea_teamengineering@changepoint.com'
+license 'All rights reserved'
+description ''
+long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
+ver_path = File.join(File.dirname(__FILE__), 'version.txt')
+version File.exist?(ver_path) ? IO.read(ver_path).chomp : '0.0.1'
+chef_version '>= 12.5' if respond_to?(:chef_version)
+source_url 'https://github.com/daptiv/daptiv_teamcity'
+issues_url 'https://github.com/daptiv/daptiv_teamcity/issues'
+supports 'ubuntu'
+depends 'daptiv_github'
+depends 'daptiv_java'
+depends 'teamcity'
+depends 'daptiv_nuget'
+depends 'daptiv_gem'
+depends 'daptiv_nodejs'
+depends 'daptiv_docker'
+depends 'daptiv_ppm_build'
