@@ -1,5 +1,5 @@
 pipelines:
-  "cicdus_teamcity_deploy":
+  "cicdus_teamcity_agent_deploy":
     environment_variables:
       AWS_CRED_DIR: /var/go/.aws/
       CHEF_CONFIG_DIR: /etc/chef
@@ -41,7 +41,7 @@ pipelines:
                       - "docker pull $DOCKER_IMAGE"
                 - exec:
                     run_if: passed
-                    working_directory: teamcity/terraform
+                    working_directory: teamcity/terraform/teamcity_agent
                     command: /bin/bash
                     arguments:
                       - -c
@@ -62,21 +62,21 @@ pipelines:
                       - "docker pull $DOCKER_IMAGE"
                 - exec:
                     run_if: passed
-                    working_directory: teamcity/terraform
+                    working_directory: teamcity/terraform/teamcity_agent
                     command: /bin/bash
                     arguments:
                       - -c
                       - "docker-compose run --rm terraform 'rake notify[\"started\"]'"
                 - exec:
                     run_if: passed
-                    working_directory: teamcity/terraform
+                    working_directory: teamcity/terraform/teamcity_agent
                     command: /bin/bash
                     arguments:
                       - -c
                       - "docker-compose run --rm terraform 'rake $TF_ACTION'"
                 - exec:
                     run_if: failed
-                    working_directory: teamcity/terraform
+                    working_directory: teamcity/terraform/teamcity_agent
                     command: /bin/bash
                     arguments:
                       - -c
@@ -96,21 +96,21 @@ pipelines:
                       - "docker pull $DOCKER_IMAGE"
                 - exec:
                     run_if: passed
-                    working_directory: teamcity/terraform
+                    working_directory: teamcity/terraform/teamcity_agent
                     command: /bin/bash
                     arguments:
                       - -c
                       - "docker-compose run --rm terraform 'rake verify'"
                 - exec:
                     run_if: passed
-                    working_directory: teamcity/terraform
+                    working_directory: teamcity/terraform/teamcity_agent
                     command: /bin/bash
                     arguments:
                       - -c
                       - "docker-compose run --rm terraform 'rake notify[\"passed\"]'"
                 - exec:
                     run_if: failed
-                    working_directory: teamcity/terraform
+                    working_directory: teamcity/terraform/teamcity_agent
                     command: /bin/bash
                     arguments:
                       - -c
