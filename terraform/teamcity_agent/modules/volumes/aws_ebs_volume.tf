@@ -5,7 +5,7 @@ resource "aws_ebs_volume" "data_volume" {
   encrypted = true
   type = "gp2"
   tags {
-    Name = "${upper(var.env_hostname_prefix)}-${upper(var.service_name)}-${count.index + 1}-DATA"
+    Name = "${upper(var.env_hostname_prefix)}-${replace(upper(var.service_name), "_", "-")}-${count.index + 1}-DATA"
   }
 }
 
@@ -16,6 +16,6 @@ resource "aws_ebs_volume" "log_volume" {
   encrypted = true
   type = "gp2"
   tags {
-    Name = "${upper(var.env_hostname_prefix)}-${upper(var.service_name)}-${count.index + 1}-LOG"
+    Name = "${upper(var.env_hostname_prefix)}-${replace(upper(var.service_name), "_", "-")}-${count.index + 1}-LOG"
   }
 }
