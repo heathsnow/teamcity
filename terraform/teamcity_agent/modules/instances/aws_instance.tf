@@ -8,7 +8,7 @@ resource "aws_instance" "my_instance" {
   user_data              = "${element(data.template_file.user_data.*.rendered, count.index)}"
 
   tags = {
-    Name = "${upper(var.env_hostname_prefix)}-${upper(var.service_name)}-${count.index + 1}"
+    Name = "${upper(var.env_hostname_prefix)}-${replace(upper(var.service_name), "_", "-")}-${count.index + 1}"
   }
 
   provisioner "remote-exec" {
