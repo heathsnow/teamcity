@@ -10,11 +10,11 @@ set -e
 # for the loopback interface (127.0.0.1) in /etc/hosts.
 #
 # Always run 'enable_hostname_resolution.sh' first in sequence to ensure smooth
-# execution of subsequent Packer provisioning scripts on Linux.  
+# execution of subsequent Packer provisioning scripts on Linux.
 #
 # Always run this script last in sequence to remove the modifications to
 # /etc/hosts since they will not be valid for any machines built from the
 # resultant Packer image.
 
 echo "Removing hostname from /etc/hosts..."
-sudo sed -i "s/ $HOSTNAME//g" /etc/hosts
+sudo sed -i "s/ ${HOSTNAME}//g" /etc/hosts

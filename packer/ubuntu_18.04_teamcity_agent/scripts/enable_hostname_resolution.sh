@@ -17,4 +17,4 @@ set -e
 # built from the resultant Packer image.
 
 echo "Adding hostname to /etc/hosts..."
-sudo sed -i "/127.0.0.1.*/s/$/ $HOSTNAME/" /etc/hosts &>/dev/null
+sudo sed -i "/127.0.0.1.*/s/$/ ${HOSTNAME}/" /etc/hosts &>/dev/null
