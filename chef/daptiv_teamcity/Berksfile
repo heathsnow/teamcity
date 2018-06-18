@@ -1,4 +1,6 @@
+# rubocop:disable Metrics/LineLength
 source :chef_server
 
 cookbook 'minitest-handler'
+cookbook 'teamcity', github: 'daptiv/teamcity', branch: '187704_teamcity', rel: 'chef/teamcity'
 metadata
