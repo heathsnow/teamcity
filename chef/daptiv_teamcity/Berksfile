@@ -1,3 +1,4 @@
+# rubocop:disable Metrics/LineLength
 source :chef_server
 
 cookbook 'minitest-handler'
