@@ -1,0 +1,22 @@
+## THIS FILE IS MANAGED BY CHEF. ALL CHANGES WILL BE OVERWRITTEN!
+
+[Unit]
+Description=TeamCity Agent
+Documentation=https://confluence.jetbrains.com/display/TCD10/
+After=network-online.target syslog.target
+Requires=network-online.target
+
+[Service]
+ExecStart=<%= @system_dir %>/bin/agent.sh start
+ExecStop=<%= @system_dir %>/bin/agent.sh stop
+KillMode=process
+PIDFile=<%= @system_dir %>/logs/buildAgent.pid
+RemainAfterExit=yes
+Restart=on-failure
+Type=forking
+User=<%= @user %>
+
+
+[Install]
+Alias=teamcity-agent.service
+WantedBy=multi-user.target

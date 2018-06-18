@@ -115,8 +115,8 @@ require 'digest/md5'
   # buildAgent.properties (TeamCity will restart if this file is changed)
   template agent_config do
     source 'buildAgent.properties.erb'
-    user node['teamcity']['agents']['user'] 
-    user node['teamcity']['agents']['group'] 
+    user node['teamcity']['agents']['user']
+    user node['teamcity']['agents']['group']
     mode 0644
     variables(
       server_url: server_url,
@@ -132,11 +132,10 @@ require 'digest/md5'
     )
   end
 
-  # create init.d script
+  # create systemd service definition
   service_name = 'teamcity-agent'
-  # template '/etc/init.d/' + service_name do
-  template '/etc/systemd/system/' + service_name do
-    source 'agent.initd.erb'
+  template "/etc/systemd/system/#{service_name}.service" do
+    source 'teamcity-agent.service.erb'
     mode 0755
     variables(
       user: node['teamcity']['agents']['user'],
