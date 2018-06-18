@@ -6,7 +6,8 @@ Packer templates for creating TeamCity agent AMIs in EC2.
 
 | Name | Description |
 |------|-------------|
-| [ubuntu_18.04_teamcity_agent](ubuntu_18.04_teamcity_agent) | Packer template which creates a TeamCity agent AMI. |
+| [ubuntu_xenial_16.04_teamcity_agent](ubuntu_xenial_16.04_teamcity_agent) | Packer template which creates a TeamCity agent AMI. |
+| [ubuntu_18.04_teamcity_agent](ubuntu_18.04_teamcity_agent) | Packer template which creates a TeamCity agent AMI. (NOTE: This cannot be used until a 'docker-ce' package is released for Ubuntu 18.04.) |
 | [windows_2012r2_chef_13.8.5_visualstudio_2015](windows_2012r2_chef_13.8.5_visualstudio_2015) | Packer template which creates a Visual Studio 2015 AMI. |
 | [windows_2012r2_chef_13.8.5_visualstudio_2015_buildagent](windows_2012r2_chef_13.8.5_visualstudio_2015_buildagent) | Packer template which creates a build agent AMI. |
 | [windows_2012r2_chef_13.8.5_visualstudio_2015_sql_server_2016](windows_2012r2_chef_13.8.5_visualstudio_2015_sql_server_2016) | Packer template which creates a SQL Server 2016 AMI. |
