@@ -12,10 +12,10 @@ ExecStop=<%= @system_dir %>/bin/agent.sh stop
 KillMode=process
 PIDFile=<%= @system_dir %>/logs/buildAgent.pid
 RemainAfterExit=yes
-Restart=on-failure
-Type=forking
+Type=oneshot
 User=<%= @user %>
-
+SuccessExitStatus=0 143
+WorkingDirectory=<%= @system_dir %>
 
 [Install]
 Alias=teamcity-agent.service
