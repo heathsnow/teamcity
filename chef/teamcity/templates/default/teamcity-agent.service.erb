@@ -10,7 +10,6 @@ Requires=network-online.target
 ExecStart=<%= @system_dir %>/bin/agent.sh start
 ExecStop=<%= @system_dir %>/bin/agent.sh stop
 KillMode=process
-PIDFile=<%= @system_dir %>/logs/buildAgent.pid
 RemainAfterExit=yes
 Type=oneshot
 User=<%= @user %>
