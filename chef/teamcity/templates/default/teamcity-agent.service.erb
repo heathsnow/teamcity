@@ -3,8 +3,8 @@
 [Unit]
 Description=TeamCity Agent
 Documentation=https://confluence.jetbrains.com/display/TCD10/
-After=network.target rsyslog.service
-Requires=network.target rsyslog.service
+After=docker.service network.target syslog.service
+Requires=docker.service network.target syslog.service
 
 [Service]
 ExecStart=<%= @system_dir %>/bin/agent.sh start
