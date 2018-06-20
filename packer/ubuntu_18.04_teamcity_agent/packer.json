@@ -1,7 +1,7 @@
 {
   "variables": {
-    "ami_name": "ubuntu_xenial_16.04_teamcity_agent",
-    "ami_source_filter": "ubuntu_xenial_16.04",
+    "ami_name": "ubuntu_18.04_teamcity_agent",
+    "ami_source_filter": "ubuntu_18.04",
     "aws_access_key": "",
     "aws_secret_key": "",
     "ec2_ami_name_suffix": "{{env `EC2_AMI_NAME_SUFFIX`}}",
