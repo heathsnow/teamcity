@@ -8,12 +8,16 @@ Requires=docker.service network.target syslog.service
 
 [Service]
 ExecStart=<%= @system_dir %>/bin/agent.sh start
-ExecStop=-<%= @system_dir %>/bin/agent.sh stop force
+ExecStop=<%= @system_dir %>/bin/agent.sh stop
+PIDFile=<%= @system_dir %>/logs/buildAgent.pid
+PrivateTmp=yes
 RemainAfterExit=yes
-Type=oneshot
-User=<%= @user %>
+Restart=on-failure
+RestartSec=5
 SuccessExitStatus=0 143
-WorkingDirectory=<%= @system_dir %>
+SyslogIdentifier=teamcity_agent
+Type=forking
+User=<%= @user %>
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target

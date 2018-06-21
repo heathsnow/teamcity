@@ -131,7 +131,7 @@ end
 
 # create systemd service definition
 service_name = 'teamcity-agent'
-template "/etc/systemd/system/#{service_name}.service" do
+template "/lib/systemd/system/#{service_name}.service" do
   source 'teamcity-agent.service.erb'
   mode 0644
   variables(
