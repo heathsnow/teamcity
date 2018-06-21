@@ -1,3 +1,5 @@
+# rubocop:disable Metrics/BlockLength
+
 describe 'daptiv_teamcity::default' do
   let(:chef_run) do
     ChefSpec::SoloRunner.new(platform: 'ubuntu', version: '16.04') do |node|
