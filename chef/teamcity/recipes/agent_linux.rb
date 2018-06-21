@@ -136,7 +136,7 @@ require 'digest/md5'
   service_name = 'teamcity-agent'
   template "/etc/systemd/system/#{service_name}.service" do
     source 'teamcity-agent.service.erb'
-    mode 0755
+    mode 0644
     variables(
       user: node['teamcity']['agents']['user'],
       system_dir: system_dir

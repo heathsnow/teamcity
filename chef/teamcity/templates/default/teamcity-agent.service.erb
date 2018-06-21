@@ -9,7 +9,6 @@ Requires=docker.service network.target syslog.service
 [Service]
 ExecStart=<%= @system_dir %>/bin/agent.sh start
 ExecStop=<%= @system_dir %>/bin/agent.sh stop
-KillMode=process
 RemainAfterExit=yes
 Type=oneshot
 User=<%= @user %>
