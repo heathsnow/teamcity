@@ -18,6 +18,6 @@ variable "teamcity_agent_log_volume_size" { default = "10" }
 variable "teamcity_agent_service_name" { default = "teamcity-agent" }
 variable "remote_state_bucket" {}
 variable "remote_state_region" {}
-variable "secret_key_file" { default = "/etc/chef/encrypted_data_bag_secret" }
+variable "secret_key_file" { default = "/root/.chef/encrypted_data_bag_secret" }
 variable "user_key_file" {}
 variable "vpc_state_file" {}
