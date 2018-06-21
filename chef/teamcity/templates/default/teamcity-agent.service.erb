@@ -8,7 +8,7 @@ Requires=docker.service network.target syslog.service
 
 [Service]
 ExecStart=<%= @system_dir %>/bin/agent.sh start
-ExecStop=<%= @system_dir %>/bin/agent.sh stop
+ExecStop=-<%= @system_dir %>/bin/agent.sh stop force
 RemainAfterExit=yes
 Type=oneshot
 User=<%= @user %>
@@ -16,4 +16,4 @@ SuccessExitStatus=0 143
 WorkingDirectory=<%= @system_dir %>
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=default.target
