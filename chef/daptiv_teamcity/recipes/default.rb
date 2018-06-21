@@ -6,9 +6,6 @@
 #
 # TeamCity build agent role
 
-# Set the agent name using hostname
-
-
 user = ENV['USER'].to_s.empty? ? ENV['USERNAME'] : ENV['USER']
 user = 'Administrator' if platform?('windows') \
   && node.chef_environment == 'cookbook_ci'
