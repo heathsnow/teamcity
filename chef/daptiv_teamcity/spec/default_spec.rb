@@ -19,8 +19,4 @@ describe 'daptiv_teamcity::default' do
       'generate_chef_user_npmrc'
     )
   end
-
-  it 'should include daptiv_ppm_build::npm_tools recipe' do
-    expect(chef_run).to include_recipe 'daptiv_ppm_build::npm_tools'
-  end
 end

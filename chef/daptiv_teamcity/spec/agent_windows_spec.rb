@@ -67,4 +67,8 @@ describe 'daptiv_teamcity::agent_windows' do
   it 'creates nuget config' do
     expect(chef_run).to create_daptiv_nuget_config 'user'
   end
+
+  it 'should include daptiv_ppm_build::npm_tools recipe' do
+    expect(chef_run).to include_recipe 'daptiv_ppm_build::npm_tools'
+  end
 end
