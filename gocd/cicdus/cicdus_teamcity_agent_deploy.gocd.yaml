@@ -26,7 +26,7 @@ pipelines:
         branch: 187704_teamcity
         destination: terraform_environment
     stages:
-      - "Validate":
+      - "Plan":
           clean_workspace: true
           jobs:
             "Execute":
@@ -46,6 +46,13 @@ pipelines:
                     arguments:
                       - -c
                       - "docker-compose run --rm terraform 'rake validate'"
+                - exec:
+                    run_if: passed
+                    working_directory: teamcity/terraform/teamcity_agent
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - "docker-compose run --rm terraform 'rake plan'"
       - "Deploy":
           approval: manual
           clean_workspace: true
