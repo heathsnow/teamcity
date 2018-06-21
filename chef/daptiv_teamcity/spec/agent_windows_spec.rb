@@ -29,6 +29,10 @@ describe 'daptiv_teamcity::agent_windows' do
     end.converge(described_recipe)
   end
 
+  it 'should include teamcity::agent_windows recipe' do
+    expect(chef_run).to include_recipe('teamcity::agent_windows')
+  end
+
   it 'should configure github' do
     expect(chef_run).to create_daptiv_github_git_config('user_git_config')
   end
@@ -54,14 +58,6 @@ describe 'daptiv_teamcity::agent_windows' do
   it 'should override system_dir' do
     system_dir = chef_run.node['teamcity']['agents']['system_dir']
     expect(system_dir).to eq('d:\\teamcity\\')
-  end
-
-  it 'teamcity windows recipe is included' do
-    expect(chef_run).to include_recipe('teamcity::agent_windows')
-  end
-
-  it 'daptiv_java recipe is included' do
-    expect(chef_run).to include_recipe('daptiv_java')
   end
 
   it 'creates nuget config' do

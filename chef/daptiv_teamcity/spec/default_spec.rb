@@ -5,7 +5,15 @@ describe 'daptiv_teamcity::default' do
     end.converge(described_recipe)
   end
 
-  it 'should include ubuntu recipe' do
+  it 'should include daptiv_github::install recipe' do
+    expect(chef_run).to include_recipe('daptiv_github::install')
+  end
+
+  it 'should include daptiv_java::default recipe' do
+    expect(chef_run).to include_recipe('daptiv_java')
+  end
+
+  it 'should include daptiv_teamcity::agent_linux recipe' do
     expect(chef_run).to include_recipe 'daptiv_teamcity::agent_linux'
   end
 

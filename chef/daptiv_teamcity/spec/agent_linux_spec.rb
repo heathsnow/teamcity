@@ -6,16 +6,8 @@ describe 'daptiv_teamcity::agent_linux' do
     end.converge(described_recipe)
   end
 
-  it 'should include daptiv_java cookbook' do
-    expect(chef_run).to include_recipe('daptiv_java')
-  end
-
-  it 'teamcity::agent_linux is included' do
+  it 'should include teamcity::agent_linux recipe' do
     expect(chef_run).to include_recipe 'teamcity::agent_linux'
-  end
-
-  it 'should include daptiv_github::install recipe' do
-    expect(chef_run).to include_recipe('daptiv_github::install')
   end
 
   it 'should create daptiv_github_git_config' do

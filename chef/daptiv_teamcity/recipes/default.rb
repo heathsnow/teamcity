@@ -20,6 +20,9 @@ daptiv_nodejs_npm_config 'generate_chef_user_npmrc' do
   email 'shawn.weitzel@changepoint.com'
 end
 
+include_recipe 'daptiv_java'
+include_recipe 'daptiv_github::install'
+
 if platform?('windows')
   include_recipe 'daptiv_teamcity::agent_windows'
 else

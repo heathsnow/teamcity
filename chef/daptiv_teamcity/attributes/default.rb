@@ -9,4 +9,5 @@
 #
 
 default['daptiv_teamcity']['server_url'] = 'http://teamcity.daptiv.com'
-default['daptiv_teamcity']['system_dir'] = 'd:\\teamcity\\'
+default['daptiv_teamcity']['linux']['system_dir'] = '/opt/teamcity-agent/'
+default['daptiv_teamcity']['windows']['system_dir'] = 'd:\\teamcity\\'

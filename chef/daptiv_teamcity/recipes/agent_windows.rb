@@ -5,10 +5,9 @@
 # Copyright 2018 Changepoint
 #
 # TeamCity Windows build agent role
-
-# Logic block to read data bag for user information
 require 'time'
 
+# Logic block to read data bag for user information
 tc_userdata = data_bag_item('teamcity', 'buildagent_creds')
 
 # Set the server_url for the default agent we're configuring
@@ -17,7 +16,7 @@ node.override['teamcity']['agents']['server_url'] =
 
 # Set the system directory for the default agent we're configuring
 node.override['teamcity']['agents']['system_dir'] =
-  node['daptiv_teamcity']['system_dir']
+  node['daptiv_teamcity']['windows']['system_dir']
 
 # Set the service user using data bag tc_userdata
 unless node.chef_environment == 'cookbook_ci'
@@ -31,10 +30,10 @@ end
 # run on 9000 intead of the 9090 default
 node.override['teamcity']['agents']['own_port'] = '9000'
 
-include_recipe 'daptiv_java'
+# Install TeamCity agent
 include_recipe 'teamcity::agent_windows'
-include_recipe 'daptiv_github::install'
 
+# Configure SSH for GitHub access by this agent
 tc_local_user = tc_userdata['domain_username'][/\\(\w*)/, 1]
 host_name = ENV['COMPUTERNAME'] || ENV['HOSTNAME']
 
