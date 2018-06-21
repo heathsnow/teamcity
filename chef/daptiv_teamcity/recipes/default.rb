@@ -8,6 +8,11 @@
 
 # Set the agent name using hostname
 
+
+user = ENV['USER'].to_s.empty? ? ENV['USERNAME'] : ENV['USER']
+user = 'Administrator' if platform?('windows') \
+  && node.chef_environment == 'cookbook_ci'
+
 # set npmrc config for chef user so pkgs are installed to a globally
 # accessible location during chef run
 npm_auth_token = data_bag_item('teamcity', 'npm_auth_token')
@@ -19,11 +24,8 @@ daptiv_nodejs_npm_config 'generate_chef_user_npmrc' do
 end
 
 if platform?('windows')
-  user = ENV['USERNAME']
-  user = 'Administrator' if node.chef_environment == 'cookbook_ci'
   include_recipe 'daptiv_ppm_build::npm_tools'
   include_recipe 'daptiv_teamcity::agent_windows'
 else
-  user = ENV['USER']
   include_recipe 'daptiv_teamcity::agent_linux'
 end
