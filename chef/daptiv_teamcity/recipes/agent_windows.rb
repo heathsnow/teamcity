@@ -59,6 +59,11 @@ end
 daptiv_nuget_config tc_local_user do
 end
 
+# Add NPM directory to system PATH variable
+windows_path 'C:\npm' do
+  action :add
+end
+
 # Create npm config
 npm_auth_token = data_bag_item('teamcity', 'npm_auth_token')
 daptiv_nodejs_npm_config 'generate_teamcity_npmrc' do
