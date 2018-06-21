@@ -59,7 +59,10 @@ end
 daptiv_nuget_config tc_local_user do
 end
 
-# Add NPM directory to system PATH variable
+# Install npm
+include_recipe 'daptiv_ppm_build::npm_tools'
+
+# Add npm directory to system PATH variable
 windows_path 'C:\npm' do
   action :add
 end

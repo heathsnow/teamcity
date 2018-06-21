@@ -21,7 +21,6 @@ daptiv_nodejs_npm_config 'generate_chef_user_npmrc' do
 end
 
 if platform?('windows')
-  include_recipe 'daptiv_ppm_build::npm_tools'
   include_recipe 'daptiv_teamcity::agent_windows'
 else
   include_recipe 'daptiv_teamcity::agent_linux'
