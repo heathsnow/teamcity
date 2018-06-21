@@ -13,6 +13,10 @@ describe 'daptiv_teamcity::default' do
     expect(chef_run).to include_recipe('daptiv_java')
   end
 
+  it 'should install openjdk-7-jdk and openjdk-7-jre-headless' do
+    expect(chef_run).to install_package('openjdk-7-jdk, openjdk-7-jre-headless')
+  end
+
   it 'should include daptiv_teamcity::agent_linux recipe' do
     expect(chef_run).to include_recipe 'daptiv_teamcity::agent_linux'
   end

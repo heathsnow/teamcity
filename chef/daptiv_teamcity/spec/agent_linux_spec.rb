@@ -41,8 +41,4 @@ describe 'daptiv_teamcity::agent_linux' do
   it 'should create user with teamcity' do
     expect(chef_run).to create_user('teamcity')
   end
-
-  it 'should install openjdk-7-jdk and openjdk-7-jre-headless' do
-    expect(chef_run).to install_package('openjdk-7-jdk, openjdk-7-jre-headless')
-  end
 end
