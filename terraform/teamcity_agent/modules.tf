@@ -36,6 +36,5 @@ module "volumes" {
   instance_count = "${var.teamcity_agent_instance_count}"
   instance_private_key = "${var.instance_private_key}"
   log_volume_size = "${var.teamcity_agent_log_volume_size}"
-  service_name = "${var.teamcity_agent_service_name}"
   volume_availability_zones = "${data.terraform_remote_state.vpc.private_subnet_availability_zone_list}"
 }
