@@ -16,6 +16,7 @@ resource "aws_volume_attachment" "log_volume" {
       bastion_private_key = "${file("${var.instance_private_key}")}"
     }
     inline = [
+      "sudo systemctl stop teamcity-agent",
       "sudo umount -d /dev/xvdi1"
     ]
     when                  = "destroy"
@@ -40,6 +41,7 @@ resource "aws_volume_attachment" "data_volume" {
       bastion_private_key = "${file("${var.instance_private_key}")}"
     }
     inline = [
+      "sudo systemctl stop teamcity-agent",
       "sudo umount -d /dev/xvdj1"
     ]
     when                  = "destroy"
