@@ -6,7 +6,7 @@ pipelines:
       CHEF_SECRET_FILE: dev_encrypted_data_bag_secret
       DOCKER_IMAGE: daptiv/gocd-agent-ubuntu-16.04-terraform:0.10.8
       TF_ACTION: deploy
-      TF_DESTROY_TARGETS: module.instances
+      TF_DESTROY_TARGETS: all
       TF_VARIABLE_FILE: us_cicd.tfvars
       TF_VARIABLE_PATH: ../../../terraform_environment/variables/
     secure_variables: # https://api.gocd.org/current/#encrypt-a-plain-text-value
