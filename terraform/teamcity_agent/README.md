@@ -78,6 +78,7 @@ The following root level inputs are required to successfully apply all modules c
 | teamcity_agent_ami_name | Name of AMI to use when creating servers. |
 | teamcity_agent_ami_owners | Comma separated list of AWS account IDs to filter on when locating AMI. |
 | teamcity_agent_data_volume_size | Desired size of the 'data' volume. |
+| teamcity_agent_hostname_identifier | Server moniker to embed in the hostname, [ENV]-[IDENTIFIER]-[NUM]. |
 | teamcity_agent_instance_count | Desired number of servers. |
 | teamcity_agent_instance_type | Instance type to use when provisioning servers. |
 | teamcity_agent_instance_user | Username used to authenticate SSH sessions to destination EC2 instances. |

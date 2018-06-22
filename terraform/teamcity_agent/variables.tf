@@ -11,6 +11,7 @@ variable "instance_private_key" {}
 variable "teamcity_agent_ami_name" { default = "ubuntu_xenial_16.04_teamcity_agent_fb" }
 variable "teamcity_agent_ami_owners" { default = "147491244536" }
 variable "teamcity_agent_data_volume_size" { default = "60" }
+variable "teamcity_agent_hostname_identifier" { default = "TCUBT" }
 variable "teamcity_agent_instance_count" { default = "1" }
 variable "teamcity_agent_instance_type" { default = "t2.medium" }
 variable "teamcity_agent_instance_user" { default = "ubuntu" }

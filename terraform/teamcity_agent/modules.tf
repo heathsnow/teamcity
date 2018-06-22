@@ -1,8 +1,8 @@
-module "instances" {
+module "instances_ubuntu" {
   source = "modules/instances"
   ami_name = "${var.teamcity_agent_ami_name}"
   ami_owners = "${var.teamcity_agent_ami_owners}"
-  bastion_host = "${var.bastion_host}" 
+  bastion_host = "${var.bastion_host}"
   bastion_user = "${var.bastion_user}"
   chef_environment = "${var.chef_environment}"
   chef_server_url = "${var.chef_server_url}"
@@ -11,6 +11,7 @@ module "instances" {
   data_volume_ids = "${module.volumes.teamcity_agent_data_volume_ids}"
   domain_name = "${var.domain_name}"
   env_hostname_prefix = "${var.env_hostname_prefix}"
+  hostname_identifier = "${var.teamcity_agent_hostname_identifier}"
   instance_count = "${var.teamcity_agent_instance_count}"
   instance_key_name = "${var.instance_key_name}"
   instance_private_key = "${var.instance_private_key}"
@@ -25,12 +26,13 @@ module "instances" {
   user_key_file = "${var.user_key_file}"
 }
 
-module "volumes" {
+module "volumes_ubuntu" {
   source = "modules/volumes"
   bastion_host = "${var.bastion_host}"
   bastion_user = "${var.bastion_user}"
   data_volume_size = "${var.teamcity_agent_data_volume_size}"
   env_hostname_prefix = "${var.env_hostname_prefix}"
+  hostname_identifier = "${var.teamcity_agent_hostname_identifier}"
   instance_count = "${var.teamcity_agent_instance_count}"
   instance_private_key = "${var.instance_private_key}"
   log_volume_size = "${var.teamcity_agent_log_volume_size}"

@@ -9,6 +9,7 @@ variable "chef_version" {}
 variable "data_volume_ids" {}
 variable "domain_name" {}
 variable "env_hostname_prefix" {}
+variable "hostname_identifier" {}
 variable "instance_count" {}
 variable "instance_key_name" {}
 variable "instance_private_key" {}
