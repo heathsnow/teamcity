@@ -19,6 +19,7 @@ require 'digest/md5'
 
 home = node['teamcity']['agents']['home'] || File.join('', 'home', node['teamcity']['agents']['user'])
 system_dir = node['teamcity']['agents']['system_dir']
+logs_dir = File.expand_path node['teamcity']['agents']['logs_dir'], system_dir
 temp_dir = File.expand_path node['teamcity']['agents']['temp_dir'], system_dir
 work_dir = File.expand_path node['teamcity']['agents']['work_dir'], system_dir
 server_url = node['teamcity']['agents']['server_url']
@@ -42,12 +43,16 @@ user node['teamcity']['agents']['user'] do
   home home
 end
 
-# Create the teamcity agent directory
-directory system_dir do
-  owner node['teamcity']['agents']['user']
-  group node['teamcity']['agents']['group']
-  recursive true
-  action :create
+# Create system_dir, location teamcity agent will be installed.
+# Create logs_dir and work_dir since they are mounted
+# EBS volumes which are initially owned by root.
+[system_dir, logs_dir, work_dir].each do |dir|
+  directory dir do
+    owner node['teamcity']['agents']['user']
+    group node['teamcity']['agents']['group']
+    recursive true
+    action :create
+  end
 end
 
 server_hash = Digest::MD5.hexdigest(server_url)

@@ -25,6 +25,7 @@ default['teamcity']['agents']['user'] = 'teamcity'
 default['teamcity']['agents']['group'] = 'teamcity'
 default['teamcity']['agents']['home'] = nil
 default['teamcity']['agents']['system_dir'] = '.'
+default['teamcity']['agents']['logs_dir'] = 'logs'
 default['teamcity']['agents']['work_dir'] = 'work'
 default['teamcity']['agents']['temp_dir'] = 'tmp'
 default['teamcity']['agents']['own_address'] = nil
