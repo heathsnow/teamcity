@@ -73,6 +73,7 @@ The following root level inputs are required to successfully apply all modules c
 | chef_version | Version of the Chef client to install on EC2 instances. |
 | domain_name | Domain name associated with the current VPC. |
 | env_hostname_prefix | AWS environment name abbreviation. (Ex. BLU) |
+| iam_state_file | Name of Terraform state file containing IAM state. |
 | instance_key_name | Name of EC2 key pair to associate with new EC2 instances. |
 | instance_private_key | Private key file used to authenticate EC2 SSH sessions. |
 | teamcity_agent_ami_name | Name of AMI to use when creating servers. |

@@ -11,6 +11,7 @@ variable "domain_name" {}
 variable "env_hostname_prefix" {}
 variable "hostname_identifier" {}
 variable "instance_count" {}
+variable "instance_iam_instance_profile" {}
 variable "instance_key_name" {}
 variable "instance_private_key" {}
 variable "instance_security_group_ids" {}

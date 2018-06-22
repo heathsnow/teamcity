@@ -6,6 +6,7 @@ variable "chef_user_name" { default = "deploysvc" }
 variable "chef_version" { default = "13.8.5" }
 variable "domain_name" {}
 variable "env_hostname_prefix" {}
+variable "iam_state_file" {}
 variable "instance_key_name" {}
 variable "instance_private_key" {}
 variable "teamcity_agent_ami_name" { default = "ubuntu_xenial_16.04_teamcity_agent_fb" }

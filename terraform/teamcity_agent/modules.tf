@@ -13,6 +13,7 @@ module "instances" {
   env_hostname_prefix = "${var.env_hostname_prefix}"
   hostname_identifier = "${var.teamcity_agent_hostname_identifier}"
   instance_count = "${var.teamcity_agent_instance_count}"
+  instance_iam_instance_profile = "${data.terraform_remote_state.iam.teamcity_agent_role_name}"
   instance_key_name = "${var.instance_key_name}"
   instance_private_key = "${var.instance_private_key}"
   instance_security_group_ids = "${data.terraform_remote_state.vpc.linuxcoreservices_sg_id},${data.terraform_remote_state.vpc.teamcity_agent_sg_id}"
