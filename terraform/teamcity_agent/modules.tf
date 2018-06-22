@@ -1,4 +1,4 @@
-module "instances_ubuntu" {
+module "instances" {
   source = "modules/instances"
   ami_name = "${var.teamcity_agent_ami_name}"
   ami_owners = "${var.teamcity_agent_ami_owners}"
@@ -26,7 +26,7 @@ module "instances_ubuntu" {
   user_key_file = "${var.user_key_file}"
 }
 
-module "volumes_ubuntu" {
+module "volumes" {
   source = "modules/volumes"
   bastion_host = "${var.bastion_host}"
   bastion_user = "${var.bastion_user}"
