@@ -21,7 +21,7 @@ default['teamcity']['agent_windows']['ntservice_user'] = nil
 default['teamcity']['agent_windows']['ntservice_password'] = nil
 default['teamcity']['agents']['server_url'] = nil
 default['teamcity']['agents']['name'] =
-  ENV['COMPUTERNAME'].to_s.empty? ? ENV['HOSTNAME'] : ENV['COMPUTERNAME']
+  ENV['COMPUTERNAME'].to_s.empty? ? `uname -n`.chop : ENV['COMPUTERNAME']
 default['teamcity']['agents']['user'] = 'teamcity'
 default['teamcity']['agents']['group'] = 'teamcity'
 default['teamcity']['agents']['home'] = nil
