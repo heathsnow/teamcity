@@ -18,7 +18,7 @@
 require 'digest/md5'
 
 home = node['teamcity']['agents']['home'] || File.join('', 'home', node['teamcity']['agents']['user'])
-system_dir = File.expand_path node['teamcity']['agents']['system_dir'], home
+system_dir = node['teamcity']['agents']['system_dir']
 temp_dir = File.expand_path node['teamcity']['agents']['temp_dir'], system_dir
 work_dir = File.expand_path node['teamcity']['agents']['work_dir'], system_dir
 server_url = node['teamcity']['agents']['server_url']
@@ -31,24 +31,23 @@ unless server_url && !server_url.empty?
   raise message
 end
 
-# Create the users' group
+# Create the teamcity group
 group node['teamcity']['agents']['group'] do
 end
 
-# Create the user
+# Create the teamcity user
 user node['teamcity']['agents']['user'] do
   comment 'TeamCity Agent'
   gid node['teamcity']['agents']['group']
   home home
 end
 
-directory "directory #{system_dir}" do
-  path system_dir
-  user node['teamcity']['agents']['user']
+# Create the teamcity agent directory
+directory system_dir do
+  owner node['teamcity']['agents']['user']
   group node['teamcity']['agents']['group']
   recursive true
   action :create
-  not_if { File.exists? system_dir }
 end
 
 server_hash = Digest::MD5.hexdigest(server_url)

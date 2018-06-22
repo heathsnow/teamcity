@@ -5,8 +5,8 @@ manage_etc_hosts: true
 bootcmd:
   - 'while [ `lsblk -d -n | wc -l` -lt 6 ]; do echo Waiting on EBS volumes...; sleep 5; done'
 runcmd:
-  - [ mkdir, -p, /var/log/${service_name} ]
-  - [ mkdir, -p, /opt/${service_name} ]
+  - [ mkdir, -p, /opt/${service_name}/log ]
+  - [ mkdir, -p, /opt/${service_name}/work ]
 disk_setup:
   /dev/xvdi:
     table_type: 'gpt'
@@ -24,5 +24,5 @@ fs_setup:
     filesystem: 'ext4'
     device: '/dev/xvdj1'
 mounts:
-  - [ /dev/xvdi1, /var/log/${service_name}, "auto", "defaults,nofail", "0", "3" ]
-  - [ /dev/xvdj1, /opt/${service_name}, "auto", "defaults,nofail", "0", "4" ]
+  - [ /dev/xvdi1, /opt/${service_name}/log, "auto", "defaults,nofail", "0", "3" ]
+  - [ /dev/xvdj1, /opt/${service_name}/work, "auto", "defaults,nofail", "0", "4" ]
