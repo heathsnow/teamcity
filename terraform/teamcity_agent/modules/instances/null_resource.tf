@@ -1,8 +1,9 @@
 resource "null_resource" "execute_teamcity_agent_configuration" {
   count = "${var.instance_count}"
   depends_on = [
-    "aws_volume_attachment.log_volume",
-    "aws_volume_attachment.data_volume"
+    "aws_volume_attachment.docker_volume",
+    "aws_volume_attachment.logs_volume",
+    "aws_volume_attachment.work_volume"
   ]
 
   triggers {
