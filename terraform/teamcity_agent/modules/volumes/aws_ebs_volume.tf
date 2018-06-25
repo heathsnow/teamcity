@@ -1,21 +1,32 @@
-resource "aws_ebs_volume" "data_volume" {
+resource "aws_ebs_volume" "docker_volume" {
   count = "${var.instance_count}"
   availability_zone = "${element(split(",", var.volume_availability_zones), count.index)}"
-  size = "${var.data_volume_size}"
+  size = "${var.docker_volume_size}"
   encrypted = true
   type = "gp2"
   tags {
-    Name = "${upper(var.env_hostname_prefix)}-${replace(upper(var.hostname_identifier), "_", "-")}-${count.index + 1}-DATA"
+    Name = "${upper(var.env_hostname_prefix)}-${replace(upper(var.hostname_identifier), "_", "-")}-${count.index + 1}-DOCKER"
   }
 }
 
-resource "aws_ebs_volume" "log_volume" {
+resource "aws_ebs_volume" "logs_volume" {
   count = "${var.instance_count}"
   availability_zone = "${element(split(",", var.volume_availability_zones), count.index)}"
-  size = "${var.log_volume_size}"
+  size = "${var.logs_volume_size}"
   encrypted = true
   type = "gp2"
   tags {
-    Name = "${upper(var.env_hostname_prefix)}-${replace(upper(var.hostname_identifier), "_", "-")}-${count.index + 1}-LOG"
+    Name = "${upper(var.env_hostname_prefix)}-${replace(upper(var.hostname_identifier), "_", "-")}-${count.index + 1}-LOGS"
+  }
+}
+
+resource "aws_ebs_volume" "work_volume" {
+  count = "${var.instance_count}"
+  availability_zone = "${element(split(",", var.volume_availability_zones), count.index)}"
+  size = "${var.work_volume_size}"
+  encrypted = true
+  type = "gp2"
+  tags {
+    Name = "${upper(var.env_hostname_prefix)}-${replace(upper(var.hostname_identifier), "_", "-")}-${count.index + 1}-WORK"
   }
 }
