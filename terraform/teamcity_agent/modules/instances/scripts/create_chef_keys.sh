@@ -28,18 +28,18 @@ METADATA_URL="http://169.254.169.254/latest/dynamic/instance-identity/document"
 export AWS_DEFAULT_REGION="$(curl -s "${METADATA_URL}" | jq -r .region)"
 verify_variable 'AWS_DEFAULT_REGION' "${AWS_DEFAULT_REGION}"
 
-echo "Creating Amazon keys..."
+echo "Creating Chef keys..."
 until [ "${NEXT_TOKEN}" == null ]
 do
   if [ "${NEXT_TOKEN}" ]; then
     AMAZON_KEYS="$(aws ssm get-parameters-by-path \
       --with-decryption \
-      --path /amazon/keys/ \
+      --path /chef/keys/ \
       --next-token ${NEXT_TOKEN})"
   else
     AMAZON_KEYS="$(aws ssm get-parameters-by-path \
       --with-decryption \
-      --path /amazon/keys/)"
+      --path /chef/keys/)"
   fi
 
   NEXT_TOKEN="$(echo ${AMAZON_KEYS} | jq -r '.NextToken')"
@@ -49,10 +49,10 @@ do
   do
     KEY_NAME="${n##*/}"
     sudo -u "${USER}" \
-      chmod 600 "${USER_HOME}/.ssh/${KEY_NAME}.pem" \
-      >> "${USER_HOME}/.ssh/${KEY_NAME}.pem"
+      chmod 600 "${USER_HOME}/.chef/${KEY_NAME}.pem" \
+      >> "${USER_HOME}/.chef/${KEY_NAME}.pem"
     echo ${AMAZON_KEYS} | sudo -u "${USER}" jq -r \
-      ".Parameters[] | select(.Name == \"/amazon/keys/${KEY_NAME}\") \
-      | .Value" > "${USER_HOME}/.ssh/${KEY_NAME}.pem"
+      ".Parameters[] | select(.Name == \"/chef/keys/${KEY_NAME}\") \
+      | .Value" > "${USER_HOME}/.chef/${KEY_NAME}.pem"
   done
 done
