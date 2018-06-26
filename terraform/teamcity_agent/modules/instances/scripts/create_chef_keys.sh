@@ -61,8 +61,8 @@ create_key () {
 main () {
   determine_linux_distribution
   set_aws_default_region
-  create_key '/chef/keys/deploysvc' 'deploysvc.pem'
-  create_key '/chef/keys/dev-encrypted-data-bag-secret' 'encrypted_data_bag_secret'
+  create_key "/chef/keys/deploysvc" "deploysvc.pem"
+  create_key "/chef/keys/dev-encrypted-data-bag-secret" "encrypted_data_bag_secret"
 }
 
 main
