@@ -32,6 +32,8 @@ verify_variable 'AWS_DEFAULT_REGION' "${AWS_DEFAULT_REGION}"
 echo "Creating Chef key: deploysvc.pem..."
 KEY_NAME="deploysvc"
 FILE_NAME="deploysvc.pem"
+
+mkdir "${HOME}/.chef/" 2>/dev/null
 aws ssm get-parameter \
   --name "/chef/keys/${KEY_NAME}" \
   --query "Parameter.Value" \
@@ -45,6 +47,8 @@ sudo chown "${DESTINATION_OWNER}":"${DESTINATION_GROUP}" \
 echo "Creating Chef key: encrypted_data_bag_secret..."
 KEY_NAME="dev-encrypted-data-bag-secret"
 FILE_NAME="encrypted_data_bag_secret"
+
+mkdir "${HOME}/.chef/" 2>/dev/null
 aws ssm get-parameter \
   --name "/chef/keys/${KEY_NAME}" \
   --query "Parameter.Value" \
