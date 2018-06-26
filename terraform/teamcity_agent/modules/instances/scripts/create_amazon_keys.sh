@@ -53,8 +53,8 @@ create_amazon_keys () {
     KEY_NAME_ARR=( $(printf "${AMAZON_KEYS}" | jq -r '.Parameters[].Name') )
     for n in "${KEY_NAME_ARR[@]}"
     do
-      printf "Creating key '${KEY_NAME}.pem' in '${DESTINATION_DIR}'...\n"
       KEY_NAME="${n##*/}"
+      printf "Creating key '${KEY_NAME}.pem' in '${DESTINATION_DIR}'...\n"
       chmod 600 "${HOME}/.ssh/${KEY_NAME}.pem" \
         >> "${HOME}/.ssh/${KEY_NAME}.pem"
       printf "${AMAZON_KEYS}" | jq -r \
