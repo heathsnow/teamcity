@@ -22,18 +22,8 @@ get_ssm_parameter_value () {
     --with-decryption
 }
 
-determine_linux_distribution () {
-  echo "Determining Linux distribution..."
-  if [ -x "$(command -v apt-get)" ]; then
-    echo "Found apt-get, assuming Debian family..."
-    DISTRO="debian"
-  elif [ -x "$(command -v yum)" ]; then
-    echo "Found yum, assuming Red Hat family..."
-    DISTRO="redhat"
-  else
-    echo "Unable to determine Linux distribution."
-    exit 1
-  fi
+print_script_name () {
+  echo "Running 'create_chef_keys.sh'..."
 }
 
 set_aws_default_region () {
@@ -60,7 +50,7 @@ create_key () {
 }
 
 main () {
-  determine_linux_distribution
+  print_script_name
   set_aws_default_region
   create_key "/chef/keys/deploysvc" "deploysvc.pem"
   create_key "/chef/keys/dev-encrypted-data-bag-secret" "encrypted_data_bag_secret"

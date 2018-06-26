@@ -12,18 +12,8 @@ verify_variable () {
   fi
 }
 
-determine_linux_distribution () {
-  echo "Determining Linux distribution..."
-  if [ -x "$(command -v apt-get)" ]; then
-    echo "Found apt-get, assuming Debian family..."
-    DISTRO="debian"
-  elif [ -x "$(command -v yum)" ]; then
-    echo "Found yum, assuming Red Hat family..."
-    DISTRO="redhat"
-  else
-    echo "Unable to determine Linux distribution."
-    exit 1
-  fi
+print_script_name () {
+  echo "Running 'create_amazon_keys.sh'..."
 }
 
 set_aws_default_region () {
@@ -68,7 +58,7 @@ create_amazon_keys () {
 }
 
 main () {
-  determine_linux_distribution
+  print_script_name
   set_aws_default_region
   create_amazon_keys
 }
