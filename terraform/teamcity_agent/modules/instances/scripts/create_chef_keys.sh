@@ -54,7 +54,7 @@ create_key () {
   sudo chmod 700 "${DESTINATION_DIR}/"
   printf "${VALUE}" | \
     sudo -u "${DESTINATION_OWNER}" \
-    tee --append "${DESTINATION_DIR}/${FILE_NAME}" &>/dev/null
+    tee "${DESTINATION_DIR}/${FILE_NAME}" &>/dev/null
   sudo chmod 600 "${DESTINATION_DIR}/${FILE_NAME}"
 }
 
