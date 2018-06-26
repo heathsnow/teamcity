@@ -7,34 +7,34 @@ DESTINATION_GROUP="teamcity"
 
 verify_variable () {
   if [ -z "${2}" ]; then
-    printf "Unable to set ${1}.\n"
+    echo "Unable to set ${1}."
     exit 1
   fi
 }
 
 determine_linux_distribution () {
-  printf "Determining Linux distribution...\n"
+  echo "Determining Linux distribution..."
   if [ -x "$(command -v apt-get)" ]; then
-    printf "Found apt-get, assuming Debian family...\n"
+    echo "Found apt-get, assuming Debian family..."
     DISTRO="debian"
   elif [ -x "$(command -v yum)" ]; then
-    printf "Found yum, assuming Red Hat family...\n"
+    echo "Found yum, assuming Red Hat family..."
     DISTRO="redhat"
   else
-    printf "Unable to determine Linux distribution.\n"
+    echo "Unable to determine Linux distribution."
     exit 1
   fi
 }
 
 set_aws_default_region () {
-  printf "Setting AWS_DEFAULT_REGION...\n"
+  echo "Setting AWS_DEFAULT_REGION..."
   local METADATA_URL="http://169.254.169.254/latest/dynamic/instance-identity/document"
   export AWS_DEFAULT_REGION="$(curl -s "${METADATA_URL}" | jq -r .region)"
   verify_variable 'AWS_DEFAULT_REGION' "${AWS_DEFAULT_REGION}"
 }
 
 create_amazon_keys () {
-  printf "Creating Amazon keys...\n"
+  echo "Creating Amazon keys..."
   until [ "${NEXT_TOKEN}" == null ]
   do
     if [ "${NEXT_TOKEN}" ]; then
@@ -48,16 +48,16 @@ create_amazon_keys () {
         --path /amazon/keys/)"
     fi
 
-    NEXT_TOKEN="$(printf "${AMAZON_KEYS}" | jq -r '.NextToken')"
+    NEXT_TOKEN="$(echo "${AMAZON_KEYS}" | jq -r '.NextToken')"
 
-    KEY_NAME_ARR=( $(printf "${AMAZON_KEYS}" | jq -r '.Parameters[].Name') )
+    KEY_NAME_ARR=( $(echo "${AMAZON_KEYS}" | jq -r '.Parameters[].Name') )
     for n in "${KEY_NAME_ARR[@]}"
     do
       KEY_NAME="${n##*/}"
-      printf "Creating key '${KEY_NAME}.pem' in '${DESTINATION_DIR}'...\n"
+      echo "Creating key '${KEY_NAME}.pem' in '${DESTINATION_DIR}'..."
       chmod 600 "${HOME}/.ssh/${KEY_NAME}.pem" \
         >> "${HOME}/.ssh/${KEY_NAME}.pem"
-      printf "${AMAZON_KEYS}" | jq -r \
+      echo "${AMAZON_KEYS}" | jq -r \
         ".Parameters[] | select(.Name == \"/amazon/keys/${KEY_NAME}\") \
         | .Value" > "${HOME}/.ssh/${KEY_NAME}.pem"
       sudo mv "${HOME}/.ssh/${KEY_NAME}.pem" "${DESTINATION_DIR}/"
