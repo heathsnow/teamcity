@@ -35,7 +35,7 @@ FILE_NAME="deploysvc.pem"
 aws ssm get-parameter \
   --name "/chef/keys/${KEY_NAME}" \
   --query "Parameter.Value" \
-  --with-decryption "${HOME}/.chef/${FILE_NAME}"
+  --with-decryption > "${HOME}/.chef/${FILE_NAME}"
 
 chmod 600 "${HOME}/.chef/${FILE_NAME}"
 sudo mv "${HOME}/.chef/${FILE_NAME}" "${DESTINATION_DIR}/"
@@ -48,7 +48,7 @@ FILE_NAME="encrypted_data_bag_secret"
 aws ssm get-parameter \
   --name "/chef/keys/${KEY_NAME}" \
   --query "Parameter.Value" \
-  --with-decryption "${HOME}/.chef/${FILE_NAME}"
+  --with-decryption > "${HOME}/.chef/${FILE_NAME}"
 
 chmod 600 "${HOME}/.chef/${FILE_NAME}"
 sudo mv "${HOME}/.chef/${FILE_NAME}" "${DESTINATION_DIR}/"
