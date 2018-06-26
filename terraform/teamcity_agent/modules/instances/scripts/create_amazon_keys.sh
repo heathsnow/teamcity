@@ -1,61 +1,76 @@
 #!/usr/bin/env bash
 set -e
 
-echo "Determining Linux distribution..."
-if [ -x "$(command -v apt-get)" ]; then
-  echo "Found apt-get, assuming Debian family..."
-  export DISTRO="debian"
-elif [ -x "$(command -v yum)" ]; then
-  echo "Found yum, assuming Red Hat family..."
-  export DISTRO="redhat"
-else
-  echo "Unable to determine Linux distribution."
-  exit 1
-fi
-
 DESTINATION_DIR="/home/teamcity/.ssh/"
 DESTINATION_OWNER="teamcity"
 DESTINATION_GROUP="teamcity"
 
 verify_variable () {
   if [ -z "${2}" ]; then
-    echo "Unable to set ${1}."
+    printf "Unable to set ${1}.\n"
     exit 1
   fi
 }
 
-echo "Setting AWS_DEFAULT_REGION..."
-METADATA_URL="http://169.254.169.254/latest/dynamic/instance-identity/document"
-export AWS_DEFAULT_REGION="$(curl -s "${METADATA_URL}" | jq -r .region)"
-verify_variable 'AWS_DEFAULT_REGION' "${AWS_DEFAULT_REGION}"
-
-echo "Creating Amazon keys..."
-until [ "${NEXT_TOKEN}" == null ]
-do
-  if [ "${NEXT_TOKEN}" ]; then
-    AMAZON_KEYS="$(aws ssm get-parameters-by-path \
-      --with-decryption \
-      --path /amazon/keys/ \
-      --next-token ${NEXT_TOKEN})"
+determine_linux_distribution () {
+  printf "Determining Linux distribution...\n"
+  if [ -x "$(command -v apt-get)" ]; then
+    printf "Found apt-get, assuming Debian family...\n"
+    DISTRO="debian"
+  elif [ -x "$(command -v yum)" ]; then
+    printf "Found yum, assuming Red Hat family...\n"
+    DISTRO="redhat"
   else
-    AMAZON_KEYS="$(aws ssm get-parameters-by-path \
-      --with-decryption \
-      --path /amazon/keys/)"
+    printf "Unable to determine Linux distribution.\n"
+    exit 1
   fi
+}
 
-  NEXT_TOKEN="$(echo ${AMAZON_KEYS} | jq -r '.NextToken')"
+set_aws_default_region () {
+  printf "Setting AWS_DEFAULT_REGION...\n"
+  local METADATA_URL="http://169.254.169.254/latest/dynamic/instance-identity/document"
+  export AWS_DEFAULT_REGION="$(curl -s "${METADATA_URL}" | jq -r .region)"
+  verify_variable 'AWS_DEFAULT_REGION' "${AWS_DEFAULT_REGION}"
+}
 
-  KEY_NAME_ARR=( $(echo ${AMAZON_KEYS} | jq -r '.Parameters[].Name') )
-  for n in "${KEY_NAME_ARR[@]}"
+create_amazon_keys () {
+  printf "Creating Amazon keys...\n"
+  until [ "${NEXT_TOKEN}" == null ]
   do
-    KEY_NAME="${n##*/}"
-    chmod 600 "${HOME}/.ssh/${KEY_NAME}.pem" \
-      >> "${HOME}/.ssh/${KEY_NAME}.pem"
-    echo ${AMAZON_KEYS} | jq -r \
-      ".Parameters[] | select(.Name == \"/amazon/keys/${KEY_NAME}\") \
-      | .Value" > "${HOME}/.ssh/${KEY_NAME}.pem"
-    sudo mv "${HOME}/.ssh/${KEY_NAME}.pem" "${DESTINATION_DIR}/"
-    sudo chown "${DESTINATION_OWNER}":"${DESTINATION_GROUP}" \
-      "${DESTINATION_DIR}/${KEY_NAME}.pem"
+    if [ "${NEXT_TOKEN}" ]; then
+      AMAZON_KEYS="$(aws ssm get-parameters-by-path \
+        --with-decryption \
+        --path /amazon/keys/ \
+        --next-token ${NEXT_TOKEN})"
+    else
+      AMAZON_KEYS="$(aws ssm get-parameters-by-path \
+        --with-decryption \
+        --path /amazon/keys/)"
+    fi
+
+    NEXT_TOKEN="$(printf "${AMAZON_KEYS}" | jq -r '.NextToken')"
+
+    KEY_NAME_ARR=( $(printf "${AMAZON_KEYS}" | jq -r '.Parameters[].Name') )
+    for n in "${KEY_NAME_ARR[@]}"
+    do
+      printf "Creating key '${KEY_NAME}.pem' in '${DESTINATION_DIR}'...\n"
+      KEY_NAME="${n##*/}"
+      chmod 600 "${HOME}/.ssh/${KEY_NAME}.pem" \
+        >> "${HOME}/.ssh/${KEY_NAME}.pem"
+      printf "${AMAZON_KEYS}" | jq -r \
+        ".Parameters[] | select(.Name == \"/amazon/keys/${KEY_NAME}\") \
+        | .Value" > "${HOME}/.ssh/${KEY_NAME}.pem"
+      sudo mv "${HOME}/.ssh/${KEY_NAME}.pem" "${DESTINATION_DIR}/"
+      sudo chown "${DESTINATION_OWNER}":"${DESTINATION_GROUP}" \
+        "${DESTINATION_DIR}/${KEY_NAME}.pem"
+    done
   done
-done
+}
+
+main () {
+  determine_linux_distribution
+  set_aws_default_region
+  create_amazon_keys
+}
+
+main
