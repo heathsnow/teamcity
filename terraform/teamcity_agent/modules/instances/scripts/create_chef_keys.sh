@@ -13,8 +13,9 @@ else
   exit 1
 fi
 
-USER="teamcity"
-USER_HOME="/home/${USER}/"
+DESTINATION_DIR="/home/teamcity/.chef/"
+DESTINATION_OWNER="teamcity"
+DESTINATION_GROUP="teamcity"
 
 verify_variable () {
   if [ -z "${2}" ]; then
@@ -48,11 +49,13 @@ do
   for n in "${KEY_NAME_ARR[@]}"
   do
     KEY_NAME="${n##*/}"
-    sudo -u "${USER}" \
-      chmod 600 "${USER_HOME}/.chef/${KEY_NAME}.pem" \
-      >> "${USER_HOME}/.chef/${KEY_NAME}.pem"
+    chmod 600 "${HOME}/.chef/${KEY_NAME}.pem" \
+      >> "${HOME}/.chef/${KEY_NAME}.pem"
     echo ${AMAZON_KEYS} | sudo -u "${USER}" jq -r \
       ".Parameters[] | select(.Name == \"/chef/keys/${KEY_NAME}\") \
-      | .Value" > "${USER_HOME}/.chef/${KEY_NAME}.pem"
+      | .Value" > "${HOME}/.chef/${KEY_NAME}.pem"
+    sudo mv "${HOME}/.chef/${KEY_NAME}.pem" "${DESTINATION_DIR}/${KEY_NAME}.pem"
+    sudo chown "${DESTINATION_OWNER}":"${DESTINATION_GROUP}" \
+      "${DESTINATION_DIR}/${KEY_NAME}.pem"
   done
 done
