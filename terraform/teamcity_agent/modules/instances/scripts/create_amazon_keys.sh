@@ -54,7 +54,7 @@ do
     echo ${AMAZON_KEYS} | jq -r \
       ".Parameters[] | select(.Name == \"/amazon/keys/${KEY_NAME}\") \
       | .Value" > "${HOME}/.ssh/${KEY_NAME}.pem"
-    sudo mv "${HOME}/.chef/${KEY_NAME}.pem" "${DESTINATION_DIR}/"
+    sudo mv "${HOME}/.ssh/${KEY_NAME}.pem" "${DESTINATION_DIR}/"
     sudo chown "${DESTINATION_OWNER}":"${DESTINATION_GROUP}" \
       "${DESTINATION_DIR}/${KEY_NAME}.pem"
   done
