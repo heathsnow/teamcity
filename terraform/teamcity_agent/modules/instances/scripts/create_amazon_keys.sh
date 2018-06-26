@@ -24,7 +24,6 @@ set_aws_default_region () {
 }
 
 create_amazon_keys () {
-  echo "Creating Amazon keys..."
   until [ "${NEXT_TOKEN}" == null ]
   do
     if [ "${NEXT_TOKEN}" ]; then
