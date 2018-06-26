@@ -29,33 +29,28 @@ METADATA_URL="http://169.254.169.254/latest/dynamic/instance-identity/document"
 export AWS_DEFAULT_REGION="$(curl -s "${METADATA_URL}" | jq -r .region)"
 verify_variable 'AWS_DEFAULT_REGION' "${AWS_DEFAULT_REGION}"
 
-echo "Creating Chef keys..."
-until [ "${NEXT_TOKEN}" == null ]
-do
-  if [ "${NEXT_TOKEN}" ]; then
-    AMAZON_KEYS="$(aws ssm get-parameters-by-path \
-      --with-decryption \
-      --path /chef/keys/ \
-      --next-token ${NEXT_TOKEN})"
-  else
-    AMAZON_KEYS="$(aws ssm get-parameters-by-path \
-      --with-decryption \
-      --path /chef/keys/)"
-  fi
+echo "Creating Chef key: deploysvc.pem..."
+KEY_NAME="deploysvc"
+FILE_NAME="deploysvc.pem"
+aws ssm get-parameter \
+  --name "/chef/keys/${KEY_NAME}" \
+  --query "Parameter.Value" \
+  --with-decryption "${HOME}/.chef/${FILE_NAME}"
 
-  NEXT_TOKEN="$(echo ${AMAZON_KEYS} | jq -r '.NextToken')"
+chmod 600 "${HOME}/.chef/${FILE_NAME}"
+sudo mv "${HOME}/.chef/${FILE_NAME}" "${DESTINATION_DIR}/"
+sudo chown "${DESTINATION_OWNER}":"${DESTINATION_GROUP}" \
+  "${DESTINATION_DIR}/${FILE_NAME}"
 
-  KEY_NAME_ARR=( $(echo ${AMAZON_KEYS} | jq -r '.Parameters[].Name') )
-  for n in "${KEY_NAME_ARR[@]}"
-  do
-    KEY_NAME="${n##*/}"
-    chmod 600 "${HOME}/.chef/${KEY_NAME}.pem" \
-      >> "${HOME}/.chef/${KEY_NAME}.pem"
-    echo ${AMAZON_KEYS} | sudo -u "${USER}" jq -r \
-      ".Parameters[] | select(.Name == \"/chef/keys/${KEY_NAME}\") \
-      | .Value" > "${HOME}/.chef/${KEY_NAME}.pem"
-    sudo mv "${HOME}/.chef/${KEY_NAME}.pem" "${DESTINATION_DIR}/"
-    sudo chown "${DESTINATION_OWNER}":"${DESTINATION_GROUP}" \
-      "${DESTINATION_DIR}/${KEY_NAME}.pem"
-  done
-done
+echo "Creating Chef key: encrypted_data_bag_secret..."
+KEY_NAME="dev-encrypted-data-bag-secret"
+FILE_NAME="encrypted_data_bag_secret"
+aws ssm get-parameter \
+  --name "/chef/keys/${KEY_NAME}" \
+  --query "Parameter.Value" \
+  --with-decryption "${HOME}/.chef/${FILE_NAME}"
+
+chmod 600 "${HOME}/.chef/${FILE_NAME}"
+sudo mv "${HOME}/.chef/${FILE_NAME}" "${DESTINATION_DIR}/"
+sudo chown "${DESTINATION_OWNER}":"${DESTINATION_GROUP}" \
+  "${DESTINATION_DIR}/${FILE_NAME}"
