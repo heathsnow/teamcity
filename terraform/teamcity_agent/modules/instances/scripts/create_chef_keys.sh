@@ -2,6 +2,8 @@
 set -e
 
 DESTINATION_DIR="/etc/chef/"
+DESTINATION_DIR_PERMISSIONS="755"
+DESTINATION_FILE_PERMISSIONS="644"
 DESTINATION_OWNER="root"
 DESTINATION_GROUP="root"
 
@@ -42,11 +44,11 @@ create_key () {
 
   sudo mkdir -p "${DESTINATION_DIR}/" &>/dev/null
   sudo chown "${DESTINATION_OWNER}":"${DESTINATION_GROUP}" "${DESTINATION_DIR}/"
-  sudo chmod 700 "${DESTINATION_DIR}/"
+  sudo chmod "${DESTINATION_DIR_PERMISSIONS}" "${DESTINATION_DIR}/"
   printf "%s" "${VALUE}" | \
     sudo -u "${DESTINATION_OWNER}" \
     tee "${DESTINATION_DIR}/${FILE_NAME}" &>/dev/null
-  sudo chmod 600 "${DESTINATION_DIR}/${FILE_NAME}"
+  sudo chmod "${DESTINATION_FILE_PERMISSIONS}" "${DESTINATION_DIR}/${FILE_NAME}"
 }
 
 main () {

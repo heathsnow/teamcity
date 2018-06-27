@@ -2,6 +2,8 @@
 set -e
 
 DESTINATION_DIR="/home/teamcity/.ssh/"
+DESTINATION_DIR_PERMISSIONS="700"
+DESTINATION_FILE_PERMISSIONS="600"
 DESTINATION_OWNER="teamcity"
 DESTINATION_GROUP="teamcity"
 
@@ -23,6 +25,8 @@ get_ssm_parameter_value () {
 }
 
 print_script_name () {
+  if [ -z "${1}" ]; then
+  else
   echo "Running '${0##*/}'..."
 }
 
@@ -42,11 +46,11 @@ create_key () {
 
   sudo mkdir -p "${DESTINATION_DIR}/" &>/dev/null
   sudo chown "${DESTINATION_OWNER}":"${DESTINATION_GROUP}" "${DESTINATION_DIR}/"
-  sudo chmod 700 "${DESTINATION_DIR}/"
+  sudo chmod "${DESTINATION_DIR_PERMISSIONS}" "${DESTINATION_DIR}/"
   printf "%s" "${VALUE}" | \
     sudo -u "${DESTINATION_OWNER}" \
     tee "${DESTINATION_DIR}/${FILE_NAME}" &>/dev/null
-  sudo chmod 600 "${DESTINATION_DIR}/${FILE_NAME}"
+  sudo chmod "${DESTINATION_FILE_PERMISSIONS}" "${DESTINATION_DIR}/${FILE_NAME}"
 }
 
 main () {
