@@ -46,8 +46,8 @@ resource "null_resource" "execute_teamcity_agent_configuration" {
     }
 
     scripts = [
-      "${path.module}/scripts/create_amazon_keys.sh",
-      "${path.module}/scripts/create_chef_keys.sh"
+      "${path.module}/scripts/create_chef_keys.sh",
+      "${path.module}/scripts/create_ssh_keys.sh"
     ]
 
     when = "create"

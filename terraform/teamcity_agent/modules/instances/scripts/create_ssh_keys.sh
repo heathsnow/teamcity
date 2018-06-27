@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-DESTINATION_DIR="/home/teamcity/.chef/"
+DESTINATION_DIR="/home/teamcity/.ssh/"
 DESTINATION_OWNER="teamcity"
 DESTINATION_GROUP="teamcity"
 
@@ -52,8 +52,12 @@ create_key () {
 main () {
   print_script_name
   set_aws_default_region
-  create_key "/chef/keys/deploysvc" "deploysvc.pem"
-  create_key "/chef/keys/dev-encrypted-data-bag-secret" "encrypted_data_bag_secret"
+  create_key "/amazon/keys/go-aws-us-blu" "go_aws_us_blu.pem"
+  create_key "/amazon/keys/go-aws-us-gra" "go_aws_us_gra.pem"
+  create_key "/amazon/keys/go-aws-us-red" "go_aws_us_red.pem"
+  create_key "/amazon/keys/go-aws-us-grn" "go_aws_us_grn.pem"
+  create_key "/amazon/keys/go-aws-us-cicd" "go_aws_us_cicd.pem"
+  create_key "/amazon/keys/go-aws-us-cicd-cookbooks" "go_aws_us_cicd_cookbooks.pem"
 }
 
 main
