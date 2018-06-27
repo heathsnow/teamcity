@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
-DESTINATION_DIR="/home/teamcity/.chef/"
-DESTINATION_OWNER="teamcity"
-DESTINATION_GROUP="teamcity"
+DESTINATION_DIR="/etc/chef/"
+DESTINATION_OWNER="root"
+DESTINATION_GROUP="root"
 
 verify_variable () {
   if [ -z "${2}" ]; then
