@@ -25,7 +25,13 @@ get_ssm_parameter_value () {
 }
 
 print_script_name () {
-  echo "Running '${0##*/}'..."
+  local NAME="${1}"
+
+  if [ -z "${NAME}" ]; then
+    echo "Running '${0##*/}'..."
+  else
+    echo "Running '${NAME}'..."
+  fi
 }
 
 set_aws_default_region () {
@@ -52,7 +58,7 @@ create_key () {
 }
 
 main () {
-  print_script_name
+  print_script_name "create_chef_keys.sh"
   set_aws_default_region
   create_key "/chef/keys/deploysvc" "deploysvc.pem"
   create_key "/chef/keys/dev-encrypted-data-bag-secret" "encrypted_data_bag_secret"

@@ -25,9 +25,13 @@ get_ssm_parameter_value () {
 }
 
 print_script_name () {
-  if [ -z "${1}" ]; then
+  local NAME="${1}"
+
+  if [ -z "${NAME}" ]; then
+    echo "Running '${0##*/}'..."
   else
-  echo "Running '${0##*/}'..."
+    echo "Running '${NAME}'..."
+  fi
 }
 
 set_aws_default_region () {
@@ -54,7 +58,7 @@ create_key () {
 }
 
 main () {
-  print_script_name
+  print_script_name "create_ssh_keys.sh"
   set_aws_default_region
   create_key "/amazon/keys/go-aws-us-blu" "go_aws_us_blu.pem"
   create_key "/amazon/keys/go-aws-us-gra" "go_aws_us_gra.pem"
