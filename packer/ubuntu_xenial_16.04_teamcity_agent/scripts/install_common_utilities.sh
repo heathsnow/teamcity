@@ -33,6 +33,16 @@ case $DISTRO in
     ;;
 esac
 
+echo "Installing pry..."
+case $DISTRO in
+  "debian")
+    sudo apt-get install -y pry
+    ;;
+  "redhat")
+    sudo yum install -y pry
+    ;;
+esac
+
 echo "Installing python-pip..."
 case $DISTRO in
   "debian")
@@ -40,6 +50,16 @@ case $DISTRO in
     ;;
   "redhat")
     sudo yum install -y python-pip
+    ;;
+esac
+
+echo "Installing screen..."
+case $DISTRO in
+  "debian")
+    sudo apt-get install -y screen
+    ;;
+  "redhat")
+    sudo yum install -y screen
     ;;
 esac
 
