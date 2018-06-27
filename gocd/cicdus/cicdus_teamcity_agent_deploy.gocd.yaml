@@ -2,7 +2,7 @@ pipelines:
   "cicdus_teamcity_agent_deploy":
     environment_variables:
       AWS_CRED_DIR: /var/go/.aws/
-      CHEF_CONFIG_DIR: ~/.chef/
+      CHEF_CONFIG_DIR: /etc/chef/
       CHEF_SECRET_FILE: dev_encrypted_data_bag_secret
       DOCKER_IMAGE: daptiv/gocd-agent-ubuntu-16.04-terraform:0.10.8
       TF_ACTION: deploy
