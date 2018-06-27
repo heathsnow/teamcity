@@ -60,6 +60,7 @@ create_key () {
 }
 
 create_symlink_to_destination_dir () {
+  echo "Creating symlink '${SYMLINK_NAME}' to location '${DESTINATION_DIR}'..."
   sudo -u "${SYMLINK_OWNER}" ln -fns "${DESTINATION_DIR}" "${SYMLINK_NAME}"
 }
 
