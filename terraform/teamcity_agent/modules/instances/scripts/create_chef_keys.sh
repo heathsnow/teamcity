@@ -6,8 +6,6 @@ DESTINATION_DIR_PERMISSIONS="755"
 DESTINATION_FILE_PERMISSIONS="644"
 DESTINATION_OWNER="root"
 DESTINATION_GROUP="root"
-SYMLINK_NAME="/home/teamcity/.chef"
-SYMLINK_OWNER="teamcity"
 
 verify_variable () {
   if [ -z "${2}" ]; then
@@ -54,14 +52,11 @@ create_key () {
   sudo chown "${DESTINATION_OWNER}":"${DESTINATION_GROUP}" "${DESTINATION_DIR}/"
   sudo chmod "${DESTINATION_DIR_PERMISSIONS}" "${DESTINATION_DIR}/"
   printf "%s" "${VALUE}" | \
+    | sed 's/- /-\n/g' \
+    | sed 's/ -/\n-/g' \
     sudo -u "${DESTINATION_OWNER}" \
     tee "${DESTINATION_DIR}/${FILE_NAME}" &>/dev/null
   sudo chmod "${DESTINATION_FILE_PERMISSIONS}" "${DESTINATION_DIR}/${FILE_NAME}"
-}
-
-create_symlink_to_destination_dir () {
-  echo "Creating symlink '${SYMLINK_NAME}' to location '${DESTINATION_DIR}'..."
-  sudo -u "${SYMLINK_OWNER}" ln -fns "${DESTINATION_DIR}" "${SYMLINK_NAME}"
 }
 
 main () {
@@ -69,7 +64,6 @@ main () {
   set_aws_default_region
   create_key "/chef/keys/deploysvc" "deploysvc.pem"
   create_key "/chef/keys/dev-encrypted-data-bag-secret" "encrypted_data_bag_secret"
-  create_symlink_to_destination_dir
 }
 
 main
