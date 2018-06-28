@@ -284,28 +284,28 @@ end
 def terraform_deploy
   puts 'Deploying Terraform configuration...'.green
 
-  begin
-    cleanup
-    terraform_init
-    sh "terraform plan #{common_flags}"
-    sh "terraform apply #{common_flags} -backup=\"-\""
-  ensure
-    cleanup
-  end
+  cleanup
+  terraform_init
+  sh "terraform plan #{common_flags}"
+  sh "terraform apply #{common_flags} -backup=\"-\""
+rescue
+  cleanup
+ensure
+  cleanup
 end
 
 def terraform_destroy
   puts 'Destroying Terraform configuration...'.green
 
-  begin
-    cleanup
-    terraform_init
-    sh "terraform plan -destroy #{targets} #{common_flags}"
-    destroy_countdown
-    sh "terraform destroy -force #{targets} #{common_flags}"
-  ensure
-    cleanup
-  end
+  cleanup
+  terraform_init
+  sh "terraform plan -destroy #{targets} #{common_flags}"
+  destroy_countdown
+  sh "terraform destroy -force #{targets} #{common_flags}"
+rescue
+  cleanup
+ensure
+  cleanup
 end
 
 def verify_service
