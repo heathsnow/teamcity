@@ -4,7 +4,7 @@ pipelines:
       AWS_CRED_DIR: /var/go/.aws/
       CHEF_CONFIG_DIR: /etc/chef/
       CHEF_SECRET_FILE: dev_encrypted_data_bag_secret
-      DOCKER_IMAGE: daptiv/gocd-agent-ubuntu-16.04-terraform:0.11.5
+      DOCKER_IMAGE: daptiv/gocd-agent-ubuntu-16.04-terraform:0.11.6-1
       TF_ACTION: deploy
       TF_DESTROY_TARGETS: all
       TF_VARIABLE_FILE: us_cicd.tfvars
