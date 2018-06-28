@@ -54,6 +54,17 @@ resource "null_resource" "execute_teamcity_agent_configuration" {
   }
 
   provisioner "file" {
+    connection {
+      type                = "ssh"
+      host                = "${element(aws_instance.my_instance.*.private_ip, count.index)}"
+      user                = "${var.instance_user}"
+      private_key         = "${file("${var.instance_private_key}")}"
+      bastion_user        = "${var.bastion_user}"
+      bastion_host        = "${var.bastion_host}"
+      bastion_port        = "22"
+      bastion_private_key = "${file("${var.instance_private_key}")}"
+    }
+
     content     = "${data.template_file.knife.rendered}"
     destination = "${var.chef_config_dir}"
   }
