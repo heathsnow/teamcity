@@ -53,6 +53,13 @@ pipelines:
                     arguments:
                       - -c
                       - "docker-compose run --rm terraform 'rake plan'"
+                    on_cancel:
+                      exec:
+                      working_directory: teamcity/terraform/teamcity_agent
+                      command: /bin/bash
+                      arguments:
+                        - -c
+                        - "docker-compose run --rm terraform 'rake cleanup'"
       - "Deploy":
           approval: manual
           clean_workspace: true
@@ -81,6 +88,13 @@ pipelines:
                     arguments:
                       - -c
                       - "docker-compose run --rm terraform 'rake $TF_ACTION'"
+                    on_cancel:
+                      exec:
+                      working_directory: teamcity/terraform/teamcity_agent
+                      command: /bin/bash
+                      arguments:
+                        - -c
+                        - "docker-compose run --rm terraform 'rake cleanup'"
                 - exec:
                     run_if: failed
                     working_directory: teamcity/terraform/teamcity_agent

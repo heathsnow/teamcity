@@ -211,6 +211,11 @@ task :notify, [:type] do |_t, args|
   system cmd
 end
 
+desc 'Clean up terraform directory.'
+task :cleanup do
+  cleanup
+end
+
 private
 
 def load_tfvars
