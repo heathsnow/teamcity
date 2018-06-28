@@ -1,5 +1,6 @@
 variable "bastion_host" {}
 variable "bastion_user" { default = "ubuntu" }
+variable "chef_config_dir" { default = "/etc/chef/" }
 variable "chef_environment" { default = "cookbook_ci" }
 variable "chef_server_url" { default = "https://api.opscode.com/organizations/daptiv" }
 variable "chef_user_name" { default = "deploysvc" }

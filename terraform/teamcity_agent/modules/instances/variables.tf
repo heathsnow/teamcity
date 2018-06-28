@@ -2,6 +2,7 @@ variable "ami_name" {}
 variable "ami_owners" {}
 variable "bastion_host" {}
 variable "bastion_user" {}
+variable "chef_config_dir" {}
 variable "chef_environment" {}
 variable "chef_server_url" {}
 variable "chef_user_name" {}

@@ -4,6 +4,7 @@ module "instances" {
   ami_owners = "${var.teamcity_agent_ami_owners}"
   bastion_host = "${var.bastion_host}"
   bastion_user = "${var.bastion_user}"
+  chef_config_dir = "${var.chef_config_dir}"
   chef_environment = "${var.chef_environment}"
   chef_server_url = "${var.chef_server_url}"
   chef_user_name = "${var.chef_user_name}"
