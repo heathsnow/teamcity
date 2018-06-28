@@ -66,6 +66,24 @@ resource "null_resource" "execute_teamcity_agent_configuration" {
     }
 
     content     = "${data.template_file.knife.rendered}"
-    destination = "${var.chef_config_dir}knife.rb"
+    destination = "/tmp/knife.rb"
+  }
+
+  provisioner "remote-exec" {
+    connection {
+      type                = "ssh"
+      host                = "${element(aws_instance.my_instance.*.private_ip, count.index)}"
+      user                = "${var.instance_user}"
+      private_key         = "${file("${var.instance_private_key}")}"
+      bastion_user        = "${var.bastion_user}"
+      bastion_host        = "${var.bastion_host}"
+      bastion_port        = "22"
+      bastion_private_key = "${file("${var.instance_private_key}")}"
+    }
+
+    inline = [
+      "mv /tmp/knife.rb ${var.chef_config_dir}knife.rb",
+      "chmod 644 ${var.chef_config_dir}knife.rb"
+    ]
   }
 }
