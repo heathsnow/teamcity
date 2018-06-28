@@ -69,7 +69,7 @@ end
 desc 'Validate Terraform configuration.'
 task :validate do
   puts 'Validating Terraform configuration...'.green
-    begin
+  begin
     Rake::Task[:version_info].invoke
     build_variables
     Rake::Task[:assume_role].invoke
@@ -287,7 +287,7 @@ def terraform_deploy
   cleanup
   terraform_init
   sh "terraform plan #{common_flags}"
-  sh "terraform apply #{common_flags} -backup=\"-\""
+  sh "terraform apply #{common_flags} -auto-approve -backup=\"-\""
 rescue
   cleanup
 ensure
