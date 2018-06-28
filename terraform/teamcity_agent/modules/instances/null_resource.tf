@@ -57,5 +57,4 @@ resource "null_resource" "execute_teamcity_agent_configuration" {
     content     = "${data.template_file.knife.rendered}"
     destination = "${var.chef_config_dir}"
   }
-    when = "create"
 }
