@@ -11,6 +11,4 @@ provider "template" {
   version = "~> 1.0.0"
 }
 
-provider "terraform" {
-  version = "~> 1.0.0"
-}
+provider "terraform" {}
