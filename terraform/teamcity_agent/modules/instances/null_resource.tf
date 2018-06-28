@@ -82,8 +82,8 @@ resource "null_resource" "execute_teamcity_agent_configuration" {
     }
 
     inline = [
-      "mv /tmp/knife.rb ${var.chef_config_dir}knife.rb",
-      "chmod 644 ${var.chef_config_dir}knife.rb"
+      "sudo chown root:root /tmp/knife.rb",
+      "sudo mv /tmp/knife.rb ${var.chef_config_dir}knife.rb"
     ]
   }
 }
