@@ -288,8 +288,6 @@ def terraform_deploy
   terraform_init
   sh "terraform plan #{common_flags}"
   sh "terraform apply #{common_flags} -auto-approve -backup=\"-\""
-rescue
-  cleanup
 ensure
   cleanup
 end
@@ -302,8 +300,6 @@ def terraform_destroy
   sh "terraform plan -destroy #{targets} #{common_flags}"
   destroy_countdown
   sh "terraform destroy -force #{targets} #{common_flags}"
-rescue
-  cleanup
 ensure
   cleanup
 end
