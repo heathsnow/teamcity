@@ -17,7 +17,7 @@ resource "aws_volume_attachment" "docker_volume" {
     }
     inline = [
       "sudo systemctl stop teamcity-agent",
-      "sudo umount -d /dev/xvdi1"
+      "sudo umount -dl /dev/xvdi1"
     ]
     when                  = "destroy"
   }
@@ -42,7 +42,7 @@ resource "aws_volume_attachment" "logs_volume" {
     }
     inline = [
       "sudo systemctl stop teamcity-agent",
-      "sudo umount -d /dev/xvdj1"
+      "sudo umount -dl /dev/xvdj1"
     ]
     when                  = "destroy"
   }
@@ -67,7 +67,7 @@ resource "aws_volume_attachment" "work_volume" {
     }
     inline = [
       "sudo systemctl stop teamcity-agent",
-      "sudo umount -d /dev/xvdk1"
+      "sudo umount -dl /dev/xvdk1"
     ]
     when                  = "destroy"
   }
