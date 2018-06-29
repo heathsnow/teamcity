@@ -62,6 +62,7 @@ create_key () {
 main () {
   print_script_name "create_ssh_keys.sh"
   set_aws_default_region
+  create_key "/chef/keys/deploysvc" "deploysvc.pem"
   create_key "/amazon/keys/go-aws-us-blu" "go_aws_us_blu.pem"
   create_key "/amazon/keys/go-aws-us-gra" "go_aws_us_gra.pem"
   create_key "/amazon/keys/go-aws-us-red" "go_aws_us_red.pem"
