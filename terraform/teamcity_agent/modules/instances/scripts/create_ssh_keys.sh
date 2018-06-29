@@ -52,6 +52,8 @@ create_key () {
   sudo chown "${DESTINATION_OWNER}":"${DESTINATION_GROUP}" "${DESTINATION_DIR}/"
   sudo chmod "${DESTINATION_DIR_PERMISSIONS}" "${DESTINATION_DIR}/"
   printf "%s" "${VALUE}" | \
+    sed 's/- /-\n/g' | \
+    sed 's/ -/\n-/g' | \
     sudo -u "${DESTINATION_OWNER}" \
     tee "${DESTINATION_DIR}/${FILE_NAME}" &>/dev/null
   sudo chmod "${DESTINATION_FILE_PERMISSIONS}" "${DESTINATION_DIR}/${FILE_NAME}"
