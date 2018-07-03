@@ -20,11 +20,13 @@ default['teamcity']['agents']['default'] = {}
 default['teamcity']['agent_windows']['ntservice_user'] = nil
 default['teamcity']['agent_windows']['ntservice_password'] = nil
 default['teamcity']['agents']['server_url'] = nil
-default['teamcity']['agents']['name'] = ENV['COMPUTERNAME'] || ENV['HOSTNAME']
+default['teamcity']['agents']['name'] =
+  ENV['COMPUTERNAME'].to_s.empty? ? `uname -n`.chop : ENV['COMPUTERNAME']
 default['teamcity']['agents']['user'] = 'teamcity'
 default['teamcity']['agents']['group'] = 'teamcity'
 default['teamcity']['agents']['home'] = nil
 default['teamcity']['agents']['system_dir'] = '.'
+default['teamcity']['agents']['logs_dir'] = 'logs'
 default['teamcity']['agents']['work_dir'] = 'work'
 default['teamcity']['agents']['temp_dir'] = 'tmp'
 default['teamcity']['agents']['own_address'] = nil

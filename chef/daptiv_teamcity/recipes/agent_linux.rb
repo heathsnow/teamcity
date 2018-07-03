@@ -5,20 +5,23 @@
 # Copyright 2018 Changepoint
 #
 # TeamCity Linux build agent role
+require 'time'
+
+# Logic block to read data bag for user information
+tc_userdata = data_bag_item('teamcity', 'buildagent_creds')
 
 # Set the server_url for the default agent we're configuring
 node.override['teamcity']['agents']['server_url'] =
   node['daptiv_teamcity']['server_url']
 
-include_recipe 'daptiv_java'
+# Set the system directory for the default agent we're configuring
+node.override['teamcity']['agents']['system_dir'] =
+  node['daptiv_teamcity']['linux']['system_dir']
+
+# Install TeamCity agent
 include_recipe 'teamcity::agent_linux'
-# include_recipe 'chef-teamcity::linux_agent'
 
 # Configure SSH for GitHub access by this agent
-tc_userdata = data_bag_item('teamcity', 'buildagent_creds')
-
-include_recipe 'daptiv_github::install'
-
 tc_local_user = tc_userdata['username']
 host_name = ENV['COMPUTERNAME'] || ENV['HOSTNAME']
 

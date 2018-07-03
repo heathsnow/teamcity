@@ -69,7 +69,7 @@ end
 desc 'Validate Terraform configuration.'
 task :validate do
   puts 'Validating Terraform configuration...'.green
-    begin
+  begin
     Rake::Task[:version_info].invoke
     build_variables
     Rake::Task[:assume_role].invoke
@@ -211,6 +211,11 @@ task :notify, [:type] do |_t, args|
   system cmd
 end
 
+desc 'Clean up terraform directory.'
+task :cleanup do
+  cleanup
+end
+
 private
 
 def load_tfvars
@@ -284,28 +289,24 @@ end
 def terraform_deploy
   puts 'Deploying Terraform configuration...'.green
 
-  begin
-    cleanup
-    terraform_init
-    sh "terraform plan #{common_flags}"
-    sh "terraform apply #{common_flags} -backup=\"-\""
-  ensure
-    cleanup
-  end
+  cleanup
+  terraform_init
+  sh "terraform plan #{common_flags}"
+  sh "terraform apply #{common_flags} -auto-approve -backup=\"-\""
+ensure
+  cleanup
 end
 
 def terraform_destroy
   puts 'Destroying Terraform configuration...'.green
 
-  begin
-    cleanup
-    terraform_init
-    sh "terraform plan -destroy #{targets} #{common_flags}"
-    destroy_countdown
-    sh "terraform destroy -force #{targets} #{common_flags}"
-  ensure
-    cleanup
-  end
+  cleanup
+  terraform_init
+  sh "terraform plan -destroy #{targets} #{common_flags}"
+  destroy_countdown
+  sh "terraform destroy -force #{targets} #{common_flags}"
+ensure
+  cleanup
 end
 
 def verify_service

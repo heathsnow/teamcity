@@ -1,0 +1,23 @@
+## THIS FILE IS MANAGED BY CHEF. ALL CHANGES WILL BE OVERWRITTEN!
+
+[Unit]
+Description=TeamCity Agent
+Documentation=https://confluence.jetbrains.com/display/TCD10/
+After=docker.service network.target syslog.service
+Requires=docker.service network.target syslog.service
+
+[Service]
+ExecStart=<%= @system_dir %>/bin/agent.sh start
+ExecStop=<%= @system_dir %>/bin/agent.sh stop
+PIDFile=<%= @system_dir %>/logs/buildAgent.pid
+PrivateTmp=yes
+RemainAfterExit=yes
+Restart=on-failure
+RestartSec=5
+SuccessExitStatus=0 143
+SyslogIdentifier=teamcity-agent
+Type=forking
+User=<%= @user %>
+
+[Install]
+WantedBy=multi-user.target

@@ -6,19 +6,9 @@
 #
 # TeamCity build agent role
 
-# Set the agent name using hostname
-
-if platform?('windows')
-  windows_path 'C:\npm' do
-    action :add
-  end
-  user = ENV['USERNAME']
-  user = 'Administrator' if node.chef_environment == 'cookbook_ci'
-  include_recipe 'daptiv_teamcity::agent_windows'
-else
-  user = ENV['USER']
-  include_recipe 'daptiv_teamcity::agent_linux'
-end
+user = ENV['USER'].to_s.empty? ? ENV['USERNAME'] : ENV['USER']
+user = 'Administrator' if platform?('windows') \
+  && node.chef_environment == 'cookbook_ci'
 
 # set npmrc config for chef user so pkgs are installed to a globally
 # accessible location during chef run
@@ -30,4 +20,11 @@ daptiv_nodejs_npm_config 'generate_chef_user_npmrc' do
   email 'shawn.weitzel@changepoint.com'
 end
 
-include_recipe 'daptiv_ppm_build::npm_tools'
+include_recipe 'daptiv_java'
+include_recipe 'daptiv_github::install'
+
+if platform?('windows')
+  include_recipe 'daptiv_teamcity::agent_windows'
+else
+  include_recipe 'daptiv_teamcity::agent_linux'
+end
