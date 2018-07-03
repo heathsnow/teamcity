@@ -19,11 +19,11 @@ pipelines:
     materials:
       "teamcity":
         git: git@github.com:daptiv/teamcity.git
-        branch: 187704_teamcity
+        branch: master
         destination: teamcity
       "terraform_environment":
         git: git@github.com:daptiv/terraform_environment.git
-        branch: 187704_teamcity
+        branch: master
         destination: terraform_environment
     stages:
       - "Plan":
