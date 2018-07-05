@@ -324,7 +324,7 @@ end
 
 def bastion_host_ips
   cmd = 'aws ec2 describe-instances ' \
-    '--query "Reservations[].Instances[].PublicIpAddress" ' \
+    '--query "Reservations[].Instances[].PrivateIpAddress" ' \
     '--filter "Name=instance.group-name,Values=BASTION_LINUX" ' \
     '"Name=instance-state-name,Values=running" --output text'
   IO.popen(cmd).read.split
