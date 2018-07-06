@@ -1,13 +1,11 @@
 task default: [:help]
 
 desc 'Packer Build.'
-# task :build, [:type] => [:assume_role] do |_t, args|
-task :build do
+task :build, [:type] => [:assume_role] do |_t, args|
   task_thread = []
   packer_complete = false
   start_time = Time.now
-  # %w(packer assume_role).each do |task|
-  %w(packer).each do |task|
+  %w(packer assume_role).each do |task|
     task_thread << Thread.new do
       case task
       when 'packer'
@@ -57,7 +55,6 @@ task :assume_role do
 
   ENV['AWS_ACCESS_KEY_ID'] = nil
   ENV['AWS_SECRET_ACCESS_KEY'] = nil
-  ENV['AWS_SESSION_TOKEN'] = token
 
   puts "Role '#{ENV['EC2_ROLE_ARN']}' has been assumed.".green
 end
@@ -71,6 +68,7 @@ task :help do
   puts "  $> export AWS_ACCESS_KEY_ID=your_aws_access_key (current: #{ENV['AWS_ACCESS_KEY_ID']})".yellow
   puts "  $> export AWS_CRED_DIR=your_aws_profile_dir (current: #{ENV['AWS_CRED_DIR']})".yellow
   puts "  $> export AWS_SECRET_ACCESS_KEY=your_aws_secret_access_key (current: #{ENV['AWS_SECRET_ACCESS_KEY']})".yellow
+  puts "  $> export CHEF_DIR=your_chef_profile_dir (current: #{ENV['CHEF_DIR']})".yellow
   puts "  $> export EC2_AMI_REGION=list_of_regions (current: #{ENV['EC2_AMI_REGION']})".yellow
   puts "  $> export EC2_AMI_USERS=list_of_account_ids (current: #{ENV['EC2_AMI_USERS']})".yellow
   puts "  $> export EC2_ROLE_ARN=role_arn_for_grn (current: #{ENV['EC2_ROLE_ARN']})".yellow
