@@ -2,8 +2,8 @@
   "variables": {
     "ami_name": "windows_2012r2_chef_13.8.5_visualstudio_2015_sql_server_2016",
     "ami_source_filter": "windows_2012r2_chef_13.8.5_visualstudio_2015",
-    "aws_access_key": "{{env `AWS_ACCESS_KEY_ID`}}",
-    "aws_secret_key": "{{env `AWS_SECRET_ACCESS_KEY`}}",
+    "aws_access_key": "",
+    "aws_secret_key": "",
     "ec2_ami_name_suffix": "{{env `EC2_AMI_NAME_SUFFIX`}}",
     "ec2_ami_region": "{{env `EC2_AMI_REGION`}}",
     "ec2_ami_users": "{{env `EC2_AMI_USERS`}}",
