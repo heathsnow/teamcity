@@ -1,7 +1,7 @@
 # Test Agent AMI
 
 Creates a Test Agent EC2 AMI using the
-windows_2012r2_chef_13_8_5_visualstudio_2015_sql_server_2016 AMI as its base.
+windows_2012r2_chef_13.8.5_visualstudio_2015_sql_server_2016 AMI as its base.
 
 ## Prereq's
 
