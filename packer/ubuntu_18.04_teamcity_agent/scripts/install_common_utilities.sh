@@ -63,5 +63,20 @@ case $DISTRO in
     ;;
 esac
 
+echo "Installing yarn..."
+case $DISTRO in
+  "debian")
+    sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
+    echo "deb http://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+    sudo apt-get -y update
+    sudo apt-get -y install yarn
+    ;;
+  "redhat")
+    curl --silent --location https://dl.yarnpkg.com/rpm/yarn.repo | sudo tee /etc/yum.repos.d/yarn.repo
+    curl --silent --location https://rpm.nodesource.com/setup_6.x | bash -
+    sudo yum install -y yarn
+    ;;
+esac
+
 echo "Installing aws-cli..."
 sudo pip install --upgrade awscli
