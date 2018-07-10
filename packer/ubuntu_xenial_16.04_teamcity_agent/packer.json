@@ -79,7 +79,6 @@
       "type": "shell",
       "scripts": [
         "./scripts/install_common_utilities.sh",
-        "./scripts/install_yarn.sh",
         "./scripts/partition_setup.sh",
         "./scripts/disable_hostname_resolution.sh"
       ]
