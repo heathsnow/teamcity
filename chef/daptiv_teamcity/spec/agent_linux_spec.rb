@@ -6,6 +6,10 @@ describe 'daptiv_teamcity::agent_linux' do
     end.converge(described_recipe)
   end
 
+  it 'updates apt cache' do
+    expect(chef_run).to update_apt_update('cache')
+  end
+
   it 'should include teamcity::agent_linux recipe' do
     expect(chef_run).to include_recipe 'teamcity::agent_linux'
   end
