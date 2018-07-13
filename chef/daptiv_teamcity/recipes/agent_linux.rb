@@ -7,6 +7,12 @@
 # TeamCity Linux build agent role
 require 'time'
 
+# Update apt cache to get data for current region's package servers.
+# This must happen before any installations are attempted.
+apt_update 'cache' do
+  action :update
+end
+
 # Logic block to read data bag for user information
 tc_userdata = data_bag_item('teamcity', 'buildagent_creds')
 
