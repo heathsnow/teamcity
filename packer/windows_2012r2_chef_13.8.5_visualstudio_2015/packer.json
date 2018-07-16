@@ -93,7 +93,7 @@
       "run_list": "recipe[visualstudio]",
       "server_url": "https://api.opscode.com/organizations/daptiv",
       "skip_install": "true",
-      "validation_client_name": "daptiv-validator",
+      "validation_client_name": "deploysvc",
       "validation_key_path": "{{user `validation_key_path`}}"
     },
     {

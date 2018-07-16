@@ -23,7 +23,7 @@ services:
       EC2_SUBNET_ID: ${EC2_SUBNET_ID}
       EC2_VPC_ID: ${EC2_VPC_ID}
       PACKER_FILE: ${PACKER_FILE}
-      VALIDATION_KEY_PATH: /root/.chef/validation.pem
+      VALIDATION_KEY_PATH: /root/.chef/deploysvc.pem
     command: |
       bash -c 'bash -s <<EOF
       echo "Please enter the command to execute:"
