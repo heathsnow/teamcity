@@ -10,7 +10,7 @@ variable "env_hostname_prefix" {}
 variable "iam_state_file" {}
 variable "instance_key_name" {}
 variable "instance_private_key" {}
-variable "teamcity_agent_ami_name" { default = "ubuntu_xenial_16.04_teamcity_agent_fb" }
+variable "teamcity_agent_ami_name" { default = "ubuntu_xenial_16.04_teamcity_agent" }
 variable "teamcity_agent_ami_owners" { default = "147491244536" }
 variable "teamcity_agent_docker_volume_size" { default = "20" }
 variable "teamcity_agent_hostname_identifier" { default = "TCUBT" }
