@@ -88,12 +88,16 @@
       "run_list": "recipe[daptiv_sql_server::install]",
       "server_url": "https://api.opscode.com/organizations/daptiv",
       "skip_install": "true",
-      "validation_client_name": "daptiv-validator",
+      "validation_client_name": "deploysvc",
       "validation_key_path": "{{user `validation_key_path`}}"
     },
     {
       "type": "powershell",
       "script": "./scripts/delete-cached-installation-packages.ps1"
+    },
+    {
+      "type": "powershell",
+      "script": "./scripts/configure_sql_server_trace_flags.ps1"
     },
     {
       "type": "powershell",
