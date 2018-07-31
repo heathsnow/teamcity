@@ -79,9 +79,22 @@
       "type": "shell",
       "scripts": [
         "./scripts/install_common_utilities.sh",
-        "./scripts/partition_setup.sh",
+        "./scripts/configure_partitions.sh",
+        "./scripts/enable_collectd_automatic_startup.sh",
         "./scripts/disable_hostname_resolution.sh"
       ]
+    },
+    {
+      "type": "inspec",
+      "test_path": "./spec/configure_partitions_spec.rb"
+    },
+    {
+      "type": "inspec",
+      "test_path": "./spec/enable_collectd_automatic_startup_spec.rb"
+    },
+    {
+      "type": "inspec",
+      "test_path": "./spec/install_common_utilities_spec.rb"
     }
   ]
 }
