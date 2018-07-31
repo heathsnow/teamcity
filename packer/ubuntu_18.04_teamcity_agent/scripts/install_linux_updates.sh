@@ -65,6 +65,15 @@ fi
 # initiates a reboot and exits.  Packer would begin executing the next script in
 # sequence, which would be interrupted at some point by the pending reboot, and
 # cause the currently executing script--one subsequent to this script--to fail.
+#
+# Also note that for some Amazon EC2 instance types, the default Ethernet
+# interface is not named 'eth0'.  If the script fails with...
+#
+#   Cannot find device "eth0"
+#
+# ...then it is likely that the instance type you are using uses some other
+# default interface.  You will need to adjust the script accordingly, or switch
+# to a different instance type.  For reference, the t2 series all use 'eth0'.
 
 echo "Restarting system..."
 sudo ip link set down eth0
