@@ -111,7 +111,6 @@ create_key () {
 
 main () {
   print_script_name "create_chef_keys.sh"
-  verify_network_connectivity
   set_aws_default_region
   create_key "/chef/keys/deploysvc" "deploysvc.pem"
   create_key "/chef/keys/dev-encrypted-data-bag-secret" "encrypted_data_bag_secret"
