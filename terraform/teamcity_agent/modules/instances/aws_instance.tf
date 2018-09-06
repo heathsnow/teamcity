@@ -24,6 +24,8 @@ resource "aws_instance" "my_instance" {
       bastion_private_key = "${file("${var.instance_private_key}")}"
     }
     inline = [
+      "sudo systemctl stop teamcity-agent",
+      "sudo systemctl stop docker",
       "sudo chef-client -o recipe['daptiv_chef_cleanup']; exit 0"
     ]
     when                  = "destroy"
