@@ -91,11 +91,6 @@ set_aws_default_region () {
 create_key () {
   local PARAMETER_NAME="${1}"
   local FILE_NAME="${2}"
-  local DESTINATION_DIR="/etc/chef/"
-  local DESTINATION_DIR_PERMISSIONS="755"
-  local DESTINATION_FILE_PERMISSIONS="644"
-  local DESTINATION_OWNER="root"
-  local DESTINATION_GROUP="root"
 
   echo "Creating key '${FILE_NAME}' in '${DESTINATION_DIR}'..."
   local VALUE="$(get_ssm_parameter_value "${PARAMETER_NAME}")"
@@ -113,6 +108,12 @@ create_key () {
 }
 
 main () {
+  DESTINATION_DIR="/etc/chef/"
+  DESTINATION_DIR_PERMISSIONS="755"
+  DESTINATION_FILE_PERMISSIONS="644"
+  DESTINATION_OWNER="root"
+  DESTINATION_GROUP="root"
+
   print_script_name "create_chef_keys.sh"
   set_aws_default_region
   create_key "/chef/keys/deploysvc" "deploysvc.pem"
