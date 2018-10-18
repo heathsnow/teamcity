@@ -4,7 +4,6 @@ pipelines:
       AWS_CRED_DIR: /var/go/.aws/
       CHEF_CONFIG_DIR: /etc/chef/
       CHEF_SECRET_FILE: dev_encrypted_data_bag_secret
-      DOCKER_IMAGE: daptiv/gocd-agent-ubuntu-16.04-terraform:0.11.6
       TF_ACTION: deploy
       TF_DESTROY_TARGETS: all
       TF_VARIABLE_FILE: us_cicd.tfvars
@@ -35,10 +34,11 @@ pipelines:
               tasks:
                 - exec:
                     run_if: passed
+                    working_directory: teamcity/terraform/teamcity_agent
                     command: /bin/bash
                     arguments:
                       - -c
-                      - "docker pull $DOCKER_IMAGE"
+                      - "docker-compose pull"
                 - exec:
                     run_if: passed
                     working_directory: teamcity/terraform/teamcity_agent
@@ -70,10 +70,11 @@ pipelines:
               tasks:
                 - exec:
                     run_if: passed
+                    working_directory: teamcity/terraform/teamcity_agent
                     command: /bin/bash
                     arguments:
                       - -c
-                      - "docker pull $DOCKER_IMAGE"
+                      - "docker-compose pull"
                 - exec:
                     run_if: passed
                     working_directory: teamcity/terraform/teamcity_agent
@@ -111,10 +112,11 @@ pipelines:
               tasks:
                 - exec:
                     run_if: passed
+                    working_directory: teamcity/terraform/teamcity_agent
                     command: /bin/bash
                     arguments:
                       - -c
-                      - "docker pull $DOCKER_IMAGE"
+                      - "docker-compose pull"
                 - exec:
                     run_if: passed
                     working_directory: teamcity/terraform/teamcity_agent

@@ -4,7 +4,7 @@
 version: '2'
 services:
   terraform:
-    image: ${DOCKER_IMAGE}
+    image: daptiv/gocd-agent-ubuntu-16.04-terraform:0.11.6
     volumes:
       - $PWD:/src/
       - ${AWS_CRED_DIR}:/root/.aws/
