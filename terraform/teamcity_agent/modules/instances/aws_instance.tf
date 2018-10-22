@@ -9,7 +9,8 @@ resource "aws_instance" "my_instance" {
   user_data              = "${element(data.template_file.user_data.*.rendered, count.index)}"
 
   tags = {
-    Name = "${upper(var.env_hostname_prefix)}-${replace(upper(var.hostname_identifier), "_", "-")}-${count.index + 1}"
+    Name = "${upper(var.env_hostname_prefix)}-${replace(upper(var.hostname_identifier), "_", "-")}-${count.index + 1}",
+    NodeType = "${replace(lower(var.service_name), "_", "-")}"
   }
 
   provisioner "remote-exec" {
