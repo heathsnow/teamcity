@@ -37,7 +37,7 @@
       "communicator": "winrm",
       "force_delete_snapshot": true,
       "force_deregister": true,
-      "instance_type": "c4.large",
+      "instance_type": "t2.medium",
       "launch_block_device_mappings": [
         {
           "delete_on_termination": true,
@@ -75,6 +75,11 @@
   ],
   "provisioners": [
     {
+      "type": "file",
+      "destination": "c:/chef/encrypted_data_bag_secret",
+      "source": "/root/.chef/{{user `chef_secret_file`}}"
+    },
+    {
       "type": "chef-client",
       "chef_environment": "dev",
       "guest_os_type": "windows",
@@ -84,11 +89,6 @@
       "skip_install": "true",
       "validation_client_name": "deploysvc",
       "validation_key_path": "{{user `validation_key_path`}}"
-    },
-    {
-      "type": "file",
-      "destination": "c:/chef/encrypted_data_bag_secret",
-      "source": "/root/.chef/{{user `chef_secret_file`}}"
     },
     {
       "type": "powershell",
