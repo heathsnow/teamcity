@@ -75,6 +75,11 @@
   ],
   "provisioners": [
     {
+      "type": "file",
+      "destination": "c:/chef/encrypted_data_bag_secret",
+      "source": "/root/.chef/{{user `chef_secret_file`}}"
+    },
+    {
       "type": "chef-client",
       "chef_environment": "dev",
       "guest_os_type": "windows",
@@ -84,15 +89,6 @@
       "skip_install": "true",
       "validation_client_name": "deploysvc",
       "validation_key_path": "{{user `validation_key_path`}}"
-    },
-    {
-      "type": "file",
-      "destination": "c:/windows/temp/encrypted_data_bag_secret",
-      "source": "/root/.chef/{{user `chef_secret_file`}}"
-    },
-    {
-      "type": "shell",
-      "inline": ["xcopy /s /Y c:/windows/temp/encrypted_data_bag_secret c:/chef/"]
     },
     {
       "type": "powershell",
