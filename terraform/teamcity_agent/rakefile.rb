@@ -31,7 +31,8 @@ end
   service_name: 'teamcity_agent',
   slack_technology_emojis: ':terraform: :chef: :teamcity:',
   tf_action: '',
-  tf_destroy_targets: ''
+  tf_destroy_targets: '',
+  user_key_dir: '~/.chef/'
 }
 
 task default: [:help]
@@ -250,7 +251,7 @@ def build_variables
   @vars[:remote_state_file] = @vars["#{@vars[:service_name].tr('-', '_')}_state_file".to_sym]
   @vars[:instance_private_key] = "#{@defaults[:private_key_dir]}#{@vars[:instance_key_name]}.pem"
   @vars[:secret_key_file] = ENV['CHEF_SECRET_FILE'].to_s.empty? ? @vars[:secret_key_file] : ENV['CHEF_SECRET_FILE']
-  @vars[:user_key_file] = "#{@defaults[:private_key_dir]}deploysvc.pem"
+  @vars[:user_key_file] = "#{@defaults[:user_key_dir]}deploysvc.pem"
 end
 
 def targets
