@@ -18,7 +18,7 @@ pipelines:
     materials:
       "teamcity":
         git: git@github.com:daptiv/teamcity.git
-        branch: 230028_aes_encryption
+        branch: master
         destination: teamcity
       "terraform_environment":
         git: git@github.com:daptiv/terraform_environment.git
