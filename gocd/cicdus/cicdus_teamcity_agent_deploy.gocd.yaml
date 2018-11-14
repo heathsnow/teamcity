@@ -30,7 +30,7 @@ pipelines:
           jobs:
             "Execute":
               resources:
-                - Docker
+                - docker
               tasks:
                 - exec:
                     run_if: passed
@@ -66,7 +66,7 @@ pipelines:
           jobs:
             "Execute":
               resources:
-                - Docker
+                - docker
               tasks:
                 - exec:
                     run_if: passed
@@ -108,7 +108,7 @@ pipelines:
           jobs:
             "Execute":
               resources:
-                - Docker
+                - docker
               tasks:
                 - exec:
                     run_if: passed
