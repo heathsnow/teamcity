@@ -9,9 +9,9 @@ pipelines:
       TF_VARIABLE_FILE: us_cicd.tfvars
       TF_VARIABLE_PATH: ../../../terraform_environment/variables/
     secure_variables: # https://api.gocd.org/current/#encrypt-a-plain-text-value
-      GO_AWS_ACCESS_KEY_ID: Xive1jvS6yEWkZxIbvfEM30k1WGKvTyK
-      GO_AWS_SECRET_ACCESS_KEY: EiYBguOF/PHZC34qxczzGFTIhgdbpbK0CzbAEOh2ijx/cNwsvYJmhRPbjVrTlEdS
-      SLACK_URL_SUFFIX: bGQzd0F8g7bN87sgMfGjcziigZLK0/DxLqBoVWRRFeFgqwDzZK9dcGaLMmMdjOh9
+      GO_AWS_ACCESS_KEY_ID: AES:TY5cRDBfU8wtIPQgf6xBTg==:m5Qb0NuLU8/GF/qYVBQL7wkbDOPfua00JctZmmA4jVw=
+      GO_AWS_SECRET_ACCESS_KEY: AES:IHftjWeuET6YPR2ycwOT/A==:m9ghhk/rJuaa3RgrTPNpOpaeYNJa3ubPzr2DUGcuenKtfQG4n5b71Eni1Sn4R1Yn
+      SLACK_URL_SUFFIX: AES:Gf9FJhvSPZvAwNUN6vrv6A==:8EV1Z57EwfIpksT47M2gV50E0DfJF/WeXnMdEDUvHO5X65AKqCwJEZUPR8fqpQnb
     group: teamcity
     label_template: "${COUNT}"
     locking: off
