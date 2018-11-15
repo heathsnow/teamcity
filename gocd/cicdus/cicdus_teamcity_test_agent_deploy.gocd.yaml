@@ -44,7 +44,7 @@ pipelines:
                     command: /bin/bash
                     arguments:
                       - -c
-                      - "docker-compose run --rm chefdk 'rake notify[\"started\"]'"
+                      - "docker-compose run --rm chefdk 'rake notify[\"started\"] -f rakefile_deploy.rb'"
                 - exec:
                     run_if: passed
                     working_directory: ops_ec2_deployer
@@ -58,11 +58,11 @@ pipelines:
                     command: /bin/bash
                     arguments:
                       - -c
-                      - "docker-compose run --rm chefdk 'rake notify[\"passed\"]'"
+                      - "docker-compose run --rm chefdk 'rake notify[\"passed\"] -f rakefile_deploy.rb'"
                 - exec:
                     run_if: failed
                     working_directory: ops_ec2_deployer
                     command: /bin/bash
                     arguments:
                       - -c
-                      - "docker-compose run --rm chefdk 'rake notify[\"failed\"]'"
+                      - "docker-compose run --rm chefdk 'rake notify[\"failed\"] -f rakefile_deploy.rb'"
