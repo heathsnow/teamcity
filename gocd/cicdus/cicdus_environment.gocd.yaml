@@ -2,4 +2,3 @@ environments:
   cicdus:
     pipelines:
       - cicdus_teamcity_ubuntu_agent_deploy
-      - cicdus_teamcity_test_agent_deploy
