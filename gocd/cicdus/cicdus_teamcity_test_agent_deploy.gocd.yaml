@@ -21,7 +21,7 @@ pipelines:
       "ops_ec2_deployer":
         git: git@github.com:daptiv/ops_ec2_deployer.git
         branch: master
-        destination: teamcity
+        destination: ops_ec2_deployer
     stages:
       - "Deploy":
           approval: manual
