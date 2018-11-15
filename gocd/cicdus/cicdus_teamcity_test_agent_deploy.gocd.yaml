@@ -6,6 +6,7 @@ pipelines:
       CHEF_SECRET_FILE: encrypted_data_bag_secret
       DC_USER: us\us_domjoin
       DOMAIN_CONTROLLER: US-DC01.us.daptiv.cloud
+      EC2_ROLE_ARN: arn:aws:iam::147491244536:role/GO_CP_US_CICD
       NODE_TYPES: testagent_windows_chef13
       PATCH_LEVEL: 20180518
       WIN_DOMAIN_USER: us\us_deploysvc
