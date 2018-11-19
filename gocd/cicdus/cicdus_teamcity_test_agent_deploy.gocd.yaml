@@ -22,7 +22,7 @@ pipelines:
     materials:
       "ops_ec2_deployer":
         git: git@github.com:daptiv/ops_ec2_deployer.git
-        branch: master
+        branch: 230028_deploy_ci
         destination: ops_ec2_deployer
     stages:
       - "Deploy":
