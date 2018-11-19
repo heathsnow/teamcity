@@ -13,8 +13,8 @@ pipelines:
       WIN_DOMAIN_USER: us\us_deploysvc
     secure_variables: # https://api.gocd.org/current/#encrypt-a-plain-text-value
       DC_PASS: AES:w9NH2Zk+VRENh9UL7lmSew==:JEXZf0wrMwbjHqXAeMroUQ==
-      AWS_ACCESS_KEY_ID: AES:TY5cRDBfU8wtIPQgf6xBTg==:m5Qb0NuLU8/GF/qYVBQL7wkbDOPfua00JctZmmA4jVw=
-      AWS_SECRET_ACCESS_KEY: AES:IHftjWeuET6YPR2ycwOT/A==:m9ghhk/rJuaa3RgrTPNpOpaeYNJa3ubPzr2DUGcuenKtfQG4n5b71Eni1Sn4R1Yn
+      GO_AWS_ACCESS_KEY_ID: AES:TY5cRDBfU8wtIPQgf6xBTg==:m5Qb0NuLU8/GF/qYVBQL7wkbDOPfua00JctZmmA4jVw=
+      GO_AWS_SECRET_ACCESS_KEY: AES:IHftjWeuET6YPR2ycwOT/A==:m9ghhk/rJuaa3RgrTPNpOpaeYNJa3ubPzr2DUGcuenKtfQG4n5b71Eni1Sn4R1Yn
       SLACK_URL_SUFFIX: AES:Gf9FJhvSPZvAwNUN6vrv6A==:8EV1Z57EwfIpksT47M2gV50E0DfJF/WeXnMdEDUvHO5X65AKqCwJEZUPR8fqpQnb
       WIN_DOMAIN_PASS: AES:eoSRfPVUr52uHiqjAhU2HA==:UZu+wR9bo8hQ4eQIDnhc34Kz8+OmVSqRXzKqVhIZB0M=
     group: teamcity
