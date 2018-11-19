@@ -1,0 +1,73 @@
+pipelines:
+  "cicdus_teamcity_cognos_agent_deploy":
+    environment_variables:
+      AWS_CRED_DIR: /var/go/.aws/
+      AWS_DEFAULT_REGION: us-east-1
+      CHEF_CONFIG_DIR: /etc/chef/
+      CHEF_SECRET_FILE: encrypted_data_bag_secret
+      DC_USER: us\us_domjoin
+      DOMAIN_CONTROLLER: us-dc01.us.daptiv.cloud
+      EC2_ROLE_ARN: arn:aws:iam::147491244536:role/GO_CP_US_CICD
+      NODE_TYPES: testagent_cognos_windows_chef13
+      PATCH_LEVEL: 20180518
+      WIN_DOMAIN_USER: us\us_deploysvc
+      WIN_LOCAL_USER: Administrator
+    secure_variables: # https://api.gocd.org/current/#encrypt-a-plain-text-value
+      DC_PASS: AES:w9NH2Zk+VRENh9UL7lmSew==:JEXZf0wrMwbjHqXAeMroUQ==
+      AWS_ACCESS_KEY_ID: AES:TY5cRDBfU8wtIPQgf6xBTg==:m5Qb0NuLU8/GF/qYVBQL7wkbDOPfua00JctZmmA4jVw=
+      AWS_SECRET_ACCESS_KEY: AES:IHftjWeuET6YPR2ycwOT/A==:m9ghhk/rJuaa3RgrTPNpOpaeYNJa3ubPzr2DUGcuenKtfQG4n5b71Eni1Sn4R1Yn
+      SLACK_URL_SUFFIX: AES:Gf9FJhvSPZvAwNUN6vrv6A==:8EV1Z57EwfIpksT47M2gV50E0DfJF/WeXnMdEDUvHO5X65AKqCwJEZUPR8fqpQnb
+      WIN_DOMAIN_PASS: AES:eoSRfPVUr52uHiqjAhU2HA==:UZu+wR9bo8hQ4eQIDnhc34Kz8+OmVSqRXzKqVhIZB0M=
+      WIN_LOCAL_PASS: AES:+ScLaate2XUIW/7fPLstBw==:0ButywWhDkkQNig83ut7ww==
+    group: teamcity
+    label_template: "${COUNT}"
+    locking: off
+    materials:
+      "ops_ec2_deployer":
+        git: git@github.com:daptiv/ops_ec2_deployer.git
+        branch: master
+        destination: ops_ec2_deployer
+    stages:
+      - "Deploy":
+          approval: manual
+          clean_workspace: true
+          jobs:
+            "Execute":
+              resources:
+                - docker
+              tasks:
+                - exec:
+                    run_if: passed
+                    working_directory: ops_ec2_deployer
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - "docker-compose pull"
+                - exec:
+                    run_if: passed
+                    working_directory: ops_ec2_deployer
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - "docker-compose run --rm chefdk 'rake notify[\"started\"] -f rakefile_deploy.rb'"
+                - exec:
+                    run_if: passed
+                    working_directory: ops_ec2_deployer
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - "docker-compose -f docker-compose.yml run --rm chefdk 'gem uninstall winrm -v 2.2.3 --force && rake deploy -f rakefile_deploy.rb'"
+                - exec:
+                    run_if: passed
+                    working_directory: ops_ec2_deployer
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - "docker-compose run --rm chefdk 'rake notify[\"passed\"] -f rakefile_deploy.rb'"
+                - exec:
+                    run_if: failed
+                    working_directory: ops_ec2_deployer
+                    command: /bin/bash
+                    arguments:
+                      - -c
+                      - "docker-compose run --rm chefdk 'rake notify[\"failed\"] -f rakefile_deploy.rb'"

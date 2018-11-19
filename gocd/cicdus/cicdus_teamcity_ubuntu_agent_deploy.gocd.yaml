@@ -1,5 +1,5 @@
 pipelines:
-  "cicdus_teamcity_agent_deploy":
+  "cicdus_teamcity_ubuntu_agent_deploy":
     environment_variables:
       AWS_CRED_DIR: /var/go/.aws/
       CHEF_CONFIG_DIR: /etc/chef/
