@@ -6,7 +6,7 @@ pipelines:
       CHEF_CONFIG_DIR: /etc/chef/
       CHEF_SECRET_FILE: encrypted_data_bag_secret
       DC_USER: us\us_domjoin
-      DOMAIN_CONTROLLER: US-DC01.us.daptiv.cloud
+      DOMAIN_CONTROLLER: us-dc01.us.daptiv.cloud
       EC2_ROLE_ARN: arn:aws:iam::147491244536:role/GO_CP_US_CICD
       NODE_TYPES: buildagent_windows_chef13
       PATCH_LEVEL: 20180518
