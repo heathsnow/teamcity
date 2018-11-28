@@ -22,7 +22,7 @@ services:
       GO_JOB_NAME: ${GO_JOB_NAME}
       GO_PIPELINE_COUNTER: ${GO_PIPELINE_COUNTER}
       GO_PIPELINE_NAME: ${GO_PIPELINE_NAME}
-      GO_SERVER_URL: http://gocd.daptiv.com:8153
+      GO_SERVER_URL: https://gocd.us.daptiv.cloud
       GO_STAGE_COUNTER: ${GO_STAGE_COUNTER}
       GO_STAGE_NAME: ${GO_STAGE_NAME}
       SERVICE_NAME: ${SERVICE_NAME}
