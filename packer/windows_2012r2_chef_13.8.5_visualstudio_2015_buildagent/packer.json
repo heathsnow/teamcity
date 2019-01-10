@@ -5,6 +5,7 @@
     "aws_access_key": "",
     "aws_secret_key": "",
     "chef_secret_file": "{{env `CHEF_SECRET_FILE`}}",
+    "chef_secret_file_dev": "{{env `CHEF_SECRET_FILE_DEV`}}",
     "ec2_ami_name_suffix": "{{env `EC2_AMI_NAME_SUFFIX`}}",
     "ec2_ami_region": "{{env `EC2_AMI_REGION`}}",
     "ec2_ami_users": "{{env `EC2_AMI_USERS`}}",
@@ -97,6 +98,11 @@
     {
       "type": "powershell",
       "script": "./scripts/fix-default-profile.ps1"
+    },
+    {
+      "type": "file",
+      "destination": "c:/chef/encrypted_data_bag_secret",
+      "source": "/root/.chef/{{user `chef_secret_file_dev`}}"
     }
   ]
 }
