@@ -25,10 +25,10 @@ pipelines:
         branch: master
         destination: terraform_environment
     stages:
-      - "Plan":
+      - "plan":
           clean_workspace: true
           jobs:
-            "Execute":
+            "execute":
               resources:
                 - docker
               tasks:
@@ -60,11 +60,11 @@ pipelines:
                         arguments:
                           - -c
                           - "docker-compose run --rm terraform 'rake cleanup'"
-      - "Deploy":
+      - "deploy":
           approval: manual
           clean_workspace: true
           jobs:
-            "Execute":
+            "execute":
               resources:
                 - docker
               tasks:
@@ -103,10 +103,10 @@ pipelines:
                     arguments:
                       - -c
                       - "docker-compose run --rm terraform 'rake notify[\"failed\"]'"
-      - "Verify":
+      - "verify":
           clean_workspace: true
           jobs:
-            "Execute":
+            "execute":
               resources:
                 - docker
               tasks:
