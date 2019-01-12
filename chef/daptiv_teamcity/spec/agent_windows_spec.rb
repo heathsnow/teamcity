@@ -77,7 +77,7 @@ describe 'daptiv_teamcity::agent_windows' do
     expect(chef_run).to sync_git semver_helper_dir
   end
 
-  it 'runs powershell script to update ca certs for semver_helper' do
-    expect(chef_run).to run_powershell_script 'update-root-ssl-certificates'
+  it 'should include cacert::default recipe' do
+    expect(chef_run).to include_recipe('cacert::default')
   end
 end

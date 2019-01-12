@@ -75,7 +75,7 @@ daptiv_nodejs_npm_config 'generate_teamcity_npmrc' do
   email 'teamcity@daptiv.com'
 end
 
-# Install semver helper
+# Install semver_helper
 semver_helper_dir = \
   ::File.join node['teamcity']['agents']['system_dir'], 'tools', 'semver_helper'
 
@@ -85,15 +85,6 @@ git semver_helper_dir do
   action :sync
 end
 
-# Update CA certificates used by semver_helper and set SSL_CERT_FILE variable
-cacert_url = 'http://curl.haxx.se/ca/cacert.pem'
-cacert_destination_file = ::File.join semver_helper_dir, 'cacert.pem'
-
-powershell_script 'update-root-ssl-certificates' do
-  code <<-EOH
-  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-  $client = new-object System.Net.WebClient
-  $client.DownloadFile('#{cacert_url}', '#{cacert_destination_file}')
-  setx SSL_CERT_FILE #{cacert_destination_file} -m
-  EOH
-end
+# Update cacert.pem file used by OpenSSL, indirectly required by semver_helper.
+# https://docs.chef.io/chef_client_security.html#ssl-cert-file
+include_recipe 'cacert::default'
