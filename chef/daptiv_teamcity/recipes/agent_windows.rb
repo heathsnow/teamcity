@@ -93,7 +93,7 @@ powershell_script 'update-root-ssl-certificates' do
   code <<-EOH
   [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
   $client = new-object System.Net.WebClient
-  $client.DownloadFile("#{cacert_url}", "#{cacert_destination_file}")
-  setx SSL_CERT_FILE "#{cacert_destination_file}" -m
+  $client.DownloadFile('#{cacert_url}', '#{cacert_destination_file}')
+  setx SSL_CERT_FILE #{cacert_destination_file} -m
   EOH
 end
