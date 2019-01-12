@@ -67,4 +67,17 @@ describe 'daptiv_teamcity::agent_windows' do
   it 'should include daptiv_ppm_build::npm_tools recipe' do
     expect(chef_run).to include_recipe 'daptiv_ppm_build::npm_tools'
   end
+
+  it 'installs semver_helper in teamcity tools dir' do
+    semver_helper_dir = ::File.join(
+      chef_run.node['teamcity']['agents']['system_dir'],
+      'tools',
+      'semver_helper'
+    )
+    expect(chef_run).to sync_git semver_helper_dir
+  end
+
+  it 'runs powershell script to update ca certs for semver_helper' do
+    expect(chef_run).to run_powershell_script 'update-root-ssl-certificates'
+  end
 end
