@@ -74,3 +74,17 @@ daptiv_nodejs_npm_config 'generate_teamcity_npmrc' do
   always_auth true
   email 'teamcity@daptiv.com'
 end
+
+# Install semver_helper
+semver_helper_dir = \
+  ::File.join node['teamcity']['agents']['system_dir'], 'tools', 'semver_helper'
+
+git semver_helper_dir do
+  repository 'git@github.com:daptiv/semver_helper.git'
+  reference 'master'
+  action :sync
+end
+
+# Update cacert.pem file used by OpenSSL, indirectly required by semver_helper.
+# https://docs.chef.io/chef_client_security.html#ssl-cert-file
+include_recipe 'cacert::default'

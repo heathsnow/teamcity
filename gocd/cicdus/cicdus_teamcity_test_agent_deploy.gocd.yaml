@@ -28,11 +28,11 @@ pipelines:
         branch: master
         destination: ops_ec2_deployer
     stages:
-      - "Deploy":
+      - "deploy":
           approval: manual
           clean_workspace: true
           jobs:
-            "Execute":
+            "execute":
               resources:
                 - docker
               tasks:
