@@ -29,7 +29,11 @@ pipelines:
         destination: ops_ec2_deployer
     stages:
       - "deploy":
-          approval: manual
+          approval:
+            type: manual
+            roles:
+              - US_GoCD_RoleTeamBork
+              - US_GoCD_RoleTeamNetOps
           clean_workspace: true
           jobs:
             "execute":
