@@ -1,3 +1,8 @@
+# Note:
+# "curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"
+# This is a quick fix solution to the outlined here:
+# https://github.com/yarnpkg/yarn/issues/6916
+
 resource "null_resource" "execute_teamcity_agent_configuration" {
   count = "${var.instance_count}"
   depends_on = [
@@ -8,6 +13,23 @@ resource "null_resource" "execute_teamcity_agent_configuration" {
 
   triggers {
     timestamp = "${timestamp()}"
+  }
+
+  provisioner "remote-exec" {
+    connection {
+      type                = "ssh"
+      host                = "${element(aws_instance.my_instance.*.private_ip, count.index)}"
+      user                = "${var.instance_user}"
+      private_key         = "${file("${var.instance_private_key}")}"
+      bastion_user        = "${var.bastion_user}"
+      bastion_host        = "${var.bastion_host}"
+      bastion_port        = "22"
+      bastion_private_key = "${file("${var.instance_private_key}")}"
+    }
+
+    inline = [
+      "curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"
+    ]
   }
 
   provisioner "chef" {
