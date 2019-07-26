@@ -89,8 +89,8 @@
       "json": {
         "teamcity": {
           "agent_windows": {
-            "ntservice_user": nil,
-            "ntservice_password": nil
+            "ntservice_user": null,
+            "ntservice_password": null
           }
         }
       },
