@@ -85,7 +85,15 @@
       "encrypted_data_bag_secret_path": "/root/.chef/{{user `chef_secret_file`}}",
       "guest_os_type": "windows",
       "node_name": "windows_2012r2_chef_13_8_5_visualstudio_2015_sql_server_2016_testagent",
-      "run_list": "recipe[daptiv_ec2_environment],recipe[daptiv_buildagent_ppm_role]",
+      "run_list": "recipe[daptiv_ec2_environment],recipe[daptiv_buildagent_ppm_role],recipe[daptiv_sql_server],recipe[daptiv_teamcity]",
+      "json": {
+        "teamcity": {
+          "agent_windows": {
+            "ntservice_user": nil,
+            "ntservice_password": nil
+          }
+        }
+      },
       "server_url": "https://api.opscode.com/organizations/daptiv",
       "skip_install": "true",
       "validation_client_name": "deploysvc",
