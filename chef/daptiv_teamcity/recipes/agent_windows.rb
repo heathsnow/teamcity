@@ -18,15 +18,6 @@ node.override['teamcity']['agents']['server_url'] =
 node.override['teamcity']['agents']['system_dir'] =
   node['daptiv_teamcity']['windows']['system_dir']
 
-# TeamCity Cloud agent should just use system account
-# Set the service user using data bag tc_userdata
-# unless node.chef_environment == 'cookbook_ci'
-  # node.override['teamcity']['agent_windows']['ntservice_user'] =
-    # tc_userdata['domain_username']
-  # node.override['teamcity']['agent_windows']['ntservice_password'] =
-    # tc_userdata['domain_password']
-# end
-
 # SSO cookbook for testagents use 9090 so need to update TC agent port to
 # run on 9000 intead of the 9090 default
 node.override['teamcity']['agents']['own_port'] = '9000'
