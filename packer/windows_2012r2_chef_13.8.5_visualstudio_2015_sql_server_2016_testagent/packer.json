@@ -92,6 +92,10 @@
       "validation_key_path": "{{user `validation_key_path`}}"
     },
     {
+      "type": "windows-shell",
+      "inline": "TZUTIL /s \"Pacific Standard Time\""
+    },
+    {
       "type": "powershell",
       "script": "./scripts/delete-cached-installation-packages.ps1"
     }
