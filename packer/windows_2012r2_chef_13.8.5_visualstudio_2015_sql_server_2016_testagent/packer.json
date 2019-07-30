@@ -97,7 +97,7 @@
     },
     {
       "type": "windows-shell",
-      "inline": "echo environment \"dev\" >> c:\chef\client.rb"
+      "inline": "echo environment \"dev\" >> c:\\chef\\client.rb"
     },
     {
       "type": "powershell",
