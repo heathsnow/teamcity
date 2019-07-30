@@ -96,6 +96,10 @@
       "inline": "TZUTIL /s \"Pacific Standard Time\""
     },
     {
+      "type": "windows-shell",
+      "inline": "echo environment \"dev\" >> c:\chef\client.rb"
+    },
+    {
       "type": "powershell",
       "script": "./scripts/delete-cached-installation-packages.ps1"
     }
