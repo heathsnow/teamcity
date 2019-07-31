@@ -19,7 +19,7 @@ node.override['teamcity']['agents']['system_dir'] =
   node['daptiv_teamcity']['windows']['system_dir']
 
 # Set the service user
-node.override['teamcity']['agent_windows']['ntservice_user'] = 'administrator'
+node.override['teamcity']['agent_windows']['ntservice_user'] = '.\administrator'
 node.override['teamcity']['agent_windows']['ntservice_password'] = 'XFm$D38y83'
 
 # SSO cookbook for testagents use 9090 so need to update TC agent port to
