@@ -76,6 +76,15 @@
   "provisioners": [
     {
       "type": "file",
+      "destination": "c:/LogOnAsService.vbs",
+      "source": "./scripts/LogOnAsService.vbs"
+    },
+    {
+      "type": "windows-shell",
+      "inline": "cscript.exe c:/LogOnAsService.vbs"
+    },
+    {
+      "type": "file",
       "destination": "c:/chef/encrypted_data_bag_secret",
       "source": "/root/.chef/{{user `chef_secret_file`}}"
     },
@@ -98,15 +107,6 @@
     {
       "type": "windows-shell",
       "inline": "echo environment \"dev\" >> c:\\chef\\client.rb"
-    },
-    {
-      "type": "file",
-      "destination": "c:/LogOnAsService.vbs",
-      "source": "./scripts/LogOnAsService.vbs"
-    },
-    {
-      "type": "windows-shell",
-      "inline": "cscript.exe c:/LogOnAsService.vbs"
     },
     {
       "type": "powershell",
