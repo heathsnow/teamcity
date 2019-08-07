@@ -1,6 +1,5 @@
 ' SetLogonAsAServiceRight.vbs
-' Sample VBScript to set or grant Logon As A Service Right.
-' Author: http://www.morgantechspace.com/
+' Grant Logon As A Service Right.
 ' ------------------------------------------------------' 
 
 Dim strUserName,ConfigFileName,OrgStr,RepStr,inputFile,strInputFile,outputFile,obj 

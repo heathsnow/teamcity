@@ -110,6 +110,10 @@
     },
     {
       "type": "powershell",
+      "script": "./scripts/ec2-configuration-settings.ps1"
+    },
+    {
+      "type": "powershell",
       "script": "./scripts/delete-cached-installation-packages.ps1"
     }
   ]
