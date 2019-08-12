@@ -2,11 +2,11 @@
 
 foreach ($element in $xmlDoc.Ec2ConfigurationSettings.Plugins.Plugin)
 {
-    if ($element.Name -eq "Ec2SetComputerName”) {
-        $element.State="Enabled"
+    if ($element.Name -eq "Ec2SetComputerName") {
+        $element.State = "Enabled"
     }
     if ($element.Name -eq "Ec2HandleUserData") {
-        $element.State="Enabled"
+        $element.State = "Enabled"
     }
 }
 
