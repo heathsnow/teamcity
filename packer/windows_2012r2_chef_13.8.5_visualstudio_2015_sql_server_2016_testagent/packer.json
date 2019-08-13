@@ -37,7 +37,7 @@
       "communicator": "winrm",
       "force_delete_snapshot": true,
       "force_deregister": true,
-      "instance_type": "c4.xlarge",
+      "instance_type": "c4.large",
       "launch_block_device_mappings": [
         {
           "delete_on_termination": true,
