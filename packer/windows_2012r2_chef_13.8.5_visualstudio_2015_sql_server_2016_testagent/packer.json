@@ -102,6 +102,26 @@
     },
     {
       "type": "windows-shell",
+      "inline": [
+        "gem install octokit",
+        "md D:/teamcity/tools/semver_helper"
+      ]
+    },
+    {
+      "type": "file",
+      "destination": "D:/teamcity/tools/semver_helper/semver_helper.rb",
+      "source": "./files/semver_helper.rb"
+    },
+    {
+      "type": "powershell",
+      "inline": [
+        "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12",
+        "$client = new-object System.Net.WebClient",
+        "$client.DownloadFile('http://curl.haxx.se/ca/cacert.pem', 'D:/teamcity/tools/semver_helper/cacert.pem')"
+      ]
+    },
+    {
+      "type": "windows-shell",
       "inline": "TZUTIL /s \"Pacific Standard Time\""
     },
     {
