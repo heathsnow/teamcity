@@ -43,18 +43,6 @@ describe 'daptiv_teamcity::agent_windows' do
     )
   end
 
-  it 'should override ntservice_user' do
-    ntservice_user = \
-      chef_run.node['teamcity']['agent_windows']['ntservice_user']
-    expect(ntservice_user).to eq('domain\user')
-  end
-
-  it 'should override ntservice_password' do
-    ntservice_password = \
-      chef_run.node['teamcity']['agent_windows']['ntservice_password']
-    expect(ntservice_password).to eq('domain_pass')
-  end
-
   it 'should override system_dir' do
     system_dir = chef_run.node['teamcity']['agents']['system_dir']
     expect(system_dir).to eq('d:\\teamcity\\')
