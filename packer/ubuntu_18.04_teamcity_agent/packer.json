@@ -86,7 +86,6 @@
         "./scripts/install_common_utilities.sh",
         "./scripts/configure_partitions.sh",
         "./scripts/enable_collectd_automatic_startup.sh",
-        "./scripts/create_ssh_keys.sh",
         "./scripts/disable_hostname_resolution.sh"
       ]
     },
@@ -102,6 +101,12 @@
       "install_command": "curl -L https://omnitruck.chef.io/install.sh | bash -s -- -v {{user `chef_version`}}",
       "validation_client_name": "deploysvc",
       "validation_key_path": "/etc/chef/deploysvc.pem"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "./scripts/create_ssh_keys.sh"
+      ]
     },
     {
       "type": "file",
