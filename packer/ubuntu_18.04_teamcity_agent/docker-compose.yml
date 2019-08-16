@@ -8,6 +8,7 @@ services:
     volumes:
       - $PWD:/src
       - ${AWS_CRED_DIR}:/root/.aws
+      - /etc/chef:/etc/chef
     working_dir: /src
     network_mode: "host"
     environment:
