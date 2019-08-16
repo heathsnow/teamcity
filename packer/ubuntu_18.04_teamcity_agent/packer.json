@@ -4,6 +4,7 @@
     "ami_source_filter": "ubuntu_18.04",
     "aws_access_key": "",
     "aws_secret_key": "",
+    "chef_version": "13.8.5",
     "ec2_ami_name_suffix": "{{env `EC2_AMI_NAME_SUFFIX`}}",
     "ec2_ami_region": "{{env `EC2_AMI_REGION`}}",
     "ec2_ami_users": "{{env `EC2_AMI_USERS`}}",
@@ -77,12 +78,36 @@
     },
     {
       "type": "shell",
+      "inline": ["curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"]
+    },
+    {
+      "type": "shell",
       "scripts": [
         "./scripts/install_common_utilities.sh",
         "./scripts/configure_partitions.sh",
         "./scripts/enable_collectd_automatic_startup.sh",
+        "./scripts/create_chef_keys.sh",
+        "./scripts/create_ssh_keys.sh",
         "./scripts/disable_hostname_resolution.sh"
       ]
+    },
+    {
+      "type": "chef-client",
+      "chef_environment": "dev",
+      "encrypted_data_bag_secret_path": "/etc/chef/encrypted_data_bag_secret",
+      "guest_os_type": "unix",
+      "node_name": "ubuntu_18.04_teamcity_agent",
+      "run_list": "recipe[daptiv_ec2_environment],recipe[daptiv_buildagent_ubuntu_role],recipe[daptiv_teamcity]",
+      "server_url": "https://api.opscode.com/organizations/daptiv",
+      "skip_install": "false",
+      "install_command": "curl -L https://omnitruck.chef.io/install.sh | bash -s -- -v {{user `chef_version`}}",
+      "validation_client_name": "deploysvc",
+      "validation_key_path": "/home/teamcity/.ssh/deploysvc.pem"
+    },
+    {
+      "type": "file",
+      "destination": "/etc/chef/knife.rb",
+      "source": "./files/knife.rb"
     },
     {
       "type": "inspec",
