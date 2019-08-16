@@ -114,6 +114,12 @@
       "source": "./files/knife.rb"
     },
     {
+      "type": "shell",
+      "scripts": [
+        "./scripts/install_docker.sh"
+      ]
+    },
+    {
       "type": "inspec",
       "test_path": "./spec/configure_partitions_spec.rb"
     },
