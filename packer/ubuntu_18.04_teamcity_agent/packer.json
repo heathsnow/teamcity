@@ -125,21 +125,20 @@
     },
     {
       "type": "shell",
-      "inline": [
-        "sudo mkdir /etc/chef/",
-        "sudo chmod 777 /etc/chef/"
-      ]
+      "inline": ["sudo mkdir /etc/chef/"]
     },
     {
       "type": "shell",
-      "scripts": [
-        "./scripts/create_chef_keys.sh"
-      ]
+      "scripts": ["./scripts/create_chef_keys.sh"]
     },
     {
       "type": "file",
-      "destination": "/etc/chef/knife.rb",
+      "destination": "/tmp/knife.rb",
       "source": "./files/knife.rb"
+    },
+    {
+      "type": "shell",
+      "inline": ["mv /tmp/knife.rb /etc/chef/knife.rb"]
     },
     {
       "type": "inspec",
