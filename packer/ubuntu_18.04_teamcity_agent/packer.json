@@ -124,6 +124,10 @@
       ]
     },
     {
+      "type": "shell",
+      "inline": ["mkdir /etc/chef/"]
+    },
+    {
       "type": "file",
       "destination": "/etc/chef/knife.rb",
       "source": "./files/knife.rb"
