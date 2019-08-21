@@ -91,6 +91,19 @@
       ]
     },
     {
+      "type": "shell",
+      "environment_vars": [
+        "DOCKER_COMPOSE_VERSION={{user `docker_compose_version`}}"
+      ],
+      "scripts": [
+        "./scripts/install_common_utilities.sh",
+        "./scripts/install_docker.sh",
+        "./scripts/install_docker_compose.sh",
+        "./scripts/enable_collectd_automatic_startup.sh",
+        "./scripts/disable_hostname_resolution.sh"
+      ]
+    },
+    {
       "type": "chef-client",
       "chef_environment": "dev",
       "encrypted_data_bag_secret_path": "/etc/chef/encrypted_data_bag_secret",
@@ -113,19 +126,6 @@
       "type": "file",
       "destination": "/etc/chef/knife.rb",
       "source": "./files/knife.rb"
-    },
-    {
-      "type": "shell",
-      "environment_vars": [
-        "DOCKER_COMPOSE_VERSION={{user `docker_compose_version`}}"
-      ],
-      "scripts": [
-        "./scripts/install_common_utilities.sh",
-        "./scripts/install_docker.sh",
-        "./scripts/install_docker_compose.sh",
-        "./scripts/enable_collectd_automatic_startup.sh",
-        "./scripts/disable_hostname_resolution.sh"
-      ]
     },
     {
       "type": "inspec",
