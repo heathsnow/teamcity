@@ -126,18 +126,17 @@
     {
       "type": "shell",
       "inline": [
-        "sudo mkdir /etc/chef/",
-        "sudo chmod 777 /etc/chef/"
+        "sudo mkdir -p /etc/chef &>/dev/null"
       ]
-    },
-    {
-      "type": "shell",
-      "scripts": ["./scripts/create_chef_keys.sh"]
     },
     {
       "type": "file",
       "destination": "/tmp/knife.rb",
       "source": "./files/knife.rb"
+    },
+    {
+      "type": "shell",
+      "scripts": ["./scripts/create_chef_keys.sh"]
     },
     {
       "type": "shell",
