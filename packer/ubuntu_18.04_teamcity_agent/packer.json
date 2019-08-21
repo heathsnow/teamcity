@@ -96,7 +96,7 @@
       "encrypted_data_bag_secret_path": "/etc/chef/encrypted_data_bag_secret",
       "guest_os_type": "unix",
       "node_name": "ubuntu_18.04_teamcity_agent",
-      "run_list": "recipe[daptiv_ec2_environment],recipe[daptiv_teamcity]",
+      "run_list": "recipe[daptiv_ec2_environment],recipe[daptiv_buildagent_ubuntu_role],recipe[daptiv_teamcity]",
       "server_url": "https://api.opscode.com/organizations/daptiv",
       "skip_install": "false",
       "install_command": "curl -L https://omnitruck.chef.io/install.sh | sudo bash -s -- -v {{user `chef_version`}}",
