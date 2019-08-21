@@ -122,6 +122,7 @@ install_docker () {
     "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
     $(lsb_release -cs) \
     stable"
+  sudo apt update
   install_system_package "docker-ce"
 }
 
