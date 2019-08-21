@@ -140,7 +140,7 @@
     },
     {
       "type": "shell",
-      "inline": ["mv /tmp/knife.rb /etc/chef/knife.rb"]
+      "inline": ["sudo mv /tmp/knife.rb /etc/chef/knife.rb"]
     },
     {
       "type": "inspec",
