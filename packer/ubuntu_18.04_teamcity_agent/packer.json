@@ -125,7 +125,10 @@
     },
     {
       "type": "shell",
-      "inline": ["sudo mkdir /etc/chef/"]
+      "inline": [
+        "sudo mkdir /etc/chef/",
+        "sudo chmod 777 /etc/chef/"
+      ]
     },
     {
       "type": "shell",
