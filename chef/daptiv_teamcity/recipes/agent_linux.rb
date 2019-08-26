@@ -65,7 +65,6 @@ daptiv_nodejs_npm_config 'generate_teamcity_npmrc' do
   email 'teamcity@daptiv.com'
 end
 
-include_recipe 'daptiv_docker'
 # Configure docker
 daptiv_docker_config 'teamcity' do
 end

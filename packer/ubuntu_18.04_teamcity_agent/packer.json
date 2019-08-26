@@ -4,6 +4,8 @@
     "ami_source_filter": "ubuntu_18.04",
     "aws_access_key": "",
     "aws_secret_key": "",
+    "chef_version": "13.8.5",
+    "docker_compose_version": "1.24.0",
     "ec2_ami_name_suffix": "{{env `EC2_AMI_NAME_SUFFIX`}}",
     "ec2_ami_region": "{{env `EC2_AMI_REGION`}}",
     "ec2_ami_users": "{{env `EC2_AMI_USERS`}}",
@@ -20,6 +22,7 @@
       "ami_users": "{{user `ec2_ami_users`}}",
       "force_delete_snapshot": true,
       "force_deregister": true,
+      "iam_instance_profile": "CP_TEAMCITY_AGENT",
       "instance_type": "t2.micro",
       "launch_block_device_mappings": [
         {
@@ -77,12 +80,67 @@
     },
     {
       "type": "shell",
+      "inline": ["curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"]
+    },
+    {
+      "type": "shell",
       "scripts": [
         "./scripts/install_common_utilities.sh",
         "./scripts/configure_partitions.sh",
         "./scripts/enable_collectd_automatic_startup.sh",
         "./scripts/disable_hostname_resolution.sh"
       ]
+    },
+    {
+      "type": "shell",
+      "environment_vars": [
+        "DOCKER_COMPOSE_VERSION={{user `docker_compose_version`}}"
+      ],
+      "scripts": [
+        "./scripts/install_common_utilities.sh",
+        "./scripts/install_docker.sh",
+        "./scripts/install_docker_compose.sh",
+        "./scripts/enable_collectd_automatic_startup.sh",
+        "./scripts/disable_hostname_resolution.sh"
+      ]
+    },
+    {
+      "type": "chef-client",
+      "chef_environment": "dev",
+      "encrypted_data_bag_secret_path": "/etc/chef/encrypted_data_bag_secret",
+      "guest_os_type": "unix",
+      "node_name": "ubuntu_18.04_teamcity_agent",
+      "run_list": "recipe[daptiv_ec2_environment],recipe[daptiv_teamcity]",
+      "server_url": "https://api.opscode.com/organizations/daptiv",
+      "skip_install": "false",
+      "install_command": "curl -L https://omnitruck.chef.io/install.sh | sudo bash -s -- -v {{user `chef_version`}}",
+      "validation_client_name": "deploysvc",
+      "validation_key_path": "/etc/chef/deploysvc.pem"
+    },
+    {
+      "type": "shell",
+      "scripts": [
+        "./scripts/create_ssh_keys.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo mkdir -p /etc/chef &>/dev/null"
+      ]
+    },
+    {
+      "type": "file",
+      "destination": "/tmp/knife.rb",
+      "source": "./files/knife.rb"
+    },
+    {
+      "type": "shell",
+      "scripts": ["./scripts/create_chef_keys.sh"]
+    },
+    {
+      "type": "shell",
+      "inline": ["sudo mv /tmp/knife.rb /etc/chef/knife.rb"]
     },
     {
       "type": "inspec",
