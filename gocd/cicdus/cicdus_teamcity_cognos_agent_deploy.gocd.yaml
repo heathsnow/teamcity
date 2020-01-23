@@ -60,7 +60,7 @@ pipelines:
                     command: /bin/bash
                     arguments:
                       - -c
-                      - "docker-compose -f docker-compose.yml run --rm chefdk 'gem uninstall winrm -v 2.2.3 --force && rake deploy -f rakefile_deploy.rb'"
+                      - "docker-compose -f docker-compose.yml run --rm chefdk 'rake deploy -f rakefile_deploy.rb'"
                 - exec:
                     run_if: passed
                     working_directory: ops_ec2_deployer
