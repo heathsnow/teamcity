@@ -24,7 +24,7 @@ RSpec.configure do |config|
       chef_ssh_private_key: 'barkey',
       github_username: 'foohub',
       github_email: 'barmail',
-      github_password: 'fooward'
+      github_token: 'fooward'
     )
     stub_data_bag_item('teamcity', 'npm_auth_token').and_return(
       auth_token: 'fake_auth_token'
