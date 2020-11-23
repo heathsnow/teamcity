@@ -41,7 +41,7 @@ end
 # Create a new SSH key for GitHub
 daptiv_github_sshkey "#{tc_local_user}_github_key" do
   email tc_userdata['github_email']
-  password tc_userdata['github_password']
+  password tc_userdata['github_token']
   key_passphrase ''
   key_title "#{tc_local_user}@#{host_name}.#{Time.now.utc.iso8601}"
   owner tc_local_user # Sets filesystem location for the .ssh dir
