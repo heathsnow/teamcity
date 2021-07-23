@@ -56,6 +56,9 @@ end
 daptiv_gem_config tc_local_user do
 end
 
+# Install npm
+include_recipe 'daptiv_nodejs'
+
 # Create npm config
 npm_auth_token = data_bag_item('teamcity', 'npm_auth_token')
 daptiv_nodejs_npm_config 'generate_teamcity_npmrc' do
