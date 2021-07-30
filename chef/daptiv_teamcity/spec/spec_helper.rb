@@ -39,5 +39,6 @@ RSpec.configure do |config|
     )
     stub_command('getent group docker').and_return(true)
     stub_command('docker --help').and_return(true)
+    stub_command("npm -v 2>&1 | grep '6.14.13'").and_return(true)
   end
 end
